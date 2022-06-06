@@ -1,0 +1,28 @@
+FROM openjdk:8
+
+ARG PROFILE
+ARG ADDITIONAL_OPTS
+
+ARG PACKAGE_NAME
+
+ENV PROFILE=${PROFILE}
+ENV ADDITIONAL_OPTS=${ADDITIONAL_OPTS}
+
+ENV PACKAGE_NAME="spring_boot_com_mysql.jar"
+
+WORKDIR /opt/spring_boot
+
+COPY /target/*jar ${PACKAGE_NAME}
+
+SHELL ["/bin/sh", "-c"]
+
+EXPOSE 8080/tcp
+EXPOSE 465/tcp
+EXPOSE 25/tcp
+EXPOSE 3306/tcp
+EXPOSE 443/tcp
+
+# Port Debug
+EXPOSE 5005/tcp
+
+CMD java ${ADDITIONAL_OPTS} -jar ${PACKAGE_NAME} --spring.profiles.active=${PROFILE}
