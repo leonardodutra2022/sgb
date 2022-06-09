@@ -1,0 +1,8 @@
+{
+    "name": "Sistema de Gestão de Benefícios",
+    "short_name": "SGB",
+    "start_url": "/",
+    "theme_color": "#1976d2",
+    "background_color": "#1976d2",
+    "display": "standalone"
+}

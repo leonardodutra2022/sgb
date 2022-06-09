@@ -1,0 +1,104 @@
+<div class="ui container subcriptionCustom">
+    <div class="ui grid">
+        <div class="sixteen wide column">
+          <div class="ui large header">
+            <i class="pencil alternate icon"></i>  
+            <div class="content">
+              Inscrição
+              <div class="sub header">({{processoDados.descricao}}).</div>
+            </div>
+          </div>
+        </div>
+
+        <!--VIEW GENERAL SCREENS-->
+        <div class="four wide column">
+                <div class="ui vertical steps ">
+
+                    <div class="completed step active {{stepDadosPessoais}}" routerLinkActive="active"
+                    *ngIf="(stepDadosPessoais$ && stepSocio$ && stepContatos$ 
+                        && stepMoradia$ && stepFinancas$ && stepSaude$
+                        && stepAuxilios$)">  
+                        <i class="address book icon"></i>
+                        <div class="content">
+                          <a routerLink="dados-pessoais">
+                            <div class="title">Dados Pessoais</div>
+                          </a>
+                          <div class="description">Informações pessoais e sócioeconômicas</div>
+                        </div>
+                      </div>                  
+                  
+                      <div class="step active {{stepDadosPessoais}}"
+                      *ngIf="!(stepDadosPessoais$ && stepSocio$ && stepContatos$ 
+                      && stepMoradia$ && stepFinancas$ && stepSaude$
+                      && stepAuxilios$)">  
+                          <i class="address book icon"></i>
+                          <div class="content">
+                            <a routerLink="dados-pessoais">
+                              <div class="title">Dados Pessoais</div>
+                            </a>
+                            <div class="description">Informações pessoais e sócioeconômicas</div>
+                          </div>
+                        </div>
+
+                        <div class="completed step" routerLinkActive="active"
+                        *ngIf="stepAcad$">
+                          <i class="graduation cap icon"></i>
+                          <div class="content">
+                            <a routerLink="info-acad">
+                              <div class="title">Informações Acadêmicas</div>
+                            </a>
+                            <div class="description">Histórico essencial acadêmico do aluno </div>
+                          </div>
+                        </div>
+
+                        <div class="step {{stepDadosAcad}}" 
+                        *ngIf="!stepAcad$">
+                          <i class="graduation cap icon"></i>
+                          <div class="content">
+                              <div class="title">Informações Acadêmicas</div>
+                            <div class="description">Histórico essencial acadêmico do aluno </div>
+                          </div>
+                        </div>                        
+
+                        <div class="step {{stepDocumentacao}}" routerLinkActive="active"
+                        *ngIf="(inscricaoValidacao.dadosAcadCompleto)" style="color: rgb(2, 62, 112)">
+                          <i class="file alternate outline icon"></i>
+                          <div class="content">
+                            <a routerLink="upload-docs">
+                              <div class="title">Documentação</div>
+                            </a>
+                            <div class="description">Documentação necessária</div>
+                          </div>
+                        </div>
+
+                        <div class="step"
+                          *ngIf="!(inscricaoValidacao.dadosAcadCompleto)">
+                            <i class="file alternate outline icon"></i>
+                            <div class="content">
+                                <div class="title">Documentação</div>
+                              <div class="description">Documentação necessária</div>
+                            </div>
+                        </div>
+
+                        <div class="step" style="color: rgb(2, 62, 112)"  routerLinkActive="active">
+                            <i class="paper plane outline icon"></i>
+                            <div class="content">
+                                
+                                  <div class="title">Submissão da Inscrição</div>
+                                
+                                <div class="description">Submeter inscrição após preenchimento de todas as informações, bem como documentação</div>
+                            </div>
+                        </div>                        
+                          
+                      </div>
+        </div>
+        
+        
+        <div class="twelve wide column">
+          <router-outlet></router-outlet>
+        </div>
+        <!--VIEW GENERAL SCREENS-->
+
+    </div>
+</div>
+

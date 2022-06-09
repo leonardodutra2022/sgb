@@ -1,0 +1,287 @@
+<div class="ui container containerCustom">
+    <div class="ui header">
+        <h2 class="ui header">
+          <span *ngIf="!dataRetro">Registro de Frequência ({{dataAtual | date: 'shortDate':'dd/MM/yyyy':'pt'}}) </span>
+          <span>
+            <fa-icon [icon]="editIcon" style="font-size: x-large; cursor: pointer; color:darkcyan" 
+              title="Alterar Data" (click)="setDataRetro()" 
+              *ngIf="!dataRetro"></fa-icon> 
+
+              <mat-form-field class="customDatePicker" 
+                *ngIf="dataRetro">
+                <mat-label>Selecione uma data</mat-label>
+                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
+                (dateChange)="setDate('change', $event)">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </span>
+        </h2>
+      </div>
+
+      <div class="sixteen wide column customHeader" *ngIf="viewInfo">
+        
+        <div class="ui info message">
+          <b>REGRAS PRINCIPAIS PARA REGISTRO DE FREQUÊNCIA!</b>
+          <i class="close icon" (click)="hideMsgInfo()"></i>
+          <ul>
+            <li>
+              <i class="chevron circle right icon"></i>Não é permitido registrar horários futuros ao horário atual, na data do mesmo dia.
+            </li>
+            <li><i class="chevron circle right icon"></i>Não é permitido registrar horário de entrada após o horário de saída ou de saída antes do horário de entrada.</li>
+            <li><i class="chevron circle right icon"></i>Não é permitido horários idênticos já registrados no mesmo dia (como 8:00 às 9:00 e 9:00 às 10:00, ou seja, deve-se registrar como 8:00 às 10:00 ou 9:01 às 10:00) ou que estejam dentro do intervalo de algum horário já registrado (como 7:00 às 10:00 e 8:00 ás 9:00 no mesmo dia)</li>
+            <li><i class="chevron circle right icon"></i>Não é permitido horários de entrada e saída idênticos, como 8:00 às 8:00</li>
+            <li><i class="chevron circle right icon"></i>Erros com Código 400 indicam que pode está havendo descumprimento a alguma dessas regras, mas caso ainda, persistam o erro, mesmo estando todas as regras atentidas, então nos contate em: sgb.ufc.crateus@gmail.com ou e-mail da CAE (cae@crateus.ufc.br)</li>
+          </ul>
+        </div>
+      </div>
+    <div class="ui divider"></div>
+
+    <div class="ui grid centered">
+      <div class="row">
+        <div class="messages">
+          <div class="ui negative message custom-msg" *ngIf="viewMsgErro">
+              <i class="close icon" (click)="hideMsg()"></i>
+              <div class="header">
+                Erro!
+              </div>
+              <p>
+                {{msgErro}}
+              </p>
+          </div>
+    
+          <div class="ui positive message custom-msg" *ngIf="viewMsg">
+            <i class="close icon" (click)="hideMsg()"></i>
+            <div class="header">
+              Informe
+            </div>
+            <p>
+              {{msg}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="sixteen wide mobile sixteen wide tablet column five wide computer column">
+          <mat-tab-group mat-align-tabs="left">
+            <mat-tab label="Entrada">
+                    <div class="row">
+                        <div class="six wide column">
+                            <div class="horario">
+                              <span>
+                                <h4>Horário de Entrada (Personalizado)</h4>
+                              </span>
+                              <p class="horario-custom" *ngIf="!horaRetro">
+                                {{horarioAtual}}
+                              </p>
+
+                              <div class="horario" *ngIf="horaRetro">
+                                <span>
+                                  <mat-form-field class="formLoginFieldCustom horaInput">
+                                    <input matInput placeholder="Horário Entrada" type="time" 
+                                    name="horaCustomEntrada" required [(ngModel)]="horarioRegistro.entrada">
+                                  </mat-form-field>
+                                </span>
+
+                                <span>
+                                  {{horarioRetro}}
+                                </span>
+                              </div>
+
+                              <div *ngIf="horarioRegistro.entrada">
+                                <span>
+                                  <h4>
+                                    <strong>{{horarioRegistro.entrada}}</strong> 
+                                  </h4>
+                                </span>
+                                <span>
+                                  <i>(valor informado)</i>
+                                </span>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="sixteen wide column">
+                        <mat-form-field class="formLoginFieldCustom">
+                            <input matInput placeholder="Observação" 
+                              name="obs" type="text" maxlength="500"
+                              [(ngModel)]="frequenciaRegistro.observacao">
+                        </mat-form-field>
+                      </div>
+                    </div>
+            </mat-tab>
+
+            <mat-tab label="Saída">
+                  <div class="row">
+                    <div class="six wide column">
+                      <div class="horario">
+                        <span>
+                          <h4>{{horaRetro ? "Horário de Saída (Personalizado)" : "Horário Atual"}}</h4>
+                        </span>
+                        <p class="horario-custom" *ngIf="!horaRetro">
+                          {{horarioAtual}}
+                        </p>
+
+                        <div class="horario" *ngIf="horaRetro">
+                          <span>
+                            <mat-form-field class="formLoginFieldCustom horaInput">
+                              <input matInput placeholder="Horário Saída" type="time" 
+                              name="horaCustomSaida" required [(ngModel)]="horarioRegistro.saida">
+                            </mat-form-field>
+                          </span>
+                          <span>
+                            {{horarioRetro}}
+                          </span>
+                        </div>
+
+                        <div *ngIf="horarioRegistro.saida">
+                          <span>
+                            <h4>
+                              <strong>{{horarioRegistro.saida}}</strong>
+                            </h4>
+                          </span>
+                          <span>
+                            <i>(valor informado)</i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="sixteen wide column">
+                    <mat-form-field class="formLoginFieldCustom">
+                        <input matInput placeholder="Observação" 
+                          name="obs" type="text" maxlength="500"
+                          [(ngModel)]="frequenciaRegistro.observacao">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+            </mat-tab>
+
+        </mat-tab-group>
+
+        <div class="row" *ngIf="horarioRegistro.entrada && horarioRegistro.saida && dataAtual">
+          <div *ngIf="!frequenciaRegistro.assinaturaAlunoEntrada || novoRegistro">
+            <button class="ui button teal" routerLink="/frequencia/aluno" (click)="assinar()">
+                <fa-icon [icon]="signIcon" style="font-size: x-large"></fa-icon>
+                Assinar e Registrar
+            </button>
+          </div>
+          
+          <div class="assinatura" *ngIf="frequenciaRegistro.assinaturaAlunoEntrada && frequenciaRegistro.assinaturaAlunoSaida && !novoRegistro">
+            <span class="info">
+              Registrado e Assinado <fa-icon [icon]="signIcon" class="icon"></fa-icon>
+            </span>
+            
+            <p class="paragrafo">
+              <a href="https://www.in.gov.br/en/web/dou/-/decreto-n-10.543-de-13-de-novembro-de-2020-288224831" target="_blank">
+                Assinado digital digitalmente conforme Decreto nº 10.543, de 13 de novembro de 2020. 
+              </a>
+            </p>
+            
+            <div>
+              <button class="ui button teal" (click)="setNovoRegistro()">
+                  <fa-icon [icon]="novoIcon" style="font-size: x-large"></fa-icon>
+                  Registrar Outro Horário
+              </button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+
+      <div class="sixteen wide mobile sixteen wide tablet column eleven wide computer column">
+        <div>
+            <div class="ui header">
+                <h3 class="ui header">
+                    Registros de Frequência ( {{dataAtual | customDate}} )
+                </h3>
+            </div>
+
+            <div class="ui divider"></div>
+
+
+            <table class="ui sortable compact celled definition blue table">
+                <thead class="full-width">
+                  <tr>
+                    <th></th>
+                    <th>Data</th>
+                    <th>Entrada/Saída</th>
+                    <th>Assinatura Aluno</th>
+                    <th>Responsável (assinatura)</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let regF of registrosFrequencia" class="(regF.assinaturaAlunoEntrada && regF.assinaturaAlunoSaida && regF.assinaturaResponsavel) ? positive">
+                    <td class="collapsing">
+                      <fa-icon class="icon-check" [icon]="calendarCheck" *ngIf="regF.assinaturaAlunoEntrada && regF.assinaturaAlunoSaida && regF.assinaturaResponsavel"></fa-icon>
+                    </td>
+                    <td>
+                      {{regF.dataReferencia | date: 'shortDate':'dd/MM/yyyy':'pt'}}
+                    </td>
+                    <td>
+                      <span *ngIf="regF.assinaturaAlunoEntrada">
+                        <span class="horario-reg" *ngFor="let r of regF.horarios">
+                            {{r.entrada | localTime}} às {{r.saida | localTime}}, 
+                        </span>
+                      </span>
+                    </td>
+                    <td>
+                      {{regF.status}}
+                    </td>
+                    <td>
+                      {{regF.assinaturaResponsavel ? 'ASSINADO' : 'PENDENTE'}}
+                    </td>
+                    <td>
+                      <div class="ui icon buttons">
+                        <button class="ui button tiny red" title="Apagar Registro desse Dia"
+                          (click)="delete(regF)">
+                          <i class="trash icon icon-custom" data-title="Apagar Registro"></i>
+                        </button>
+                      </div>
+
+                    </td>
+                  </tr>
+                  
+                </tbody>
+                <tfoot class="full-width">
+                  <tr *ngIf="registroFrequenciaPageable.totalPages > 1">
+                    <th colspan="7">
+                      <div class="ui right floated pagination menu">
+                        <a class="icon item" *ngIf="!registroFrequenciaPageable.first" (click)="prevPage()">
+                          <i class="left chevron icon"></i>
+                        </a>
+      
+                        <a [id]="i" class="item" (click)="goPage(i)" *ngFor="let p of [].constructor(registroFrequenciaPageable.totalPages); let i = index">{{i + 1}}</a>
+                        
+                        <a class="icon item" *ngIf="!registroFrequenciaPageable.last" (click)="nextPage()">
+                          <i class="right chevron icon"></i>
+                        </a>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th colspan="7">
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+        </div>
+
+    </div>
+
+    </div>
+    </div>
+    <mat-dialog-actions>
+      <button class="ui button" mat-dialog-close>Fechar</button>
+    </mat-dialog-actions>
+</div>

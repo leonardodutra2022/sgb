@@ -1,0 +1,44 @@
+<div class="ui container containerCustom">
+
+  <h1 class="ui header">
+    Cadastros Básicos
+  </h1>
+  
+  <div class="ui divider"></div>
+
+  <div class="ui grid">
+    <div class="row">
+      <div class="three wide column">
+        <div class="ui vertical menu">
+          <a class="item" routerLink="logradouros" routerLinkActive="active">
+            <h4 class="ui header">Logradouros</h4>
+            <p>Lista de Endereços cadastrados</p>
+          </a>
+          <a class="item" routerLink="logradouros-tipos" routerLinkActive="active">
+            <h4 class="ui header">Tipos de Logradouros</h4>
+            <p>Tipos de Endereços cadastrados</p>
+          </a>
+          <a class="item" routerLink="cidades-uf" routerLinkActive="active">
+            <h4 class="ui header">Cidades e Estados</h4>
+            <p>Base de cidades e estados</p>
+          </a>
+          <a class="item" routerLink="orgaos-expedidores" routerLinkActive="active">
+              <h4 class="ui header">Órgãos Expedidores</h4>
+              <p>Base de órgãos expedidores</p>
+          </a>
+          <a class="item" routerLink="bancos" routerLinkActive="active">
+              <h4 class="ui header">Bancos</h4>
+              <p>Base de bancos existentes</p>
+          </a>
+        </div>
+      </div>
+      
+      <div class="thirteen wide column">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+

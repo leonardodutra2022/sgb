@@ -1,0 +1,246 @@
+<div class="ui piled segments">  
+    <div class="ui segment">
+
+<form name="formInscricaoContatosEnderecos">
+  <div class="ui grid">
+  <div class="row">
+
+    <div class="sixteen wide column customHeader">
+      <div class="ui header">Contatos</div>
+      <div class="ui divider"></div>
+    </div>
+ 
+
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Nº Celular 1 (apenas número com DDD e dígito 9)" 
+            name="celularA" required [(ngModel)]="aluno.celularA" 
+            maxlength="16" celphoneMask
+            [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+        </mat-form-field>
+      </div>
+  
+  
+      <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Nº Celular 2  (apenas número com DDD e dígito 9)" 
+            name="celularB" [(ngModel)]="aluno.celularB" 
+            maxlength="16" celphoneMask
+            [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+        </mat-form-field>
+      </div>   
+
+
+      <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Nº Telefone Fixo (apenas número com DDD, sem dígito 9)" 
+              name="telefoneFixo" [(ngModel)]="aluno.telefoneFixo"
+              phoneMask maxlength="14"
+              [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+          </mat-form-field>
+        </div>
+    
+    
+        <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="E-mail" 
+              name="email" required [(ngModel)]="aluno.email"
+              maxlength="100"
+              [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto || !inscricaoValidacao.dadosContatosLogradouroCompleto">
+          </mat-form-field>
+        </div> 
+
+
+      
+
+    <div class="sixteen wide column customHeader">
+      <div class="ui header">Meu endereço atual</div>
+      <div class="ui divider"></div>
+    </div>
+
+    <div class="sixteen wide column custom-declaracao">
+      Resido atualmente com minha família de origem
+      <td class="collapsing">
+        <div class="ui toggle checkbox blue">
+          <input type="checkbox" name="residoFamilia" 
+            (click)="setLogradouroFamiliar()"
+            [disabled]="inscricaoValidacao.dadosContatosLogradouroCompleto"> 
+          <label></label>
+        </div>
+      </td>
+    </div>
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Logradouro (autocomplete)" 
+          name="logradouro" required  [(ngModel)]="logradouro.nomeRua"
+          maxlength="100"
+          [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+      </mat-form-field>
+    </div>
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+            <mat-select placeholder="Tipo de Logradouro" name="tipoLogradouroSelect" 
+            [ngModel]="selectTipoLogradouro" (ngModelChange)="setTipoLogradouro($event)"
+            [disabled]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+                  <mat-option *ngFor="let tipo of listTipoLog" 
+                    [value]="tipo.id">
+                    {{tipo.descricao}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="CEP" 
+          name="cep" required  [(ngModel)]="logradouro.cep"
+          cepMask maxlength="10"
+          [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+      </mat-form-field>
+    </div>
+
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+          <mat-select placeholder="UF" name="ufSelect" 
+          [ngModel]="selectUF" (ngModelChange)="carregarListaCidades($event)"
+          [disabled]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+                  <mat-option *ngFor="let est of listEstados" 
+                    [value]="est.id">
+                    {{est.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <mat-select placeholder="Cidade" name="cidadeSelect" 
+        [ngModel]="selectCidade" (ngModelChange)="setCidade($event)"
+        [disabled]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+          <mat-option *ngFor="let cid of listCidades" 
+                  [value]="cid.id">
+                  {{cid.nome}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Bairro" 
+          name="bairro" required  
+          [(ngModel)]="logradouro.bairro"
+          maxlength="30"
+          [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+      </mat-form-field>
+    </div>  
+
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+          <mat-select placeholder="Tipo de Casa" name="tipoCasaSelect" 
+          [(ngModel)]="selecaoTipoCasa"
+          [disabled]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+          <mat-option *ngFor="let tipoCasa of listTipoCasa" 
+            [value]="tipoCasa.value">
+            {{tipoCasa.tipo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Nº Casa" 
+          name="numCasa" 
+          [(ngModel)]="logradouro.numCasa"
+          maxlength="5"
+          [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+      </mat-form-field>
+    </div> 
+
+
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Complemento" 
+          name="complemento" 
+          [(ngModel)]="logradouro.complemento"
+          maxlength="100"
+          [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+      </mat-form-field>
+    </div> 
+
+
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Referência" 
+          name="referencia" 
+          [(ngModel)]="logradouro.referencia"
+          maxlength="200"
+          [readonly]="inscricaoValidacao.dadosContatosLogradouroCompleto">
+      </mat-form-field>
+    </div> 
+
+    <div class="sixteen wide column custom-declaracao">
+      Declaro ser meu logradouro atual
+      <td class="collapsing">
+        <div class="ui toggle checkbox blue">
+          <input type="checkbox" [(ngModel)]="aluno.declaracaoLogradouroAtual" name="meuLogradouroAtual" 
+          (ngModelChange)="onStatusChangeDecLogradouro(aluno)" 
+            (change)="onStatusChangeDecLogradouro(aluno)"
+            [disabled]="inscricaoValidacao.dadosContatosLogradouroCompleto"> 
+          <label></label>
+        </div>
+      </td>
+    </div>
+
+    </div>
+  </div>
+</form>
+
+</div>
+
+<div class="ui segment">
+    <div class="row">
+        <div class="customButtonStep">
+          <button class="ui button" type="button" 
+          routerLink="../dados-pessoais/"
+          *ngIf="!isModalForm">Anterior</button>  
+          <button class="ui button blue" type="button"
+            (click)="salvar()"
+            (dblclick)="dbClick()"
+            [disabled]="(!(aluno.celularA && aluno.email && logradouro.nomeRua
+                          && selectTipoLogradouro && logradouro.cep && selectUF
+                          && selectCidade && logradouro.bairro && selecaoTipoCasa
+                          && logradouro.numCasa) || fetching)"
+                          *ngIf="!(inscricaoValidacao.dadosContatosLogradouroCompleto) && !isModalForm">
+                          {{fetching ? 'Processando...' : 'Salvar e Continuar'}}
+          </button>
+          <button class="ui button green" type="button"
+            (click)="salvarPendente()"
+            [disabled]="!(aluno.celularA && aluno.email && logradouro.nomeRua
+                          && selectTipoLogradouro && logradouro.cep && selectUF
+                          && selectCidade && logradouro.bairro && selecaoTipoCasa
+                          && logradouro.numCasa)"
+                          *ngIf="isModalForm">
+                          Atualizar
+          </button>
+          
+          <button class="ui button" type="button" routerLink="../moradia-transporte/"
+            *ngIf="(inscricaoValidacao.dadosContatosLogradouroCompleto) && !isModalForm">Avançar
+          </button>   
+
+          <button class="ui labeled right floated icon button pagination"
+            (click)="editEnable()" *ngIf="(inscricaoValidacao.dadosContatosLogradouroCompleto)">
+            <i class="write icon"></i>Alterar Informações
+          </button>
+        </div>
+      </div>
+</div>
+
+</div>

@@ -1,0 +1,102 @@
+<h2 class="ui header">
+    Cadastro de Usuário (Técnico Administrativo/Professor)
+</h2>
+
+<div class="ui divider"></div>
+      <div class="ui grid">
+        <div class="row">
+            <div class="ui column eight wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Nome Completo" 
+                    name="nomeC" required [(ngModel)]="responsavel.nomeCompleto">
+                </mat-form-field>
+            </div>
+
+            <div class="ui column eight wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="E-mail" 
+                      name="email" required [(ngModel)]="responsavel.email">
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="ui column six wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Matrícula" maxlength="20"
+                      name="siape" required [(ngModel)]="responsavel.siape">
+                </mat-form-field>
+            </div>
+
+            <div class="ui column five wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <mat-select placeholder="Sexo" name="sexoSelect" 
+                      [(ngModel)]="selecaoSexo">
+                      <mat-option *ngFor="let sex of listSexo" [value]="sex.value">
+                        {{ sex.genero }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+
+            <div class="ui column five wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <mat-select placeholder="Classificação do Usuário" 
+                      name="classifUsuarioSelect" 
+                      [(ngModel)]="selecaoClassificacao">
+                      <mat-option *ngFor="let cls of classificacoes" [value]="cls">
+                        {{ cls.classificacao }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class="ui column five wide">
+            <mat-form-field class="formLoginFieldCustom">
+              <input matInput placeholder="Curso (como Responsável)" maxlength="100"
+                name="cursoRes" required [(ngModel)]="responsavel.cursoResponsavel">
+            </mat-form-field>
+          </div>
+
+          <div class="ui column five wide">
+            <mat-form-field class="formLoginFieldCustom">
+              <input matInput placeholder="Setor" maxlength="200"
+                name="setor" required [(ngModel)]="responsavel.setor">
+            </mat-form-field>
+          </div>
+
+          <div class="ui column six wide">
+            <mat-form-field class="formLoginFieldCustom">
+              <input matInput placeholder="Telefone"  maxlength="11"
+                name="telefone" required [(ngModel)]="responsavel.telefoneResponsavel">
+              </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+      <!-- [mat-dialog-close]="data.responsavel" -->
+<mat-dialog-actions align="begin">
+  <button class="ui button teal" cdkFocusInitial 
+    
+    (click)="add()"
+    mat-button
+    *ngIf="(selecaoClassificacao.papel && responsavel.nomeCompleto 
+            && responsavel.siape && responsavel.email
+            && responsavel.setor)"
+    > Cadastrar
+  </button>
+  <button class="ui button"
+     [disabled]="!(selecaoClassificacao.papel && responsavel.nomeCompleto 
+                   && responsavel.siape && responsavel.email
+                   && responsavel.setor)"
+     *ngIf="!(selecaoClassificacao.papel && responsavel.nomeCompleto 
+              && responsavel.siape && responsavel.email
+              && responsavel.setor)"
+    > Cadastrar
+    </button>
+    
+  <button class="ui button" mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

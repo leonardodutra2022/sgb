@@ -1,0 +1,151 @@
+<h2 mat-dialog-title>Validação da Inscrição (Check)</h2>
+<mat-dialog-content class="mat-typography">
+<div class="content customModal">
+
+  <div class="ui middle aligned divided list">
+    <div class="item">
+      <div class="right floated content">
+          <i class="check circle large green icon" *ngIf="inscricaoValidacao.dadosPessoaisCompleto"></i>
+          <i class="large close red icon" *ngIf="!inscricaoValidacao.dadosPessoaisCompleto"></i>
+          <div class="ui icon buttons">
+          <button class="ui button" *ngIf="!inscricaoValidacao.dadosPessoaisCompleto" (click)="setStatusValidacao(1)">
+            <i class="check circle large green icon"></i>
+          </button>
+          <button class="ui button" *ngIf="inscricaoValidacao.dadosPessoaisCompleto" (click)="setStatusValidacao(1)">
+              <i class="large close red icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="content">
+        Dados Pessoais
+      </div>
+    </div>
+    <div class="item">
+      <div class="right floated content">
+          <i class="check circle large green icon" *ngIf="inscricaoValidacao.dadosContatosLogradouroCompleto"></i>
+          <i class="large close red icon" *ngIf="!inscricaoValidacao.dadosContatosLogradouroCompleto"></i>
+          <div class="ui icon buttons">
+          <button class="ui button" *ngIf="!inscricaoValidacao.dadosContatosLogradouroCompleto" (click)="setStatusValidacao(2)">
+            <i class="check circle large green icon"></i>
+          </button>
+          <button class="ui button" *ngIf="inscricaoValidacao.dadosContatosLogradouroCompleto" (click)="setStatusValidacao(2)">
+            <i class="large close red icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="content">
+        Logradouro e Contato
+      </div>
+    </div>
+    <div class="item">
+      <div class="right floated content">
+          <i class="check circle large green icon" *ngIf="inscricaoValidacao.dadosSocioEconCompleto"></i>
+          <i class="large close red icon" *ngIf="!inscricaoValidacao.dadosSocioEconCompleto"></i>
+          <div class="ui icon buttons">
+          <button class="ui button" *ngIf="!inscricaoValidacao.dadosSocioEconCompleto" (click)="setStatusValidacao(3)">
+            <i class="check circle large green icon"></i>
+          </button>
+          <button class="ui button" *ngIf="inscricaoValidacao.dadosSocioEconCompleto" (click)="setStatusValidacao(3)">
+              <i class="large close red icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="content">
+        Informações Sócioeconômicas
+      </div>
+    </div>
+    <div class="item">
+      <div class="right floated content">
+          <i class="check circle large green icon" *ngIf="inscricaoValidacao.dadosMoradiaTransporteCompleto"></i>
+          <i class="large close red icon" *ngIf="!inscricaoValidacao.dadosMoradiaTransporteCompleto"></i>
+          <div class="ui icon buttons">
+          <button class="ui button" *ngIf="!inscricaoValidacao.dadosMoradiaTransporteCompleto" (click)="setStatusValidacao(4)">
+            <i class="check circle large green icon"></i>
+          </button>
+          <button class="ui button" *ngIf="inscricaoValidacao.dadosMoradiaTransporteCompleto" (click)="setStatusValidacao(4)">
+              <i class="large close red icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="content">
+        Moradia e Transporte
+      </div>
+    </div>
+    <div class="item">
+      <div class="right floated content">
+          <i class="check circle large green icon" *ngIf="inscricaoValidacao.dadosSaudeDeficienciaCompleto"></i>
+          <i class="large close red icon" *ngIf="!inscricaoValidacao.dadosSaudeDeficienciaCompleto"></i>
+          <div class="ui icon buttons">
+          <button class="ui button" *ngIf="!inscricaoValidacao.dadosSaudeDeficienciaCompleto" (click)="setStatusValidacao(5)">
+            <i class="check circle large green icon"></i>
+          </button>
+          <button class="ui button" *ngIf="inscricaoValidacao.dadosSaudeDeficienciaCompleto" (click)="setStatusValidacao(5)">
+              <i class="large close red icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="content">
+        Saúde e Deficiência
+      </div>
+    </div>
+    <div class="item">
+      <div class="right floated content">
+          <i class="check circle large green icon" *ngIf="inscricaoValidacao.infoFinanceiroCompleto"></i>
+          <i class="large close red icon" *ngIf="!inscricaoValidacao.infoFinanceiroCompleto"></i>
+          <div class="ui icon buttons">
+          <button class="ui button" *ngIf="!inscricaoValidacao.infoFinanceiroCompleto" (click)="setStatusValidacao(6)">
+            <i class="check circle large green icon"></i>
+          </button>
+          <button class="ui button" *ngIf="inscricaoValidacao.infoFinanceiroCompleto" (click)="setStatusValidacao(6)">
+              <i class="large close red icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="content">
+        Informações Financeiras
+      </div>
+    </div>    
+    <div class="item">
+      <div class="right floated content">
+          <i class="check circle large green icon" *ngIf="inscricaoValidacao.dadosOutrosAuxiliosCompleto"></i>
+          <i class="large close red icon" *ngIf="!inscricaoValidacao.dadosOutrosAuxiliosCompleto"></i>
+          <div class="ui icon buttons">
+          <button class="ui button" *ngIf="!inscricaoValidacao.dadosOutrosAuxiliosCompleto" (click)="setStatusValidacao(7)">
+            <i class="check circle large green icon"></i>
+          </button>
+          <button class="ui button" *ngIf="inscricaoValidacao.dadosOutrosAuxiliosCompleto" (click)="setStatusValidacao(7)">
+              <i class="large close red icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="content">
+        Outros Auxílios/Benefícios
+      </div>
+    </div>    
+    <div class="item">
+      <div class="right floated content">
+          <i class="check circle large green icon" *ngIf="inscricaoValidacao.documentacaoCompleta"></i>
+          <i class="large close red icon" *ngIf="!inscricaoValidacao.documentacaoCompleta"></i>
+          <div class="ui icon buttons">
+          <button class="ui button" *ngIf="!inscricaoValidacao.documentacaoCompleta" (click)="setStatusValidacao(8)">
+            <i class="check circle large green icon"></i>
+          </button>
+          <button class="ui button" *ngIf="inscricaoValidacao.documentacaoCompleta" (click)="setStatusValidacao(8)">
+              <i class="large close red icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="content">
+        Documentação
+      </div>
+    </div>
+  </div>
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="ui button" mat-dialog-close>Cancelar</button>
+  <button class="ui button blue" cdkFocusInitial 
+    [mat-dialog-close]="true"
+    (click)="atualizarValidacao()">Atualizar
+  </button>
+</mat-dialog-actions>

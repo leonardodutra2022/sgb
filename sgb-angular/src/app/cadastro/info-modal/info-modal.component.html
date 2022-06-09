@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{mensagem.titulo}}</h2>
+<mat-dialog-content class="mat-typography">
+<div class="content customModal">
+
+  <h3>{{mensagem.mensagem}}</h3>
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="ui button" mat-dialog-close>Cancelar</button>
+  <button class="ui button green" cdkFocusInitial 
+  [mat-dialog-close]="true">Continuar
+  </button>
+</mat-dialog-actions>

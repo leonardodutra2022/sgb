@@ -1,0 +1,186 @@
+<div class="ui piled segments">  
+    <div class="ui segment">
+
+
+<form name="formInscricaoMoradiaTransporte">
+  <div class="ui grid">
+  <div class="row">
+    <div class="sixteen wide column customHeader">
+      <div class="ui header">Minha Moradia Atual</div>
+      <div class="ui divider"></div>
+    </div>
+
+
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+            <mat-select placeholder="Atual Situação do Imóvel" name="situacaoMoradiaSelect" 
+            [(ngModel)]="selecaoSituacaoImovel"
+            [disabled]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+                  <mat-option *ngFor="let sit of listSituacaoImovel" 
+                    [value]="sit.value">
+                    {{sit.situacao}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+            <mat-select placeholder="Moradia" name="tipoMoradiaSelect" 
+            [(ngModel)]="selecaoMoradiaTipo"
+            [disabled]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+                  <mat-option *ngFor="let mor of listMoradiaTipo" 
+                    [value]="mor.value">
+                    {{mor.tipo}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+
+    <div class="eight wide column" *ngIf="checkValorFinancas()">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Valor Mensal" 
+              name="valorMensalFinanciamento" type="number" 
+              [(ngModel)]="inscricao.valorMensalFinanciamento"
+              [readonly]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+        </mat-form-field>
+    </div>
+
+
+    <div class="eight wide column">
+        <div class="ui toggle checkbox blue formFieldCustom">
+          <input type="checkbox" name="moradiaRural"
+            [(ngModel)]="inscricao.moradiaRural"
+            [disabled]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+          <label>Moradia Rural?</label>
+        </div>
+    </div>
+
+
+    <div class="sixteen wide column customHeader">
+      <div class="ui header">Moradia da Família de Origem</div>
+      <div class="ui divider"></div>
+    </div>
+
+
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+            <mat-select placeholder="Atual Situação do Imóvel" name="situacaoMoradiaFamiliarSelect" 
+            [(ngModel)]="selecaoSituacaoImovelFamiliar"
+            [disabled]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+                  <mat-option *ngFor="let sit of listSituacaoImovel" 
+                    [value]="sit.value">
+                    {{sit.situacao}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+    <div class="eight wide column" *ngIf="checkValorFinancasFamiliar()">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Valor Mensal" 
+              name="valorMensalFinanciamentoFamiliar" type="number" 
+              [(ngModel)]="inscricao.valorMensalFinanciamentoFamiliar"
+              [readonly]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+        </mat-form-field>
+    </div>
+
+
+    <div class="eight wide column">
+        <div class="ui toggle checkbox formFieldCustom">
+          <input type="checkbox" name="moradiaRuralFamiliar"
+            [(ngModel)]="inscricao.moradiaRuralFamiliar"
+            [disabled]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+          <label>Moradia Rural?</label>
+        </div>
+    </div>  
+
+
+    <div class="sixteen wide column customHeader">
+        <div class="ui header">Transporte</div>
+        <div class="ui divider"></div>
+    </div>
+
+
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Valor gasto diariamente com transporte" 
+              name="valorGastoDiariamenteTransporte" type="number" 
+              [(ngModel)]="inscricao.valorGastoDiariamenteTransporte"
+              [readonly]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+        </mat-form-field>
+    </div>
+
+
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Tempo gasto com deslocamento (minutos)" 
+              name="tempoGastoDeslocamento" type="number" 
+              [(ngModel)]="inscricao.tempoGastoDeslocamento"
+              [readonly]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+        </mat-form-field>
+    </div>  
+    
+    
+
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+            <mat-select placeholder="Meio de Transporte" name="meioTransporteSelect" 
+            [(ngModel)]="selecaoTransporte"
+            [disabled]="inscricaoValidacao.dadosMoradiaTransporteCompleto">
+            <mat-option *ngFor="let tra of listTransporte" 
+              [value]="tra.value">
+              {{tra.transporte}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+
+</div>
+</div>
+</form>
+</div>
+ 
+<div class="ui segment">
+    <div class="row">
+        <div class="customButtonStep">
+          <button class="ui button" type="button" 
+            routerLink="../contatos-enderecos"
+            *ngIf="!isModalForm">Anterior
+          </button>  
+
+          <button class="ui button blue" type="button" 
+            (click)="add()"
+            (dblclick)="dbClick()"
+            [disabled]="(!(selecaoSituacaoImovel && selecaoMoradiaTipo 
+            && selecaoSituacaoImovelFamiliar
+            && inscricao.tempoGastoDeslocamento
+            && selecaoTransporte) || fetching)"
+            *ngIf="!(inscricaoValidacao.dadosMoradiaTransporteCompleto) && !isModalForm && isUpdate">
+             {{fetching ? 'Processando...' : 'Salvar e Continuar'}}
+          </button>
+
+          <button routerLink="../socioeconomico" class="ui button"
+           *ngIf="(inscricaoValidacao.dadosMoradiaTransporteCompleto) && !isModalForm">Avançar
+          </button>
+
+          <button class="ui button green" type="button"
+            (click)="addInscricaoPendente()"
+            [disabled]="!(selecaoSituacaoImovel && selecaoMoradiaTipo 
+            && selecaoSituacaoImovelFamiliar
+            && inscricao.tempoGastoDeslocamento
+            && selecaoTransporte)"
+            *ngIf="isModalForm">Atualizar
+          </button>
+
+          <button class="ui labeled right floated icon button pagination"
+            (click)="editEnable()" *ngIf="(inscricaoValidacao.dadosMoradiaTransporteCompleto)">
+            <i class="write icon"></i>Alterar Informações
+          </button>
+        </div>
+      </div>
+</div>
+</div>

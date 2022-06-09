@@ -1,0 +1,1147 @@
+<div class="ui container containerCustom">
+  
+    <div class="ui grid">
+      <div class="row">
+        <div class="eight wide column">
+            <h1 class="ui header custom">
+                {{aluno.nomeCompleto}} {{inscricao.situacao == 'EM_ANALISE' ? '( Em Análise )' : ''}}
+            </h1>
+        </div>
+        <div class="eight wide column">
+            <div class="right floated right aligned four wide column">
+              <button (click)="setAnalise()" *ngIf="viewBtnAnalise" 
+                 class="ui right floated small green labeled icon button pagination menu">
+                 <i class="clipboard check icon"></i>Iniciar Análise 
+            </button>
+            </div>            
+            <div class="right floated right aligned four wide column">
+                <button routerLink="/processos/{{processo.id}}/inscricoes-recebidas" 
+                 class="ui right floated small primary labeled icon button pagination menu">
+                  <i class="reply icon"></i>Retornar 
+              </button>
+            </div>
+        </div> 
+        <div class="four wide column">
+                <p>
+                    Parecer Parcial: <b>{{inscricao.situacao}}</b>
+                </p>            
+                <p>
+                    Parecer Final: <b>{{inscricao.situacaoFinal}}</b>
+                </p>
+
+        </div>
+        <div class="four wide column" *ngIf="existConcessao">
+            <p>
+                Status Concessão: <b>{{concessao.concessaoStatus}}</b>
+            </p>
+            <p>
+                Data Concessão: <b>{{concessao.dataConcessao | date: 'shortDate':'dd/MM/yyyy':'pt'}}</b>
+            </p>
+        </div>
+        
+            <div class="left floated left aligned eight wide column">
+                <button class="ui left floated labeled icon button pagination"
+                 (click)="outrasConcessoesDialog()">
+                  <i class="address book outline icon"></i> Concessões Registradas
+                </button>                        
+               </div>                
+        
+      </div>
+      <div class="row">
+        <div class="sixteen wide column">
+          <h4 class="ui header">
+              Inscrição ID {{processo.id}}.{{idInscricao}}/2019
+          </h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="left floated left aligned eight wide column">
+         <button class="ui left floated small primary labeled icon button pagination menu"
+          (click)="exportDialog('CONCESSOES')">
+           <i class="file icon"></i> Exportar Informações de Concessão
+         </button>                        
+        </div>
+      </div>
+    </div>
+
+  <div class="ui divider"></div>
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Dados Pessoais">
+
+        <div class="ui grid gridCustom">
+
+            <div class="sixteen wide column customHeader">
+                <div class="ui header">Dados Básicos 
+                    <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(1)">
+                        <input type="checkbox" name="analiseGrupo" 
+                          (click)="analisarGrupo(1)"> 
+                        <label>Marcar como analisado</label>
+                    </div>
+                    <i class="green check square icon" *ngIf="checkGrupoInfo(1)" (click)="uncheckGrupoInfo(1)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+                </div>
+                <div class="ui success message" *ngIf="checkGrupoInfo(1)">
+                    <div class="header">Check da Comissão</div>
+                    <p>Grupo de informações analisado! </p>
+                </div>
+                <div class="ui divider"></div>
+            </div>          
+          
+        <div class="row">
+          <div class="four wide column">
+            <h4 class="ui header">
+                Nome Completo
+                <div class="sub header">{{aluno.nomeCompleto}}</div>
+            </h4>
+          </div>
+
+          <div class="four wide column">
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      Nome Social
+                      <div class="sub header">{{aluno.nomeSocial}}</div>
+                  </h4>
+              </div>
+          </div>
+      
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Sexo
+                  <div class="sub header">{{aluno.sexo ? 'Masculino' : 'Feminino'}}</div>
+              </h4>
+            </div>
+
+            <div class="four wide column">
+                <h4 class="ui header">
+                    CPF
+                    <div class="sub header">{{aluno.cpf}}</div>
+                </h4>
+            </div>
+          </div>
+            
+            
+          <div class="row">
+            <div class="four wide column">
+                <h4 class="ui header">
+                RG / Órgão Expedidor
+                <div class="sub header">{{aluno.rg}} / {{orgaoExpedidor.sigla}}</div>
+                </h4>
+            </div>
+            
+            <div class="four wide column">
+                <h4 class="ui header">
+                    CNH
+                    <div class="sub header">{{aluno.cnh}}</div>
+                </h4>
+            </div>
+      
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Data de Nascimento
+                    <div class="sub header">{{aluno.dataNascimento | date: 'shortDate':'dd/MM/yyyy':'pt'}}</div>
+                </h4>
+            </div>
+            
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Estado Civil
+                    <div class="sub header">{{aluno.estadoCivil}}</div>
+                </h4>
+            </div>  
+          </div>          
+
+         <div class="row">
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Naturalidade
+                    <div class="sub header">{{aluno.naturalidade}}</div>
+                </h4>
+            </div>
+              
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Nacionalidade
+                <div class="sub header">{{aluno.nacionalidade}}</div>
+                </h4>
+            </div>
+              
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Pai Viúvo?
+                <div class="sub header">{{aluno.paiViuvo ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+            </div>
+        
+            <div class="four wide column">
+                <h4 class="ui header">
+                Mãe Viúva?
+                <div class="sub header">{{aluno.maeViuva ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+            </div>
+         </div>
+
+          <div class="row">
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Nome Pai
+                    <div class="sub header">{{aluno.nomePai}}</div>
+                </h4>
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Nome Mãe
+                    <div class="sub header">{{aluno.nomeMae}}</div>
+                </h4>
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Tipo de Escola
+                    <div class="sub header">{{aluno.tipoEscolaEnsinoMedio}}</div>
+                </h4>
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">
+                    Bolsista em Escola Particular? Se sim, percentual:
+                    <div class="sub header">{{aluno.bolsistaEscolaParticular ? 'SIM' : 'NÃO'}} / {{aluno.percentualBolsa}}%</div>
+                </h4>
+            </div>              
+          </div>
+
+          <div class="sixteen wide column customHeader">
+              <div class="ui header">Endereço e Contato
+                <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(2)">
+                    <input type="checkbox" name="analiseGrupo2" 
+                      (click)="analisarGrupo(2)"> 
+                    <label>Marcar como analisado</label>
+                </div>
+                <i class="green check square icon" *ngIf="checkGrupoInfo(2)" (click)="uncheckGrupoInfo(2)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+            </div>
+            <div class="ui success message" *ngIf="checkGrupoInfo(2)">
+                <div class="header">Check da Comissão</div>
+                <p>Grupo de informações analisado! </p>
+            </div>
+            <div class="ui divider"></div>
+          </div>
+
+          <div class="row">
+              <div class="eight wide column">
+                  <h4 class="ui header">
+                      Endereço Completo <b>(Aluno)</b>
+                      <div class="sub header">{{logradouro.nomeRua}}, {{logradouro.numCasa}} - {{logradouro.bairro}} - {{cidade.nome}}/{{uf.sigla}}. {{tipoLogradouro.descricao}} | {{logradouro.tipoCasa}}</div>
+                  </h4>
+              </div>
+              <div class="eight wide column">
+                  <h4 class="ui header">
+                    CEP, Complemento e/ou Referência <b>(Aluno)</b>
+                      <div class="sub header">{{logradouro.cep}}, {{logradouro.complemento}} |   {{logradouro.referencia}}</div>
+                  </h4>
+              </div>              
+          </div>
+
+
+          <div class="row">
+              <div class="eight wide column">
+                  <h4 class="ui header">
+                      Endereço Completo <b>(Família de Origem)</b>
+                      <div class="sub header">{{logradouroFamilia.nomeRua}}, {{logradouroFamilia.numCasa}} - {{logradouroFamilia.bairro}} - {{cidadeFamilia.nome}}/{{ufFamilia.sigla}}. {{tipoLogradouroFamilia.descricao}} | {{logradouroFamilia.tipoCasa}}</div>
+                  </h4>
+              </div>
+              <div class="eight wide column">
+                  <h4 class="ui header">
+                      CEP, Complemento e/ou Referência <b>(Família de Origem)</b>
+                      <div class="sub header">{{logradouroFamilia.cep}}, {{logradouroFamilia.complemento}} | {{logradouroFamilia.referencia}}</div>
+                  </h4>
+              </div>              
+          </div>          
+
+
+          <div class="row">
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      E-mail
+                      <div class="sub header">{{aluno.email}}</div>
+                  </h4>
+              </div>
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      Celular 1
+                      <div class="sub header">{{aluno.celularA}}</div>
+                  </h4>
+              </div>
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      Celular 2
+                      <div class="sub header">{{aluno.celularB}}</div>
+                  </h4>
+              </div> 
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      Telefone Fixo
+                      <div class="sub header">{{aluno.telefoneFixo}}</div>
+                  </h4>
+              </div>               
+          </div>
+
+          <div class="sixteen wide column customHeader">
+              <div class="ui header">Dados Bancários
+                <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(3)">
+                    <input type="checkbox" name="analiseGrupo3" 
+                      (click)="analisarGrupo(3)"> 
+                    <label>Marcar como analisado</label>
+                </div>
+                <i class="green check square icon" *ngIf="checkGrupoInfo(3)" (click)="uncheckGrupoInfo(3)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+            </div>
+            <div class="ui success message" *ngIf="checkGrupoInfo(3)">
+                <div class="header">Check da Comissão</div>
+                <p>Grupo de informações analisado! </p>
+            </div>
+            <div class="ui divider"></div>
+          </div>
+
+          <div class="row">
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      Banco
+                      <div class="sub header">{{banco.nomeBanco}} [{{banco.codBanco}}]</div>
+                  </h4>
+              </div>
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      Agência/Conta
+                      <div class="sub header">{{aluno.numAgencia}}/{{aluno.contaCorrente}}</div>
+                  </h4>
+              </div>     
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      Operação (Caixa Econômica Federal) 
+                      <div class="sub header">{{aluno.operadorCef}}</div>
+                  </h4>
+              </div>
+              <div class="four wide column">
+                  <h4 class="ui header">
+                      Cidade Agência 
+                      <div class="sub header">{{aluno.cidadeAgencia}}</div>
+                  </h4>
+              </div>                
+          </div>
+        </div>
+
+
+    </mat-tab>
+    <mat-tab label="Sócioeconômico, Auxílios, Transporte e Moradia">
+
+      <div class="ui grid gridCustom">    
+
+          <div class="sixteen wide column customHeader">
+              <div class="ui header">Núcleo Familiar
+                <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(4)">
+                    <input type="checkbox" name="analiseGrupo4" 
+                      (click)="analisarGrupo(4)"> 
+                    <label>Marcar como analisado</label>
+                </div>
+                <i class="green check square icon" *ngIf="checkGrupoInfo(4)" (click)="uncheckGrupoInfo(4)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+            </div>
+            <div class="ui success message" *ngIf="checkGrupoInfo(4)">
+                <div class="header">Check da Comissão</div>
+                <p>Grupo de informações analisado! </p>
+            </div>
+            <div class="ui divider"></div>
+          </div>
+      <div class="row">
+        <div class="two wide column">
+          <h4 class="ui header">
+            Nº Pessoas na Família 
+            <div class="sub header">{{aluno.quantasPessoasFamilia}}</div>
+          </h4>
+        </div>
+        <div class="three wide column">
+            <h4 class="ui header">
+              Pai ou Mãe?
+              <div class="sub header">{{inscricao.genitor ? 'SIM' : 'NÃO'}}</div>
+            </h4>
+        </div>
+        <div class="three wide column" *ngIf="inscricao.genitor">
+            <h4 class="ui header">
+                Quantos filhos?
+            </h4>
+            <div class="sub header">{{aluno.numFilhos}} filho(s)</div>
+        </div>
+        <div class="three wide column" *ngIf="inscricao.genitor">
+            <h4 class="ui header">
+                Idade do filho mais novo?
+            </h4>
+            <div class="sub header">{{aluno.idadeFilhoMaisNovo}} ano(s)</div>
+        </div>
+        <div class="five wide column" *ngIf="inscricao.genitor">
+            <h4 class="ui header">
+                Possui a Guarda do(s) filho(s)?
+            </h4>
+            <div class="sub header">
+                {{aluno.possueGuardaFilho ? 'Possui Guarda' : 'Não Possui Guarda'}}
+            </div>
+        </div>
+      </div>    
+      
+      <div class="row">
+        <div class="sixteen wide column">
+            <ul>
+                <li *ngFor="let membro of listaFamiliares">
+                  <i class="chevron circle right icon"></i>
+                  [{{membro.parentesco}}] {{membro.nomeCompleto}}, {{membro.idade}} ano(s), 
+                  {{membro.atividadeProfissao}} com renda de R$ {{membro.rendaMensal}} - {{membro.escolaridade}}.</li>
+            </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="sixteen wide column">
+            <h4 class="ui header">
+              Renda Per Capita
+              <div class="sub header">
+                <p>Renda Mensal (aluno): R$ {{inscricao.rendaMensal}}</p>
+                <p>Renda Outra Atividade: R$ {{inscricao.rendaOutraAtividade}}</p>
+                <p>Assistência Médica: R$ {{aluno.valorAssisMedica}}</p>
+                <p>Renda de outra bolsa (Avance e etc): R$ {{inscricao.valorOutraBolsa}}</p>
+                <p>Renda Total (núcleo familiar): R$ {{rendaNucleoFamiliar}}</p>
+                <p>Pessoas na familia (incluído o aluno): {{totalMembrosFamilia}}</p>
+                <p>Renda per capita: R$ {{rendaPerCapita}}</p>
+              </div>
+            </h4>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="sixteen wide column">
+            <h4 class="ui header">
+              Relato Familiar
+              <div class="sub header">{{inscricao.relatoFamiliar}}</div>
+            </h4>
+        </div>
+      </div>
+
+      <div class="sixteen wide column customHeader">
+          <div class="ui header">Auxílios e Bolsas
+            <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(5)">
+                <input type="checkbox" name="analiseGrupo5" 
+                  (click)="analisarGrupo(5)"> 
+                <label>Marcar como analisado</label>
+            </div>
+            <i class="green check square icon" *ngIf="checkGrupoInfo(5)" (click)="uncheckGrupoInfo(5)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+        </div>
+        <div class="ui success message" *ngIf="checkGrupoInfo(5)">
+            <div class="header">Check da Comissão</div>
+            <p>Grupo de informações analisado! </p>
+        </div>
+        <div class="ui divider"></div>
+      </div>
+
+      <div class="row">
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Acompanhamento Psicológico (NAE)
+                  <div class="sub header">{{inscricao.acompPsiPrae ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+          </div>
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Auxílio Emergencial (NAE)
+                  <div class="sub header">{{inscricao.auxEmergPrae ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+          </div>
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Auxílio Moradia (NAE)
+                  <div class="sub header">{{inscricao.auxMoradiaPrae ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+          </div> 
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Bolsa de Iniciação Acadêmica (PBIA)
+                  <div class="sub header">{{inscricao.bolsaIniAcadPrae ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+          </div>           
+      </div>
+
+      <div class="row">
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Isenção do Restaurante Universitário
+                  <div class="sub header">{{inscricao.isencaoRUPrae ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+          </div> 
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Auxílio Creche (PRAE)
+                  <div class="sub header">{{inscricao.auxCrechePrae ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+          </div>
+          <div class="eight wide column">
+              <h4 class="ui header">
+                  Outro tipo de Bolsa (com recursos pagos pela rede estadual, municipal ou outro tipo), se SIM, descrição e valor
+                  <div class="sub header">{{inscricao.bolsista ? 'SIM' : 'NÃO'}}, {{inscricao.tipoBolsa}} no valor de R$ {{inscricao.valorOutraBolsa}}</div>
+                </h4>
+          </div>            
+      </div> 
+      
+      <div class="sixteen wide column customHeader">
+          <div class="ui header">Informações Financeiras
+            <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(6)">
+                <input type="checkbox" name="analiseGrupo6" 
+                  (click)="analisarGrupo(6)"> 
+                <label>Marcar como analisado</label>
+            </div>
+            <i class="green check square icon" *ngIf="checkGrupoInfo(6)" (click)="uncheckGrupoInfo(6)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+        </div>
+        <div class="ui success message" *ngIf="checkGrupoInfo(6)">
+            <div class="header">Check da Comissão</div>
+            <p>Grupo de informações analisado! </p>
+        </div>
+        <div class="ui divider"></div>
+      </div>
+
+      <div class="row">
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Declara-se em Vulnerabilidade Econômica
+                  <div class="sub header">{{aluno.situacaoVulnerabilidadeEconomica ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+          </div>
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Estágio em andamento, se SIM, onde realiza Estágio
+                  <div class="sub header">{{inscricao.estagiario ? 'SIM' : 'NÃO'}}, {{inscricao.ondeFazEstagio}}</div>
+                </h4>
+          </div>
+          <div class="eight wide column">
+              <h4 class="ui header">
+                  Trabalho formalmente? Se SIM, qual empresa trabalha, função/cargo e quanto ganha
+                  <div class="sub header">{{inscricao.trabalhaFormalmente ? 'SIM' : 'NÃO'}}, {{inscricao.empresa}} como {{inscricao.cargo}} com renda de R$ {{inscricao.rendaMensal}}</div>
+                </h4>
+          </div>           
+      </div>
+
+      <div class="row">
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Possui outra atividade remunerada
+                  <div class="sub header">{{inscricao.possuiOutraAtividadeRemunerada ? 'SIM' : 'NÃO'}}</div>
+                </h4>
+          </div>
+          <div class="four wide column">
+              <h4 class="ui header">
+                  Outra(s) atividade(s) remunerada e Renda
+                  <div class="sub header">{{inscricao.outraAtividadeRemunerada}}, com renda de R$ {{inscricao.rendaOutraAtividade}}</div>
+                </h4>
+          </div>
+          <div class="eight wide column">
+              <h4 class="ui header">
+                  Família possui Plano de Assistência Médica? Se SIM, quanto
+                  <div class="sub header">{{aluno.familiaPossuiPlanoAssisMedica ? 'SIM' : 'NÃO'}}, R$ {{aluno.valorAssisMedica}}</div>
+                </h4>
+          </div>           
+      </div>      
+
+      <div class="sixteen wide column customHeader">
+          <div class="ui header">Moradia
+            <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(7)">
+                <input type="checkbox" name="analiseGrupo7" 
+                  (click)="analisarGrupo(7)"> 
+                <label>Marcar como analisado</label>
+            </div>
+            <i class="green check square icon" *ngIf="checkGrupoInfo(7)" (click)="uncheckGrupoInfo(7)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+        </div>
+        <div class="ui success message" *ngIf="checkGrupoInfo(7)">
+            <div class="header">Check da Comissão</div>
+            <p>Grupo de informações analisado! </p>
+        </div>
+          <div class="ui divider"></div>
+      </div>
+      
+      <div class="row">
+          <div class="four wide column">
+              <h4 class="ui header">
+                Situação Moradia [ALUNO]
+                <div class="sub header">{{inscricao.situacaoMoradiaImovel}}</div>
+              </h4>
+          </div>
+          <div class="four wide column">
+              <h4 class="ui header">
+                Tipo Moradia [ALUNO]
+                <div class="sub header">{{inscricao.tipoMoradia}}</div>
+              </h4>
+          </div>          
+          <div class="four wide column">
+              <h4 class="ui header">
+                Valor referente a moradia (Financiamento ou Aluguel) [ALUNO]
+                <div class="sub header">{{inscricao.valorMensalFinanciamento}}</div>
+              </h4>
+          </div>  
+          <div class="four wide column">
+              <h4 class="ui header">
+                Moradia Rural [ALUNO]
+                <div class="sub header">{{inscricao.moradiaRural ? 'SIM' : 'NÃO'}}</div>
+              </h4>
+          </div>                     
+      </div>
+
+      <div class="row">
+          <div class="four wide column">
+              <h4 class="ui header">
+                Situação Moradia [FAMÍLIA DE ORIGEM]
+                <div class="sub header">{{inscricao.situacaoMoradiaImovelFamiliar}}</div>
+              </h4>
+          </div>
+          <div class="four wide column">
+              <h4 class="ui header">
+                Valor referente a moradia (Financiamento ou Aluguel) [FAMÍLIA DE ORIGEM]
+                <div class="sub header">{{inscricao.valorMensalFinanciamentoFamiliar}}</div>
+              </h4>
+          </div>  
+          <div class="four wide column">
+              <h4 class="ui header">
+                Moradia Rural [FAMÍLIA DE ORIGEM]
+                <div class="sub header">{{inscricao.moradiaRuralFamiliar ? 'SIM' : 'NÃO'}}</div>
+              </h4>
+          </div>                     
+      </div>  
+      
+      <div class="sixteen wide column customHeader">
+          <div class="ui header">Transporte
+            <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(8)">
+                <input type="checkbox" name="analiseGrupo8" 
+                  (click)="analisarGrupo(8)"> 
+                <label>Marcar como analisado</label>
+            </div>
+            <i class="green check square icon" *ngIf="checkGrupoInfo(8)" (click)="uncheckGrupoInfo(8)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+        </div>
+        <div class="ui success message" *ngIf="checkGrupoInfo(8)">
+            <div class="header">Check da Comissão</div>
+            <p>Grupo de informações analisado! </p>
+        </div>
+          <div class="ui divider"></div>
+      </div>
+
+      <div class="row">
+          <div class="five wide column">
+              <h4 class="ui header">
+                Valor gasto diariamente com Transporte
+                <div class="sub header">R$ {{inscricao.valorGastoDiariamenteTransporte}}</div>
+              </h4>
+          </div>
+          <div class="five wide column">
+              <h4 class="ui header">
+                Tempo gasto com Deslocamento (minutos)
+                <div class="sub header">{{inscricao.tempoGastoDeslocamento}}</div>
+              </h4>
+          </div>  
+          <div class="four wide column">
+              <h4 class="ui header">
+                Tipo de Transporte
+                <div class="sub header">{{inscricao.meioTransporte}}</div>
+              </h4>
+          </div>                     
+      </div> 
+      
+    </div>
+
+    </mat-tab>
+    <mat-tab label="Saúde e Deficiência">
+
+        <div class="ui grid gridCustom">
+            <div class="sixteen wide column customHeader">
+                <div class="ui header">Informações de Saúde e Deficiência
+                    <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(9)">
+                        <input type="checkbox" name="analiseGrupo9" 
+                          (click)="analisarGrupo(9)"> 
+                        <label>Marcar como analisado</label>
+                    </div>
+                    <i class="green check square icon" *ngIf="checkGrupoInfo(9)" (click)="uncheckGrupoInfo(9)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+                </div>
+                <div class="ui success message" *ngIf="checkGrupoInfo(9)">
+                    <div class="header">Check da Comissão</div>
+                    <p>Grupo de informações analisado! </p>
+                </div>
+                <div class="ui divider"></div>
+            </div>
+
+        <div class="row">
+            <div class="eight wide column">
+                <h4 class="ui header">
+                    Aluno usa continuamente algum medicamento? Se SIM, qual doença
+                  <div class="sub header">{{aluno.usoContinuoMedicacao ? 'SIM' : 'NÃO'}}, {{aluno.doenca}}</div>
+                </h4>
+            </div> 
+            <div class="eight wide column">
+                <h4 class="ui header">
+                    Aluno possui alguma deficiência? Se SIM, qual deficiência
+                  <div class="sub header">{{aluno.possuiDeficiencia ? 'SIM' : 'NÃO'}}, {{aluno.deficiencia}}</div>
+                </h4>
+            </div>             
+        </div>
+
+        <div class="row">
+            <div class="eight wide column">
+                <h4 class="ui header">
+                    Membro familiar possui alguma doença grave? Se SIM, qual doença
+                  <div class="sub header">{{aluno.doencaGraveMembroFamiliar ? 'SIM' : 'NÃO'}}, {{aluno.qualDoencaGraveMembroFamiliar}}</div>
+                </h4>
+            </div> 
+            <div class="eight wide column">
+                <h4 class="ui header">
+                    Aluno familiar possui alguma deficiência? Se SIM, qual deficiência
+                  <div class="sub header">{{aluno.deficienciaMembroFamiliar ? 'SIM' : 'NÃO'}}, {{aluno.qualDeficienciaMembroFamiliar}}</div>
+                </h4>
+            </div>             
+        </div>        
+      
+      </div>
+
+    </mat-tab>
+    <mat-tab label="Informações Acadêmicas">
+
+       <div class="ui grid gridCustom ">
+        <div class="sixteen wide column customHeader">
+            <div class="ui header customHeader">Informações Acadêmicas
+                <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(10)">
+                    <input type="checkbox" name="analiseGrupo10" 
+                      (click)="analisarGrupo(10)"> 
+                    <label>Marcar como analisado</label>
+                </div>
+                <i class="green check square icon" *ngIf="checkGrupoInfo(10)" (click)="uncheckGrupoInfo(10)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+            </div>
+            <div class="ui success message" *ngIf="checkGrupoInfo(10)">
+                <div class="header">Check da Comissão</div>
+                <p>Grupo de informações analisado! </p>
+            </div>
+            <div class="ui divider"></div>
+        </div>
+       </div>
+
+       <div class="ui grid gridCustom">
+            <div class="row">
+                <div class="four wide column">
+                    <h4 class="ui header">
+                      Matrícula Atual
+                      <div class="sub header">{{aluno.siape}}</div>
+                    </h4>
+                </div> 
+                <div class="four wide column">
+                    <h4 class="ui header">
+                      Curso Atual
+                      <div class="sub header">{{aluno.cursoAtual}}</div>
+                    </h4>
+                </div>   
+                <div class="four wide column">
+                    <h4 class="ui header">
+                      Semestre Atual em Curso
+                      <div class="sub header">{{aluno.semestreCursoAtual}}º</div>
+                    </h4>
+                </div>  
+                <div class="four wide column">
+                    <h4 class="ui header">
+                      Período Letivo Atual 
+                      <div class="sub header">{{aluno.periodoLetivoAtual}}</div>
+                    </h4>
+                </div>  
+                                                                           
+            </div>
+
+            <div class="row">
+                <div class="four wide column">
+                    <h4 class="ui header">
+                        Nº de Disciplinas matriculadas no período anterior
+                      <div class="sub header">{{aluno.totalCreditosUltimo}}</div>
+                    </h4>
+                </div>  
+                <div class="four wide column">
+                    <h4 class="ui header">
+                        Nº de Disciplinas aprovadas no período anterior
+                      <div class="sub header">{{aluno.creditosAprovadosUltimo}}</div>
+                    </h4>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui header">
+                        IRA Geral Atualizado
+                      <div class="sub header">{{aluno.iraAtual}}</div>
+                    </h4>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui header">
+                        IRA Individual Atualizado
+                      <div class="sub header">{{aluno.iraIndividual}}</div>
+                    </h4>
+                </div>                
+            </div>
+
+            <div class="row">
+                <div class="sixteen wide column">
+                    <h4 class="ui header">
+                      Observações relevantes
+                      <div class="sub header">{{aluno.obsAcad}}</div>
+                    </h4>
+                </div>  
+            </div>
+
+            <div class="sixteen wide column customHeader">
+                <div class="ui header"><h3>Outras matrículas/vínculos na UFC existentes</h3></div>
+                <div class="ui divider"></div>
+            </div>
+
+            <div class="row">
+                <div class="sixteen wide column">
+                    <ul>
+                        <li *ngFor="let acad of listaOutrosVinculosAcad">
+                          <i class="chevron circle right icon"></i>
+                          {{acad.curso}}, matrícula {{acad.matricula}}, nº disciplinas matriculadas 
+                          {{acad.numDisciplina}}, nº disciplinas aprovadas {{numDisciplinaAprovada}}, 
+                          IRA {{acad.ira}}, período letivo {{acad.periodoLetivo}}</li>
+                    </ul>
+                </div>
+              </div>
+
+              <div class="sixteen wide column customHeader">
+                  <div class="ui header"><h3>Formações Anteriores (outras instituições)</h3></div>
+                  <div class="ui divider"></div>
+              </div>
+
+              <div class="row">
+                  <div class="seven wide column">
+                      <h4 class="ui header">
+                          Possui outra graduação ? Se sim, qual curso e instituição de ensino
+                        <div class="sub header">{{aluno.outraGraduacao ? 'SIM' : 'NÃO'}}, {{aluno.cursoOutraGraduacao}} ({{aluno.ies}})</div>
+                      </h4>
+                  </div> 
+                  <div class="seven wide column">
+                      <h4 class="ui header">
+                          Forma de Ingresso ou outra maneira de ingresso
+                        <div class="sub header">{{aluno.formaIngresso}} / {{aluno.outraFormaIngresso}}</div>
+                      </h4>
+                  </div>
+                  <div class="two wide column">
+                      <h4 class="ui header">
+                          Ano Conclusão
+                        <div class="sub header">{{aluno.anoConclusao}}</div>
+                      </h4>
+                  </div>
+              </div>
+
+        </div>
+
+    </mat-tab>
+    <mat-tab label="Documentação">
+        <div class="ui grid gridCustom">
+            <div class="sixteen wide column customHeader">
+                <div class="ui header customHeader">Documentação
+                    <div class="ui toggle checkbox blue" *ngIf="!checkGrupoInfo(11)">
+                        <input type="checkbox" name="analiseGrupo11" 
+                          (click)="analisarGrupo(11)"> 
+                        <label>Marcar como analisado</label>
+                    </div>
+                    <i class="green check square icon" *ngIf="checkGrupoInfo(11)" (click)="uncheckGrupoInfo(9)" title="Clique para marcar como não analisado, este grupo!" style="cursor: pointer;"></i>
+                </div>
+                <div class="ui success message" *ngIf="checkGrupoInfo(11)">
+                    <div class="header">Check da Comissão</div>
+                    <p>Grupo de informações analisado! </p>
+                </div>
+                <div class="ui divider"></div>
+            </div>
+
+            <div class="row"  *ngFor="let grupo of gruposDocsCustom">
+                <div class="sixteen wide column">
+                    <h3 class="ui header">
+                        {{grupo.descricao}}
+                        <div class="sub header">{{grupo.subtitulo}}.</div>
+                    </h3>
+                    <table mat-table [dataSource]="docsLista" class="ui selectable compact celled definition table customTable">
+    
+                        <ng-container matColumnDef="documento">
+                        <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Documento </th>
+                        <td mat-cell *matCellDef="let doc">{{doc.documento}} <i class="warning circle large icon custom-icon" title="Documento de envio obrigatório!" *ngIf="doc.obrigatorio"></i></td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="descricao">
+                        <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Descrição </th>
+                        <td mat-cell *matCellDef="let doc">{{doc.descricao}}</td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="Upload">
+                        <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Arquivo/Anexos </th>
+                        <td mat-cell *matCellDef="let doc">
+                            
+                            <a class="ui button customButtons" *ngIf="checkEntregaDoc(doc.documento)" (click)="getArquivo(doc.documento)">
+                                <i class="ui download icon"></i>
+                            </a>
+                            <label (click)="download(doc.documento)" class="ui disabled button customButtons" *ngIf="!checkEntregaDoc(doc.documento)">
+                                <i class="ui download icon"></i></label>
+                    
+                        </td>
+                        </ng-container>      
+                
+                        <ng-container matColumnDef="entrega">
+                        <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Entrega </th>
+                        <td mat-cell *matCellDef="let doc">
+                            <i class="big green check square icon" *ngIf="checkEntregaDoc(doc.documento)"></i>
+                            <i class="big window close outline icon customIcons" *ngIf="!checkEntregaDoc(doc.documento)"></i>
+                        </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="validado">
+                            <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Validação </th>
+                            <td mat-cell *matCellDef="let doc">
+                                <i class="big green check square icon" *ngIf="checDocValido(doc)" (click)="invalidar(doc)" title="Clique para invalidar o arquivo!" style="cursor: pointer;"></i>
+                                <div class="ui toggle checkbox blue" *ngIf="!checDocValido(doc)">
+                                    <input type="checkbox" name="validarDoc" 
+                                      (click)="validarDoc(doc)"> 
+                                    <label>Validar</label>
+                                </div>
+                            </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="usuario">
+                            <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Validado por </th>
+                            <td mat-cell *matCellDef="let doc">
+                                {{getUsuarioValidador(doc)}}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="colsTable"></tr>
+                        <tr mat-row *matRowDef="let row; columns: colsTable;" [ngClass]="{'hide-class' : row.grupoDoc != grupo.titulo}"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </mat-tab>
+    <mat-tab label="Emitir Parecer (Parcial)">
+      <div class="ui grid gridCustom">
+        
+            <div class="sixteen wide column" *ngIf="viewMsg">
+                <div class="ui info message message-custom">
+                <i class="close icon" (click)="hideMsg()"></i>
+                <div class="header">
+                    Informe
+                </div>
+                    Ao aplicar <b>DEFERIDO</b> ao Parecer final da inscrição, será registrado também uma <b>CONCESSÃO</b> de auxílio/benefício para o aluno!
+                </div>
+            </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="ui toggle checkbox blue" *ngIf="existDecisaoPorAluno">
+                        <input type="checkbox" name="reusoDecisao" 
+                          (click)="reusarDecisao()"> 
+                        <label>Reutilizar decisão de outra inscrição para esse aluno</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            <div class="sixteen wide column">
+                <mat-form-field class="formFieldCustom">
+                    <mat-select placeholder="Aplicar Status da Inscrição" 
+                        name="statusSelect" 
+                        [ngModel]="selecaoStatus" (ngModelChange)="setStatus($event)">
+                        <mat-option *ngFor="let s of listStatus" 
+                            [value]="s.st">
+                            {{s.st}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            </div>
+            
+            <div class="row">
+                <div class="sixteen wide column">
+                    <mat-form-field class="formFieldCustom">
+                    <textarea matInput placeholder="Fundamentação (limitado a 1500 caracteres)" 
+                        maxlength="1500" rows="6" [(ngModel)]="inscricao.analiseComissao"
+                        class="customArea">
+                    </textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        
+        <div class="customButtonStep">
+                <button class="ui button blue" type="button" 
+                  (click)="salvarAnalise()"
+                  [disabled]="!(selecaoStatus)">
+                  Salvar
+                </button>
+        </div>
+    </div>
+    </mat-tab>
+    <mat-tab label="Recursos">
+        
+        <div class="ui grid custom-margem">
+        </div>
+
+        <table class="ui selectable celled table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Nome Aluno</th>
+                          <th>Parecer</th>
+                          <th>Data</th>
+                          <th>Detalhes/Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let recurso of recursos" class="{{recurso.parecer=='DEFERIDO' ? 'positive' : 'negative'}}">
+                          <td>{{recurso.id}}</td>
+                          <td>{{recurso.inscricao.aluno.nomeCompleto}}</td>
+                          <td>{{recurso.parecer}}</td>
+                          <td>{{recurso.dataHora | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                          <td>
+                            <button class="ui button" (click)="openDetail(recurso)">
+                              <i class="eye icon"></i>
+                            </button>
+                            <button class="ui button" (click)="openParecerRecurso(recurso)">
+                              <i class="pencil icon"></i>
+                            </button>
+                              <i class="paperclip icon" *ngIf="existAnexo(recurso)" title="Contém anexo!"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+    </mat-tab>
+    <mat-tab label="Emitir Parecer (Final)">
+        <div class="ui grid gridCustom">
+           <div class="row">
+              <div class="sixteen wide column" *ngIf="viewMsg">
+                  <div class="ui info message message-custom">
+                  <i class="close icon" (click)="hideMsg()"></i>
+                  <div class="header">
+                      Informe
+                  </div>
+                      Ao aplicar <b>DEFERIDO</b> ao Parecer final da inscrição, será registrado também uma <b>CONCESSÃO</b> de auxílio/benefício para o aluno!
+                  </div>
+              </div>             
+               <div class="sixteen wide column">
+                      <mat-form-field class="formFieldCustom">
+                              <mat-select placeholder="Aplicar Status Final da Inscrição" 
+                                name="statusFinalSelect" 
+                                [ngModel]="selecaoStatusFinal" (ngModelChange)="setStatusFinal($event)">
+                                <mat-option *ngFor="let s of listStatus" 
+                                  [value]="s.st">
+                                  {{s.st}}
+                                </mat-option>
+                              </mat-select>
+                      </mat-form-field>
+               </div>
+              <div class="sixteen wide column">
+                  <mat-form-field class="formFieldCustom">
+                  <textarea matInput placeholder="Descrição da decisão final (limitado a 1500 caracteres)" 
+                      maxlength="1500" rows="6" [(ngModel)]="inscricao.analiseComissaoFinal"
+                      class="customArea">
+                  </textarea>
+                  </mat-form-field>                
+              </div>
+  
+          </div>
+          <div class="customButtonStep">
+                  <button class="ui button blue" type="button" 
+                    (click)="salvarAnaliseFinal()"
+                    [disabled]="!(selecaoStatusFinal)">Salvar</button>
+                
+          </div>        
+      </div>
+      </mat-tab>
+      <mat-tab label="Entrevista (Agendamento)" *ngIf="viewEntrevista()">
+        <div class="ui grid gridCustom">
+            <div class="row">
+                <div class="sixteen wide column">
+                    <h3 class="ui header">
+                        Agendamento
+                        <div class="sub header">Agendamento de Entrevistas.</div>
+                    </h3>
+                    <div class="ui divider"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="eight wide column">
+                    <mat-form-field class="formLoginFieldCustom">
+                        <input matInput [matDatepicker]="dataEntrevista" placeholder="Data Entrevista" 
+                          [(ngModel)]="dataEntrevistaEdit" name="dataEntrevistaProcesso" [value]="dataEntrevistaEdit">
+                        <mat-datepicker-toggle matSuffix [for]="dataEntrevista"></mat-datepicker-toggle>
+                        <mat-datepicker #dataEntrevista></mat-datepicker>
+                      </mat-form-field>
+                </div>
+                <div class="eight wide column">
+                    <mat-form-field class="formLoginFieldCustom">
+                        <input matInput placeholder="Horário" 
+                          name="descricao" required type="text" maxlength="50" 
+                          [(ngModel)]="entrevista.hora">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="eight wide column">
+                    <mat-form-field class="formLoginFieldCustom">
+                        <input matInput placeholder="Local" 
+                          name="local" required type="text" maxlength="250" 
+                          [(ngModel)]="entrevista.localEntrevista">
+                    </mat-form-field>
+                </div>
+                <div class="eight wide column">
+                    <div class="eight wide column">
+                        <mat-form-field class="formLoginFieldCustom">
+                            <input matInput placeholder="Observações" 
+                              name="obs" type="text" maxlength="250" 
+                              [(ngModel)]="entrevista.observacoes">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="customButtonStep">
+                        <button class="ui button blue" type="button" 
+                          (click)="agendarEntrevista()"
+                          [disabled]="!(entrevista)">Agendar</button>
+                      
+                    </div>
+                </div>               
+            </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <h3 class="ui header">
+                        Resultados da Entrevista
+                        <div class="sub header">Parecer e Relatório.</div>
+                    </h3>
+                    <div class="ui divider"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <mat-form-field class="formLoginFieldCustom">
+                        <mat-select placeholder="Parecer da Entrevista" [(ngModel)]="selecaoParecerEntrevista" 
+                          name="selectParecerEntrevista" (ngModelChange)="changeParecerEntrevista($event)">
+                          <mat-option *ngFor="let st of listStatus" [value]="st.st">
+                            {{st.st}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <mat-form-field class="formLoginFieldCustom">
+                        <input matInput placeholder="Relatório da Entrevista (máximo de 500 caracteres)" 
+                          name="relEntrevista" type="text" maxlength="500" 
+                          [(ngModel)]="entrevista.relatorio">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="customButtonStep">
+                        <button class="ui button blue" type="button" 
+                          (click)="salvarRelatorioEntrevista()"
+                          [disabled]="!(entrevista)">Salvar Relatório</button>
+                      
+                    </div>
+                </div>               
+            </div>
+        </div>
+      </mat-tab>
+  </mat-tab-group>
+
+</div>

@@ -1,0 +1,117 @@
+<h2 mat-dialog-title>Incluir Recurso</h2>
+<mat-dialog-content class="mat-typography">
+<div class="content customModal">
+
+  <i class="spinner loading big icon" *ngIf="loading" title="Enviando arquivo..." ></i>
+
+  <div class="ui grid">
+    <div class="row">
+      <div class="ui negative message custom-msg" *ngIf="viewMsgValid">
+          <i class="close icon" (click)="hideMsg()"></i>
+          <div class="header">
+            Validação
+          </div>
+          <p>
+            {{msgValid}}
+          </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui grid">
+    <div class="row">
+      
+      <div class="ui info message">
+        <i class="close icon"></i>
+        <div class="header">
+          Alguns esclarecimentos sobre as inclusões de recursos!
+        </div>
+        <ul class="list">
+          <li>Você pode incluir quantos recursos achar necessário.</li>
+          <li>Não é obrigatório anexar arquivo, mas a fundamentação sim, no entanto se for necessário pode ser fundamentado com anexo.</li>
+          <li>É recomendável que após inclusão do recurso, baixe o arquivo e verifique se o mesmo não está corrompido, caso esteja, reenvie novamente.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ui container containerCustom">
+    <form >
+      <div class="ui grid">  
+        <div class="row">
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+              <mat-select placeholder="Tipo de Documento" [(ngModel)]="selecaoDoc" 
+                name="docTipoSelect" (ngModelChange)="changeDocTipo($event)">
+                <mat-option *ngFor="let doc of listDocsTipo" [value]="doc.abreviacao">
+                  {{doc.titulo}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>                
+
+          <div class="eight wide column">
+              <label for="docUpload" (click)="setDocSelecao()" class="ui button customButtons">
+              <i class="ui paperclip icon"></i>Selecionar Arquivo</label>
+              {{arquivo != null ? 'Arquivo selecionado' : 'Nenhum arquivo selecionado'}}
+          </div>
+
+        </div>  
+        <div class="row">
+          <div class="sixteen wide column">
+              <mat-form-field class="formFieldCustom">
+                <textarea matInput placeholder="Fundamentação (máximo de 500 caracteres)" 
+                  maxlength="500" rows="6" [(ngModel)]="fundamentacao" 
+                  name="fundamentacao" required 
+                  (change)="validaFundamentacao()"
+                  (keypress)="validaFundamentacao()"
+                  (blur)="validaFundamentacao()"
+                  (keyup)="validaFundamentacao()"></textarea>
+              </mat-form-field>
+          </div>
+        </div>
+    </div>
+  </form>
+
+  <form name="formRecursoDocumentacao" method="post" enctype="multipart/form-data"> 
+    <input type="file" id="docUpload" name="docUpload" style="display: none !important" 
+      (change)="inputFileChange($event)" />
+  </form>
+  
+  </div>
+
+
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="ui button" cdkFocusInitial 
+  [mat-dialog-close]="true" id="btnList">Retornar à Lista
+  </button>
+  <button class="ui button blue" cdkFocusInitial 
+    *ngIf="!idTemp" (click)="checkUpload()"
+    [disabled]="!(fundamentacao && processo && inscricao && fundamentacaoValid)">Enviar Recurso 
+  </button>
+  <button class="ui button blue" cdkFocusInitial 
+    [mat-dialog-close]="true" *ngIf="idTemp" (click)="save()"  
+    [disabled]="!(fundamentacao && processo && inscricao && selecaoDoc)">Salvar Alterações
+  </button>  
+</mat-dialog-actions>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

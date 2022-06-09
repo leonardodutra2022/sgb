@@ -1,0 +1,223 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<div class="ui container containerCustom">
+    <h2 class="ui header">
+        <div class="content">
+          Dashboard
+        </div>
+    </h2>
+
+    <div class="ui grid">
+      <div class="row">
+        <!-- <div class="sixteen wide column"> -->
+
+          <div class="ui equals large menu">
+
+            <mat-card class="example-card" *ngIf="authService.checkPermissaoMenu('frequencia_aluno')">
+              <mat-card-header>
+                <mat-card-title>Frequência</mat-card-title>
+                <mat-card-subtitle>Controle de Frequência</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="assets/cards/frequencia.jpg" alt="Controle de Frequência">
+              <mat-card-content>
+                <p>
+                  Controle de Frequência
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button class="ui button teal"
+                (click)="openFrequencia()">
+                  Acessar
+                </button>
+              </mat-card-actions>
+            </mat-card>
+
+            <mat-card class="example-card" *ngIf="authService.checkPermissaoMenu('frequencia_admin')">
+              <mat-card-header>
+                <mat-card-title>Frequência</mat-card-title>
+                <mat-card-subtitle>Gerenciar Frequência</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="assets/cards/frequencia.jpg" alt="Controle de Frequência">
+              <mat-card-content>
+                <p>
+                  Gerenciar Frequência
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button class="ui button teal"
+                (click)="openFrequenciaAdmin()">
+                  Acessar
+                </button>
+              </mat-card-actions>
+            </mat-card>
+
+          </div>
+
+          <div class="ui equals large menu" *ngIf="authService.checkPermissaoMenu('rubrica')">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>Rúbrica</mat-card-title>
+                <mat-card-subtitle>Rúbrica (Cadastro)</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="assets/cards/rubrica.jpg" alt="Rúbrica">
+              <mat-card-content>
+                <p>
+                  Rúbrica (Cadastro)
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button class="ui button teal"
+                (click)="openRubrica()">
+                  Acessar
+                </button>
+              </mat-card-actions>
+            </mat-card>
+
+          </div>
+
+          <div class="ui equals large menu" *ngIf="authService.checkPermissaoMenu('documentacao')">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>Documentação</mat-card-title>
+                <mat-card-subtitle>Cadastro de Documentação</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="assets/cards/documentacao.jpg" alt="Documentação">
+              <mat-card-content>
+                <p>
+                  Documentação
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button class="ui button teal" 
+                (click)="openDocumentacao()">
+                  Acessar
+                </button>
+              </mat-card-actions>
+            </mat-card>
+
+          </div>
+
+          <div class="ui equals large menu" *ngIf="authService.checkPermissaoMenu('cadastro/auxilio')">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>Auxílios/Benefícios</mat-card-title>
+                <mat-card-subtitle>Cadastro de Auxílios/Benefícios</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="assets/cards/auxilios.jpg" alt="Auxílios/Benefícios">
+              <mat-card-content>
+                <p>
+                  Auxílios/Benefícios
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button class="ui button teal"
+                (click)="openAuxilio()">
+                  Acessar
+                </button>
+              </mat-card-actions>
+            </mat-card>
+
+          </div>
+
+          <div class="ui equals large menu" *ngIf="authService.checkPermissaoMenu('processos/admin')">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>Processos</mat-card-title>
+                <mat-card-subtitle>Cadastro de Processos</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="assets/cards/processos.jpg" alt="Processos">
+              <mat-card-content>
+                <p>
+                  Processos
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button class="ui button teal"
+                (click)="openProcessos()">
+                  Acessar
+                </button>
+              </mat-card-actions>
+            </mat-card>
+
+          </div>
+
+          <div class="ui equals large menu" *ngIf="authService.checkPermissaoMenu('concessoes')">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>Concessões</mat-card-title>
+                <mat-card-subtitle>Cadastro de Concessões</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="assets/cards/concessao.jpg" alt="Concessões">
+              <mat-card-content>
+                <p>
+                  Concessões de Auxílios/Benefícios
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button class="ui button teal" 
+                (click)="openConcessao()">
+                  Acessar
+                </button>
+              </mat-card-actions>
+            </mat-card>
+            
+          </div>
+
+          <div class="ui equals large menu" *ngIf="authService.checkPermissaoMenu('cadastros_basicos')">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>Cadastros Básicos</mat-card-title>
+                <mat-card-subtitle>Cadastros Básicos</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image src="assets/cards/cadastros.jpg" alt="Cadastros Básicos">
+              <mat-card-content>
+                <p>
+                  Cadastros Básicos
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button class="ui button teal"
+                (click)="openCadBasicos()">
+                  Acessar
+                </button>
+              </mat-card-actions>
+            </mat-card>
+
+          </div>
+
+
+        <!-- </div> -->
+
+      </div>
+      <div class="row">
+        <div class="sixteen wide column" >
+          <canvas id="myChart">
+
+            <script type="text/javascript">
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'line',
+
+                // The data for our dataset
+                data: {
+                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    datasets: [{
+                        label: "My First dataset",
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 10, 5, 2, 20, 30, 45],
+                    }]
+                },
+
+                // Configuration options go here
+                options: {}
+            });
+            </script>
+
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+</div>

@@ -1,0 +1,351 @@
+<div class="ui piled segments">  
+  <div class="ui segment">
+
+<form name="formInscricaoInfoAcad">
+<div class="ui grid">
+<div class="row">
+  <div class="sixteen wide column customHeader">
+    <div class="ui header">Informações Acadêmicas Vigentes</div>
+    <div class="ui divider"></div>
+  </div>
+
+  <div class="four wide column">
+    <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Matrícula Atual" 
+          name="matricula" required [(ngModel)]="aluno.siape"
+          maxlength="15" readonly>
+        <button mat-button matSuffix mat-icon-button aria-label="Alterar Matrícula" (click)="editSiape()">
+            <mat-icon class="custom-icon" title="Atualizar Matrícula">edit</mat-icon>
+        </button>
+      </mat-form-field>
+
+  </div> 
+
+  <div class="twelve wide column">
+    <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Observações" 
+          name="observacoes" [(ngModel)]="aluno.obsAcad" 
+          maxlength="200" [readonly]="inscricaoValidacao.dadosAcadCompleto">
+      </mat-form-field>
+  </div>
+
+  <div class="eight wide column">
+    <mat-form-field class="formFieldCustom">
+        <mat-select placeholder="Curso" 
+          name="cursoSelect" [(ngModel)]="selecaoCurso"
+          [disabled]="inscricaoValidacao.dadosAcadCompleto">
+          <mat-option *ngFor="let c of listCurso" 
+            [value]="c.value">
+            {{c.curso}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div> 
+    
+  <div class="four wide column">
+    <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Semestre atual em curso" 
+            name="semestreCursando" required [(ngModel)]="aluno.semestreCursoAtual"
+            type="number" (ngModelChange)="cofigCreditosCampos($event)" maxlength="2"
+            [readonly]="inscricaoValidacao.dadosAcadCompleto">
+    </mat-form-field>
+  </div>
+
+  <div class="four wide column">
+    <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Período Letivo Atual (ex: 2019.1)" 
+            name="periodoLetAtual" required [(ngModel)]="aluno.periodoLetivoAtual"
+            maxlength="6" periodoAcadMask
+            [readonly]="inscricaoValidacao.dadosAcadCompleto">
+    </mat-form-field>
+  </div>
+
+  <div class="eight wide column" *ngIf="viewCreditoCampo">
+    <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Nº de Disciplinas matriculadas no período anterior" 
+            name="totalCreditosUltimo" required [(ngModel)]="aluno.totalCreditosUltimo"
+            type="number" [readonly]="inscricaoValidacao.dadosAcadCompleto">
+    </mat-form-field>
+  </div>
+
+  <div class="eight wide column" *ngIf="viewCreditoCampo">
+    <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Nº de Disciplinas aprovadas no período anterior" 
+            name="creditosAprovados" required [(ngModel)]="aluno.creditosAprovadosUltimo"
+            type="number" [readonly]="inscricaoValidacao.dadosAcadCompleto">
+    </mat-form-field>
+  </div>
+
+  <div class="eight wide column" *ngIf="viewCreditoCampo">
+      <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="IRA Geral Atualizado" 
+              name="iraAtual" required [(ngModel)]="aluno.iraAtual"
+              type="number" [readonly]="inscricaoValidacao.dadosAcadCompleto">
+      </mat-form-field>
+    </div>
+
+    <div class="eight wide column" *ngIf="viewCreditoCampo">
+      <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="IRA Individual Atualizado" 
+              name="iraIndividual" required [(ngModel)]="aluno.iraIndividual"
+              type="number" [readonly]="inscricaoValidacao.dadosAcadCompleto">
+      </mat-form-field>
+    </div>
+
+
+  <div class="sixteen wide column customHeader" *ngIf="!inscricaoValidacao.dadosAcadCompleto">
+    <div class="ui header">Vincular outras matrículas e cursos (UFC) </div>
+    <div class="ui divider"></div>
+  </div>
+
+
+  <form [formGroup]="grupoAcad" *ngIf="!inscricaoValidacao.dadosAcadCompleto">
+  
+  <div formGroupName="acad">
+  <div class="ui grid">
+  
+  <div class="row">
+      <div class="four wide column">
+          <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Período Letivo (ex: 2019.1)" maxlength="6" 
+                  name="periodoLetivo"
+                  formControlName="periodoLetivo"
+                  periodoAcadMask>
+          </mat-form-field>
+      </div>
+
+    <div class="three wide column">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Matrícula" maxlength="10"
+                name="matricula" required 
+                formControlName="matricula">
+        </mat-form-field>
+    </div>
+
+    <div class="five wide column">
+      <mat-form-field class="formFieldCustom">
+          <mat-select placeholder="Curso"
+            formControlName="curso"
+            name="cursoSelect"
+            >
+          <mat-option *ngFor="let curso of listCurso" 
+            [value]="curso.value">
+            {{curso.curso}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+    </div>
+
+    <div class="four wide column">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="IRA Geral" maxlength="4" max="10"
+                name="ira" type="number"
+                formControlName="ira">
+        </mat-form-field>
+    </div>
+
+    <div class="four wide column">
+      <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Semestre" 
+              name="semestre"
+              type="number" 
+              formControlName="semestreCursado">
+      </mat-form-field>
+    </div>
+
+    <div class="six wide column">
+      <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Nº de Disciplinas matriculadas" 
+              name="totalCreditosUltimoAcad"
+              formControlName="totalCreditoCursado"
+              type="number">
+      </mat-form-field>
+    </div>
+  
+    <div class="six wide column">
+      <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Nº de Disciplinas aprovadas" 
+              name="creditosAprovadosAcad"
+              formControlName="totalCreditoAprovado"
+              type="number">
+      </mat-form-field>
+    </div>
+  </div>
+
+
+  
+ </div>
+</div>
+
+
+<div class="row">
+  <div class="sixteen wide column">
+  <div class="ui icon buttons customFormAcad" *ngIf="!inscricaoValidacao.dadosAcadCompleto">
+    <button class="ui button blue" (click)="addAlias()" 
+      [disabled]="!grupoAcad.valid" *ngIf="!idTemp">
+      Vincular
+    </button>
+    <button class="ui button blue" (click)="atualizar()" 
+      [disabled]="!grupoAcad.valid" *ngIf="idTemp" >
+      Atualizar
+    </button>
+    <button class="ui button" (click)="resetFormAcad()">
+      Limpar Formulário
+    </button>
+  </div>
+  </div>
+</div>
+
+
+    </form>
+
+
+    <div class="ui piled segment custom">
+    <h4 class="ui header">Lista de outras matrículas e cursos vinculados (UFC)</h4>
+    
+    <div class="ui grid">
+        <div class="row">
+          <div class="sixteen wide column">
+            <div class="ui segment">
+                <div class="row">
+                    <mat-accordion>
+                        <mat-expansion-panel *ngFor="let acad of vinculosAcademicos">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              {{acad.curso}} / {{acad.periodoLetivo}}
+                              
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              Matrícula: {{acad.matricula}}
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+                      
+                          <p>Período Letivo: <b>{{acad.periodoLetivo}}</b></p>
+                          <p>IRA: <b>{{acad.ira}}</b></p>
+                          <p>Semestre do Curso: <b>{{acad.semestreCursado}}º</b></p>
+                          <p>Total de Disciplinas Cursadas: <b>{{acad.totalCreditoCursado}}</b></p>
+                          <p>Total de Disciplinas Aprovadas: <b>{{acad.totalCreditoAprovado}}</b></p>
+      
+                          <div class="ui icon buttons" *ngIf="!inscricaoValidacao.dadosAcadCompleto">
+                              <button class="ui button" (click)="edit(acad)">
+                                <i class="pencil alternate icon"></i>
+                              </button>
+                              <button class="ui button" (click)="openDeleteDialog(acad.id)">
+                                <i class="trash alternate icon"></i>
+                              </button>
+                          </div>
+      
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                      
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="sixteen wide column customHeader">
+    <div class="ui header">Formações Anteriores (outras instituições)</div>
+    <div class="ui divider"></div>
+  </div>
+
+          <div class="sixteen wide column">
+            <div class="ui toggle checkbox blue formFieldCustom">
+              <input type="checkbox" name="possuiOutraGraduacao" 
+                [(ngModel)]="aluno.outraGraduacao" 
+                [disabled]="inscricaoValidacao.dadosAcadCompleto">
+              <label>Possuo outra graduação</label>
+            </div>
+          </div>           
+
+          <div class="eight wide column" *ngIf="aluno.outraGraduacao">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Curso" 
+                  name="cursoOutraGraduacao" 
+                  [(ngModel)]="aluno.cursoOutraGraduacao"
+                  maxlength="150"
+                  [readonly]="inscricaoValidacao.dadosAcadCompleto">
+              </mat-form-field>
+          </div>
+
+          <div class="eight wide column" *ngIf="aluno.outraGraduacao">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Nome da Instituição" 
+                  name="ies" [(ngModel)]="aluno.ies"
+                  maxlength="200"
+                  [readonly]="inscricaoValidacao.dadosAcadCompleto">
+              </mat-form-field>
+          </div>  
+
+          <div class="four wide column" *ngIf="aluno.outraGraduacao">
+            <mat-form-field class="formFieldCustom">
+                <mat-select placeholder="Forma de Ingresso" 
+                  name="formIngresso" [(ngModel)]="selecaoFormaIngresso"
+                  [disabled]="inscricaoValidacao.dadosAcadCompleto">
+                  <mat-option *ngFor="let ing of listIngresso" 
+                    [value]="ing.value">
+                    {{ing.ingresso}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="seven wide column" *ngIf="aluno.outraGraduacao">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Outra forma de ingresso" 
+                    name="outraFormaIngresso" 
+                    [(ngModel)]="aluno.outraFormaIngresso"
+                    maxlength="150"
+                    [readonly]="inscricaoValidacao.dadosAcadCompleto">
+                </mat-form-field>
+            </div>
+
+            <div class="five wide column" *ngIf="aluno.outraGraduacao">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Ano de Conclusão" 
+                    name="anoConclusao" type="number" [(ngModel)]="aluno.anoConclusao"
+                    [readonly]="inscricaoValidacao.dadosAcadCompleto">
+                </mat-form-field>
+            </div> 
+
+</div>
+</div>
+</form>
+</div>
+
+<div class="ui segment">
+  <div class="row">
+      <div class="customButtonStep">
+        <button class="ui button" type="button" 
+          routerLink="../outros-auxilios"
+          *ngIf="!isModalForm">Anterior
+        </button>
+        
+        <button class="ui button blue" type="button" 
+        (click)="add()" 
+        (dblclick)="dbClick()"
+        [disabled]="(!(aluno.siape && selecaoCurso 
+          && aluno.semestreCursoAtual
+          && aluno.periodoLetivoAtual) || fetching)"
+        *ngIf="!(inscricaoValidacao.dadosAcadCompleto) 
+          && !isModalForm && isUpdate">
+          {{fetching ? 'Processando...' : 'Salvar e Continuar'}}
+      </button>
+
+      <button routerLink="../upload-docs" class="ui button"
+        *ngIf="(inscricaoValidacao.dadosAcadCompleto) && !isModalForm">
+        Avançar
+      </button>
+
+      <button class="ui labeled right floated icon button pagination"
+        (click)="editEnable()" *ngIf="(inscricaoValidacao.dadosAcadCompleto)">
+        <i class="write icon"></i>Alterar Informações
+      </button>
+    </div>
+      
+    </div>
+</div>
+</div>

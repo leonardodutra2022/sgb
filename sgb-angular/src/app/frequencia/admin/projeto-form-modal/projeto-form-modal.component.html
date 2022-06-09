@@ -1,0 +1,70 @@
+<h2 class="ui header">
+    Novo Projeto
+</h2>
+
+<div class="ui divider"></div>
+
+      <div class="ui grid">
+        <div class="row">
+            <div class="ui column sixtenn wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Título do Projeto  (máximo de 500 caracteres)" 
+                    name="titulo" required [(ngModel)]="projeto.titulo"
+                    maxlength="500">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="ui column sixtenn wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Descrição do Projeto (máximo de 5000 caracteres)" 
+                      name="descricao" [(ngModel)]="projeto.descricao" 
+                      maxlength="5000">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="ui column sixtenn wide">
+                <!-- <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Total Horas" 
+                      name="totalHora" [(ngModel)]="projeto.totalHoras"
+                      type="number">
+                </mat-form-field> -->
+                <mat-form-field class="formLoginFieldCustom">
+                    <mat-select placeholder="Selecione Opção de Carga Horária" name="sexoSelect" 
+                      [(ngModel)]="selecaoCargaHoraria">
+                      <mat-option *ngFor="let h of listHorarios" [value]="h.horas">
+                        {{ h.horas }}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class="ui column sixtenn wide">
+            <mat-form-field class="formLoginFieldCustom">
+              <mat-select placeholder="Selecione Responsável pelo Projeto" name="respSelect" 
+                [(ngModel)]="selecaoResponsavel">
+                <mat-option *ngFor="let r of responsaveis" [value]="r">
+                  {{ r.nomeCompleto }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+
+<mat-dialog-actions align="begin">
+  <button class="ui button teal" cdkFocusInitial 
+    [mat-dialog-close]="data.projeto"
+    (click)="add()"
+    [disabled]="!(selecaoCargaHoraria && projeto.titulo)"
+    mat-button
+    > Cadastrar
+  </button>
+  <button class="ui button" mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

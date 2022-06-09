@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="ui negative message custom-msg" *ngIf="msgView">
+      <i class="close icon" (click)="hideMsg()"></i>
+      <div class="header">
+        Erro!
+      </div>
+      <p>
+        {{msgErro}}
+      </p>
+  </div>
+</div>
+
+<div class="ui container containerCustom">
+  <div class="ui header">
+    <h2 class="ui header">
+      Usuário
+    </h2>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <form >
+    <div class="ui grid">  
+
+      <div class="row">
+        <div class="eight wide column">
+          <mat-form-field class="formLoginFieldCustom">
+              <input [(ngModel)]="usuario.nomeCompleto" matInput placeholder="Nome Completo" 
+                name="nomeCompleto" required>
+          </mat-form-field>
+        </div>
+        <div class="eight wide column">
+            <mat-form-field class="formLoginFieldCustom">
+              <input [(ngModel)]="usuario.email" matInput placeholder="E-Mail" 
+                name="email" required (blur)="checkEmail();searchUserByEmail();" 
+                >
+            </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="eight wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input [(ngModel)]="nomeUsuarioEdit" matInput placeholder="Usuário" 
+                    name="usuario" required (blur)="searchUserByNomeUsuario()">
+              </mat-form-field>
+            </div>
+            <div class="eight wide column">
+                <mat-form-field class="formLoginFieldCustom">
+                  <input [(ngModel)]="usuario.senha" matInput placeholder="Senha" 
+                    name="senha" type="password" required>
+                </mat-form-field>
+            </div>          
+      </div>
+
+      <div class="row">
+          <div class="eight wide column" >
+            <mat-form-field class="formLoginFieldCustom">
+              <mat-select placeholder="Perfil do Usuário" [(ngModel)]="selecaoPerfil" 
+                name="perfilSelect">
+                <mat-option *ngFor="let per of perfilsList" [value]="per.valuePerfil">
+                  {{per.perfil}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="eight wide column" >
+
+            <mat-form-field class="formLoginFieldCustom">
+              <mat-select placeholder="Sexo" name="sexoSelect" 
+                [(ngModel)]="selecaoSexo" >
+                <mat-option *ngFor="let sex of listSexo" [value]="sex.value">
+                  {{ sex.genero }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="eight wide column">
+            <mat-form-field class="formLoginFieldCustom">
+                <input [(ngModel)]="usuario.siape" matInput 
+                  placeholder="SIAPE" name="siape" required
+                  (blur)="searchUserBySiape()">
+            </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="row">
+          <div class="eight wide column">
+              <button type="button" class="ui button blue" (click)="add()" *ngIf="!idTemp" 
+              [disabled]="(!(usuario.nomeCompleto && nomeUsuarioEdit && usuario.senha 
+              && usuario.email && usuario.siape && selecaoPerfil && selecaoSexo 
+              && emailValid && matriculaValid && nomeUsuarioValid)
+              && sessaoService.verificarPermissao('add_user'))">
+                Cadastrar
+              </button>
+
+              <button type="button" class="ui button blue" (click)="save()" *ngIf="idTemp" 
+              [disabled]="(!(usuario.nomeCompleto && nomeUsuarioEdit && usuario.senha 
+              && usuario.email && usuario.siape && selecaoPerfil && selecaoSexo 
+              && emailValid && matriculaValid && nomeUsuarioValid) 
+              && sessaoService.verificarPermissao('edit_user')) && !id">
+                Salvar
+              </button>
+              <button class="ui button" routerLink="/users">Cancelar</button>
+          </div>
+      </div>
+
+      </div>
+</form>
+
+</div>

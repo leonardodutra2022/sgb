@@ -1,0 +1,126 @@
+<div class="ui piled segments">  
+    <div class="ui segment">
+
+
+<form name="formInscricaoInfoSaude">
+  <div class="ui grid">
+  <div class="row">
+      <div class="sixteen wide column customHeader">
+          <div class="ui header">Deficiência e Informações de Saúde</div>
+          <div class="ui divider"></div>
+      </div>
+
+
+      <div class="eight wide column">
+          <div class="ui toggle checkbox blue formFieldCustom">
+            <input type="checkbox" name="usoContinuoMedicamento"
+              [(ngModel)]="aluno.usoContinuoMedicacao"
+              [disabled]="inscricaoValidacao.dadosSaudeDeficienciaCompleto">
+            <label>Usa continuamente algum medicamento?</label>
+          </div>
+        </div>
+        <div class="eight wide column">
+          <div class="ui toggle checkbox blue formFieldCustom">
+            <input type="checkbox" name="possuiDeficiencia"
+              [(ngModel)]="aluno.possuiDeficiencia"
+              [disabled]="inscricaoValidacao.dadosSaudeDeficienciaCompleto">
+            <label>Possui alguma deficiência?</label>
+          </div>
+        </div>
+
+
+        <div class="eight wide column" *ngIf="aluno.usoContinuoMedicacao">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Especifique a doença" 
+                  name="qualDoenca" [(ngModel)]="aluno.doenca"
+                  maxlength="100" [readonly]="inscricaoValidacao.dadosSaudeDeficienciaCompleto"
+                  >
+              </mat-form-field>
+          </div>
+          <div class="eight wide column" *ngIf="aluno.possuiDeficiencia">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Qual a deficiência" 
+                  name="qualDeficiencia" [(ngModel)]="aluno.deficiencia"
+                  maxlength="100" [readonly]="inscricaoValidacao.dadosSaudeDeficienciaCompleto"
+                  >
+              </mat-form-field>
+        </div>
+
+
+        <div class="eight wide column">
+            <div class="ui toggle checkbox blue formFieldCustom">
+              <input type="checkbox" name="doencaGraveMembroFamiliar"
+              [(ngModel)]="aluno.doencaGraveMembroFamiliar"
+              [disabled]="inscricaoValidacao.dadosSaudeDeficienciaCompleto">
+              <label>Algum membro familiar possui alguma doença grave?</label>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui toggle checkbox blue formFieldCustom">
+              <input type="checkbox" name="deficienciaMembroFamiliar"
+                [(ngModel)]="aluno.deficienciaMembroFamiliar"
+                [disabled]="inscricaoValidacao.dadosSaudeDeficienciaCompleto">
+              <label>Algum membro familiar possui alguma deficiência?</label>
+            </div>
+          </div>
+
+
+          <div class="eight wide column" *ngIf="aluno.doencaGraveMembroFamiliar">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Especifique qual doença grave do membro familiar" 
+                    name="qualDoencaGraveMembroFamiliar" [(ngModel)]="aluno.qualDoencaGraveMembroFamiliar"
+                    maxlength="100" [readonly]="inscricaoValidacao.dadosSaudeDeficienciaCompleto"
+                    >
+                </mat-form-field>
+            </div>
+            <div class="eight wide column" *ngIf="aluno.deficienciaMembroFamiliar">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Qual a deficiência do membro familiar" 
+                    name="qualDeficienciaMembroFamiliar" [(ngModel)]="aluno.qualDeficienciaMembroFamiliar"
+                    maxlength="100" [readonly]="inscricaoValidacao.dadosSaudeDeficienciaCompleto"
+                    >
+                </mat-form-field>
+          </div>
+      </div>
+    </div>
+  </form>
+ </div>
+
+
+  <div class="ui segment">
+      <div class="row">
+
+          <div class="customButtonStep">
+            <button class="ui button" type="button" 
+              routerLink="../info-financeira"
+              *ngIf="!isModalForm">Anterior
+            </button>
+            
+            <button class="ui button blue" type="button" 
+              (click)="add()"
+              (dblclick)="dbClick()"
+              [disabled]="fetching"
+              *ngIf="!(inscricaoValidacao.dadosSaudeDeficienciaCompleto) && !isModalForm && isUpdate">
+                {{fetching ? 'Processando...' : 'Salvar e Continuar'}}
+            </button>
+            
+            <button routerLink="../outros-auxilios" class="ui button"
+              *ngIf="(inscricaoValidacao.dadosSaudeDeficienciaCompleto) && !isModalForm">
+              Avançar
+            </button>
+            
+            <button class="ui button green" type="button" 
+              (click)="addPendente()"
+              *ngIf="isModalForm">Atualizar
+            </button>
+
+            <button class="ui labeled right floated icon button pagination"
+              (click)="editEnable()" *ngIf="(inscricaoValidacao.dadosSaudeDeficienciaCompleto)">
+              <i class="write icon"></i>Alterar Informações
+            </button>
+          </div>
+          
+        </div>
+  </div>
+
+</div>

@@ -1,0 +1,60 @@
+<div class="ui container containerCustom">
+    <div class="ui header">
+      <h2 class="ui header">
+        Configurações do Sistema ( <i class="newspaper icon" title="Visualizar Log de Erros" style="cursor: pointer; color: teal; font-size: xx-large;" (click)="viewLog()"></i>)
+      </h2>
+    </div>
+  
+    <div class="ui divider"></div>
+  
+    <form >
+      <div class="ui grid margem">
+        <div class="row">
+            <div class="eight wide column">
+                <div class="ui toggle checkbox blue formLoginFieldCustom">
+                    <input type="checkbox" name="manutencao" 
+                    [(ngModel)]="sistema.manutencao">
+                    <label>Em Manutenção?</label>
+                </div>
+            </div>
+
+            <div class="eight wide column">
+                <div class="ui toggle checkbox blue formLoginFieldCustom">
+                    <input type="checkbox" name="forceUpdate" 
+                    [(ngModel)]="sistema.forceClientUpdate">
+                    <label>Forçar Atualização do Usuário (deslogando sua sessão para novo login)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="six wide column">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Prazo para conclusão da manutenção (horas)" 
+                    name="prazoHoras" required type="number" maxlength="10" 
+                    [(ngModel)]="sistema.prazoHoras">
+                </mat-form-field>
+            </div>
+  
+            <div class="six wide column">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Versão Atual em Produção" 
+                    name="versionRecent" type="text" maxlength="20" 
+                    [(ngModel)]="sistema.versionRecent">
+                </mat-form-field>
+            </div>
+        </div>
+  
+        <div class="row">
+            <div class="eight wide column">
+                <button type="button" class="ui button blue" (click)="save()" *ngIf="sessaoService.verificarPermissao('edit_sistema')">
+                  Salvar
+                </button>
+                <button class="ui button" routerLink="/">Cancelar</button>
+            </div>
+        </div>
+  
+        </div>
+  </form>
+  
+  </div>

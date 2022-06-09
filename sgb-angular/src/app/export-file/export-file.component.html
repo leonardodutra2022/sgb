@@ -1,0 +1,64 @@
+<h3 class="ui header">
+    Exportar
+    <div class="sub header">Exporte em arquivo CSV, XLSX, ZIP</div>
+</h3>
+
+<div class="ui grid">
+  <div class="row">
+  <div class="eight wide column">
+   <mat-form-field class="custom">
+    <mat-label>
+      Formato
+    </mat-label>
+    <mat-select 
+      (ngModelChange)="setFormat($event)"
+      [ngModel]="formatSelect">
+      <mat-option *ngFor="let formato of formats" 
+        [value]="formato.value">
+            {{formato.format}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+
+  <div class="eight wide column">
+    <mat-form-field class="custom">
+      <mat-label>
+        Períodos Disponíveis
+      </mat-label>
+      <mat-select 
+        [ngModel]="periodoFrequencia"
+        (ngModelChange)="setPeriodoFrequencia($event)">
+        <mat-option *ngIf="formatSelect=='zip'" 
+          value="all">
+            Todos os Registros Disponíveis
+        </mat-option>
+        <mat-option *ngFor="let periodo of listaFrequenciasPeriodo" 
+          [value]="periodo">
+            {{periodo.periodoRef}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div class="row" *ngIf="generatingPdf">
+  <div class="sixteen wide column">
+    <div class="ui progress active indicating success" >
+      <div class="bar" [style]="percentual">
+        <div class="progress">{{progressoCount}}%</div>
+      </div>
+      <div class="label" *ngIf="!zippingFiles">Gerando {{dadosExport.totalArquivos}} PDFs...</div>
+      <div class="label" *ngIf="zippingFiles">Compactação de arquivos em andamento, aguarde que será liberado o arquivo em instantes...</div>
+    </div>
+  </div>
+</div>
+<div class="row">
+    <div class="eight wide column">
+        <button class="ui green button"
+        (click)="getArquivo()"
+        [disabled]="!formatSelect">
+        Exportar
+      </button>
+    </div>
+</div>
+</div>

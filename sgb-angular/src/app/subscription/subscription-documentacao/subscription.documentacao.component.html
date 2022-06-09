@@ -1,0 +1,145 @@
+<div class="ui piled segments">  
+  <div class="ui segment">
+
+
+
+<form name="formInscricaoDocumentacao" method="post" enctype="multipart/form-data"> 
+<div class="ui grid">
+<div class="row">
+  <div class="sixteen wide column customHeader">
+    <div class="ui header">Upload da Documentação</div>
+    <div class="ui divider"></div>
+  </div>
+
+  <div class="row customUpload">
+    <div class="sixteen wide column">
+        <div class="ui negative message custom" *ngIf="viewMsgErro">
+            <i class="close icon" (click)="hideMsg()"></i>
+            <div class="header">
+              Erro
+            </div>
+            <p>
+              {{msgErro}}
+            </p>
+        </div>
+    </div>
+    <div class="sixteen wide column customHeader">
+      <div class="ui blue large message">
+        <b>IMPORTANTE!</b>
+        <ul>
+          <li>
+            <i class="chevron circle right icon"></i>Apenas arquivos com extensão <b>.pdf</b> serão admitidos pelo sistema! Caso tenha dificuldades para manipular ou criar esse tipo de arquivo, segue algumas ferramentas online e gratuitas, basta se cadastrar e usar: 
+            <ul class="custom-sublista">
+              <li><i class="terminal right icon"></i> <b><a href="https://www.ilovepdf.com" target="_blank">www.ilovepdf.com</a></b></li>
+              <li><i class="terminal right icon"></i> <b><a href="https://tools.pdf24.org/pt/" target="_blank">www.pt.pdf24.org</a></b></li>
+              <li><i class="terminal right icon"></i> <b><a href="https://www.sodapdf.com/pt/pdf-creator/" target="_blank">www.sodapdf.com/pt/pdf-creator/</a></b></li>
+              <li><i class="terminal right icon"></i> <b><a href="https://www.cleverpdf.com/pt" target="_blank">www.cleverpdf.com/pt</a></b> </li>
+            </ul>  
+          </li>
+          <li><i class="chevron circle right icon"></i>Há um limite de tamanho quanto aos arquivos à enviar <b>(10MB no máximo por arquivo!!)</b>.</li>
+          <li><i class="chevron circle right icon"></i>Os documentos serão armazenados por <b>1 ano</b> no sistema!</li>
+          <li><i class="chevron circle right icon"></i>Arquivos com mesmo nome já enviado será rejeitado pelo sistema!</li>
+          <li><i class="chevron circle right icon"></i>Ao enviar o arquivo para o documento indicado, certifique-se de que sua Internet esteja em condições apropriadas, pois pode interferir na transmissão, então você precisará tentar novamente. 
+            Se estiver demorando muito até completar o envio, mesmo com uma boa conexão de internet, recarregue a página e tente novamente!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="row customUpload" *ngFor="let grupo of gruposDocsCustom">
+    <div class="sisteen wide column table-custom">
+      <h3 class="ui header">
+        {{grupo.descricao}}
+        <div class="sub header">{{grupo.subtitulo}}.</div>
+      </h3>
+      <table mat-table [dataSource]="docsLista" class="ui selectable compact celled definition table">
+ 
+        <ng-container matColumnDef="documento">
+          <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Documento </th>
+          <td mat-cell *matCellDef="let doc">{{doc.documento}} 
+            <i class="asterisk icon custom-icon" title="Documento de envio obrigatório!" *ngIf="doc.obrigatorio"></i>
+          </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="descricao">
+          <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Descrição </th>
+          <td mat-cell *matCellDef="let doc"> 
+            <i class="info circle large icon custom-icon-info" title="{{doc.descricao}}"></i>
+            <a href="http://crateus.ufc.br/processo-seletivo-unificado-assistencia-estudantil-2020-1/" target="_blank" *ngIf="viewHelpDoc(doc)">
+              <i class="question circle large icon custom-icon" title="Clique para saber como proceder!"></i></a>
+          </td>
+        </ng-container>
+       
+        <ng-container matColumnDef="Upload">
+          <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Arquivo/Anexos </th>
+          <td mat-cell *matCellDef="let doc">
+            <input type="file" id="documento[doc.id]" name="documento[doc.id]" style="display: none !important" 
+              (change)="inputFileChange($event);validate()" />
+  
+            <div class="ui icon buttons" for="documento[doc.id]">
+              <label for="documento[doc.id]" (click)="setDocSelecao(doc)" class="ui button customButtons" 
+                *ngIf="!checkEntregaDoc(doc.documento)" title="Anexar arquivo">
+                <i class="ui paperclip icon"></i></label>
+              <label for="documento[doc.id]" (click)="setDocSelecao(doc)" class="ui disabled button customButtons" 
+                *ngIf="checkEntregaDoc(doc.documento)" title="Anexar arquivo">
+                <i class="ui paperclip icon"></i></label>
+  
+              <label (click)="checkUpload()" class="ui button customButtons" 
+                *ngIf="!checkEntregaDoc(doc.documento) && isSelected(doc)" 
+                title="Enviar arquivo"> 
+                <i class="ui upload icon"></i>
+              </label>
+                
+              <a class="ui button customButtons" *ngIf="checkEntregaDoc(doc.documento)" 
+                (click)="getArquivo(doc.documento)" title="Baixar arquivo">
+                <i class="ui download icon"></i>
+              </a>
+              <label (click)="download(doc.documento)" class="ui disabled button customButtons" 
+                *ngIf="!checkEntregaDoc(doc.documento)" title="Baixar arquivo">
+                <i class="ui download icon"></i></label>
+              
+              <label (click)="openDeleteDialog(doc.documento)" class="ui button customButtons" 
+                *ngIf="checkEntregaDoc(doc.documento)" title="Apagar arquivo">
+                <i class="ui trash icon"></i></label>
+              <label (click)="openDeleteDialog(doc.documento)" class="ui disabled button customButtons" 
+                *ngIf="!checkEntregaDoc(doc.documento)" title="Apagar arquivo">
+                <i class="ui trash icon"></i></label>   
+              
+                <label class="ui button customCog" *ngIf="loadingUpload(doc.documento)" 
+                  data-inverted="" data-tooltip="Enviando arquivo..."
+                  data-position="left">
+                  <i class="ui active inline loader"></i>
+                </label>
+            </div>
+            <div>
+            </div>
+          </td>
+        </ng-container>      
+  
+        <ng-container matColumnDef="entrega">
+          <th mat-header-cell *matHeaderCellDef class="customHeaderTable"> Entrega </th>
+          <td mat-cell *matCellDef="let doc">
+            <i class="big green check square icon" *ngIf="checkEntregaDoc(doc.documento)"></i>
+            <i class="big window close outline icon customIcons" *ngIf="!checkEntregaDoc(doc.documento)"></i>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="colsTable"></tr>
+        <tr mat-row *matRowDef="let row; columns: colsTable;" [ngClass]="{'hide-class' : row.grupoDoc != grupo.titulo}"></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+</div>
+
+<div class="ui segment">
+  <div class="row">
+      <div class="customButtonStep">
+        <button class="ui button" type="button" routerLink="../info-acad">Anterior</button>
+        <button class="ui button" type="button" routerLink="../submit">Próximo</button>
+      </div>
+    </div>
+</div>
+</div>

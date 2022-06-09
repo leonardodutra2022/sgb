@@ -1,0 +1,56 @@
+<h2 mat-dialog-title><i class="write icon"></i> Atualização do CPF</h2>
+<mat-dialog-content class="mat-typography">
+<div class="content customModal">
+
+
+  <div class="ui negative message custom-msg" *ngIf="erroView">
+    <i class="close icon" (click)="hideMsg()"></i>
+    <div class="header">
+      Erro!
+    </div>
+    <p>
+      {{erro}}
+    </p>
+  </div>
+
+
+  <h3>CPF Atual: <b>{{cpfAtual}}</b></h3>
+
+  <div class="ui grid">
+    <div class="row">
+      <div class="sixteen wide column">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Novo CPF (digite apenas números)" 
+              name="cpfNova" [(ngModel)]="cpfNova" 
+              maxlength="11" (blur)="checkCpf()">
+          </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="sixteen wide column">
+        <button class="ui button blue" type="button" 
+        (click)="atualizar()" 
+        [disabled]="!cpfValidNovo">
+          Atualizar CPF
+      </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="sixteen wide column">
+        <div class="ui warning message">
+          <div class="header">
+            Informe!
+          </div>
+          Após a atualização, o sistema encerrará a sessão atual e você pode entrar novamente, por medida de segurança para as próximas alterações que você fará.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="ui button" cdkFocusInitial 
+  [mat-dialog-close]="true">Fechar
+  </button>
+</mat-dialog-actions>

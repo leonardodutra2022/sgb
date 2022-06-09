@@ -1,0 +1,140 @@
+<div class="ui piled segments">  
+    <div class="ui segment">
+      <form name="formInscricaoInfoFinanceiras">
+        <div class="ui grid">
+        <div class="row">
+          <div class="sixteen wide column customHeader">
+            <div class="ui header">Informações econômicas</div>
+            <div class="ui divider"></div>
+          </div>
+          <div class="sixteen wide column">
+              <div class="ui toggle checkbox blue formFieldCustom">
+                <input type="checkbox" name="situacaoVulnerabilidadeEconomica"
+                  [(ngModel)]="aluno.situacaoVulnerabilidadeEconomica"
+                  [disabled]="inscricaoValidacao.infoFinanceiroCompleto">
+                <label>Declaro-me em situação de Vulnerabilidade Econômica</label>
+              </div>
+          </div>
+          <div class="sixteen wide column">
+              <div class="ui toggle checkbox blue formFieldCustom">
+                <input type="checkbox" name="estagiario"
+                  [(ngModel)]="inscricao.estagiario"
+                  [disabled]="inscricaoValidacao.infoFinanceiroCompleto">
+                <label>Possui estágio em andamento?</label>
+              </div>
+          </div>    
+          <div class="sixteen wide column" *ngIf="inscricao.estagiario">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Onde faz o estágio?" 
+                    name="ondeFazEstagio" [(ngModel)]="inscricao.ondeFazEstagio"
+                    maxlength="100" [readonly]="inscricaoValidacao.infoFinanceiroCompleto">
+              </mat-form-field>
+          </div>
+          <div class="sixteen wide column">
+              <div class="ui toggle checkbox blue formFieldCustom">
+                <input type="checkbox" name="trabalhaFormalmente"
+                  [(ngModel)]="inscricao.trabalhaFormalmente"
+                  [disabled]="inscricaoValidacao.infoFinanceiroCompleto">
+                <label>Trabalho formalmente?</label>
+              </div>
+          </div>    
+          <div class="eight wide column" *ngIf="inscricao.trabalhaFormalmente">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Qual empresa você trabalha?" 
+                    name="empresa" [(ngModel)]="inscricao.empresa" 
+                    maxlength="100" [readonly]="inscricaoValidacao.infoFinanceiroCompleto">
+              </mat-form-field>
+          </div>    
+          <div class="eight wide column" *ngIf="inscricao.trabalhaFormalmente">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Qual seu cargo/função?" 
+                    name="cargo" [(ngModel)]="inscricao.cargo"
+                    maxlength="50" [readonly]="inscricaoValidacao.infoFinanceiroCompleto">
+              </mat-form-field>
+          </div>  
+          <div class="eight wide column" *ngIf="inscricao.trabalhaFormalmente">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Qual sua renda?" 
+                    name="rendaMensal" type="number" [(ngModel)]="inscricao.rendaMensal"
+                    [readonly]="inscricaoValidacao.infoFinanceiroCompleto">
+              </mat-form-field>
+          </div>
+          <div class="sixteen wide column">
+              <div class="ui toggle checkbox blue formFieldCustom">
+                <input type="checkbox" name="possuiOutraAtividade"
+                  [(ngModel)]="inscricao.possuiOutraAtividadeRemunerada"
+                  [disabled]="inscricaoValidacao.infoFinanceiroCompleto">
+                <label>Possui outra atividade remunerada?</label>
+              </div>
+          </div> 
+          <div class="ten wide column" *ngIf="inscricao.possuiOutraAtividadeRemunerada">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Informe quaisquer outra(s) atividade(s) remunerada e Renda" 
+                    name="outraAtividade" [(ngModel)]="inscricao.outraAtividadeRemunerada" 
+                    maxlength="100" [readonly]="inscricaoValidacao.infoFinanceiroCompleto">
+              </mat-form-field>
+            </div>
+        
+            <div class="six wide column" *ngIf="inscricao.possuiOutraAtividadeRemunerada">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Renda" 
+                    name="rendaOutraAtividade" [(ngModel)]="inscricao.rendaOutraAtividade" type="number"
+                    [readonly]="inscricaoValidacao.infoFinanceiroCompleto">
+              </mat-form-field>
+            </div>
+
+          <div class="sixteen wide column">
+              <div class="ui toggle checkbox blue formFieldCustom">
+                <input type="checkbox" name="familiaPossuiPlanoAssisMedica" 
+                  [(ngModel)]="aluno.familiaPossuiPlanoAssisMedica"
+                  [disabled]="inscricaoValidacao.infoFinanceiroCompleto">
+                <label>Minha família possui Plano de Assistência Médica?</label>
+              </div>
+            </div>
+            <div class="eight wide column" *ngIf="aluno.familiaPossuiPlanoAssisMedica">
+                <mat-form-field class="formFieldCustom">
+                    <input matInput placeholder="Valor da Assistência Médica" 
+                      name="valorAssisMedica" type="number" [(ngModel)]="aluno.valorAssisMedica"
+                      [readonly]="inscricaoValidacao.infoFinanceiroCompleto">
+                  </mat-form-field>
+            </div>
+        </div>
+        </div>
+        </form>
+  </div>
+  
+
+  <div class="ui segment">
+      <div class="row">
+          <div class="customButtonStep">
+            <button class="ui button" type="button" routerLink="../socioeconomico/"
+              *ngIf="!isModalForm">Anterior
+            </button>
+
+            <button class="ui button blue" type="button" 
+              routerLink="../info-saude" 
+              (click)="add()"
+              (dblclick)="dbClick()"
+              [disabled]="fetching"
+              *ngIf="!(inscricaoValidacao.infoFinanceiroCompleto) && !isModalForm && isUpdate">
+              {{fetching ? 'Processando...' : 'Salvar e Continuar'}}
+            </button>
+
+            <button routerLink="../info-saude" class="ui button"
+              *ngIf="(inscricaoValidacao.infoFinanceiroCompleto) && !isModalForm">
+              Avançar
+            </button>
+
+            <button class="ui button green" type="button" 
+              (click)="addPendente()"
+              *ngIf="isModalForm">Atualizar
+            </button>
+
+            <button class="ui labeled right floated icon button pagination"
+              (click)="editEnable()" *ngIf="(inscricaoValidacao.infoFinanceiroCompleto)">
+              <i class="write icon"></i>Alterar Informações
+            </button>
+          </div>
+        </div>
+  </div>
+</div>

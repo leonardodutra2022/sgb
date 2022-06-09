@@ -1,0 +1,155 @@
+<div class="row">
+  <div class="ui positive message custom-msg" *ngIf="msgView">
+      <i class="close icon" (click)="hideMsg()"></i>
+      <div class="header">
+        Informação!
+      </div>
+      <p>
+        {{msg}}
+      </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="ui negative message custom-msg" *ngIf="msgViewErro">
+      <i class="close icon" (click)="hideMsg()"></i>
+      <div class="header">
+        Notificação!
+      </div>
+      <p>
+        {{msgErro}}
+      </p>
+  </div>
+</div>
+
+<div class="ui container containerCustom"> 
+  <div class="ui header">
+    <h2 class="ui header">
+      {{isUpdate ? "Atualizar Dados Básicos" : "Novo Acesso"}}
+    </h2>
+  </div>
+ 
+  <div class="ui divider"></div>
+
+  <form name="formBasicoInfo">
+    <div class="ui grid">  
+
+      <div class="row">
+          <div class="four wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input matInput placeholder="CPF (Apenas números)" 
+                    name="cpf" required maxlength="11" minlength="11"
+                    (blur)="changeAluno()" [readonly]="cpfReadOnly"
+                    [(ngModel)]="selecaoAluno" [cpfMask]>
+              </mat-form-field>
+            </div>
+
+        <div class="eight wide column">
+            <mat-form-field class="formLoginFieldCustom">
+                <input matInput placeholder="Nome Completo" 
+                  name="nomeCompleto" required [(ngModel)]="aluno.nomeCompleto">
+            </mat-form-field>
+        </div>
+
+
+
+        <div class="four wide column" *ngIf="!isExistAluno">
+          <mat-form-field class="formLoginFieldCustom">
+              <input matInput placeholder="Matrícula Atual (aluno) (máximo de 10 caracteres)" 
+                name="matricula" required [(ngModel)]="aluno.siape"
+                (blur)="checkSiape()" [readonly]="matriculaRead"
+                (keyup)="verifySiape()" maxlength="10">
+          </mat-form-field>
+        </div>
+
+        <div class="four wide column" *ngIf="isExistAluno">
+          <div class="ui label">
+            <i class="exclamation circle icon" title="Você poderá atualizar a matrícula no formulário de Informações Acadêmicas, durante a inscrição!"></i> Matrícula Atual: <b>{{aluno.siape}}</b>
+          </div>
+        </div>
+
+
+        
+        <div class="ten wide column">
+          <mat-form-field class="formLoginFieldCustom">
+              <input matInput placeholder="E-mail (máximo de 50 caracteres)" 
+                name="email" required [(ngModel)]="aluno.email"
+                (blur)="checkEmail()"
+                maxlength="50">
+          </mat-form-field>
+        </div>
+       
+        <div class="six wide column">
+          <mat-form-field class="formLoginFieldCustom">
+            <mat-select placeholder="Sexo" name="sexoSelect" 
+              [(ngModel)]="selecaoSexo">
+              <mat-option *ngFor="let sex of listSexo" [value]="sex.value">
+                {{ sex.genero }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="five wide column" *ngIf="!isUpdate">
+          <mat-form-field class="formLoginFieldCustom">
+              <input matInput placeholder="Usuário (máximo de 10 caracteres)" 
+                name="usuario" required 
+                [(ngModel)]="nomeUsuarioEdit"
+                (blur)="searchUserByNomeUsuario()"
+                (keyup)="validNomeUsuarioAndSenha()"
+                maxlength="10">
+          </mat-form-field>
+        </div>
+
+        <div class="five wide column" *ngIf="!isUpdate">
+          <mat-form-field class="formLoginFieldCustom">
+              <input matInput placeholder="Senha (máximo de 10 caracteres)" 
+                name="senha" required 
+                [(ngModel)]="usuario.senha"
+                type="password" 
+                (blur)="validNomeUsuarioAndSenha()"
+                (keyup)="validNomeUsuarioAndSenha()"
+                maxlength="10">
+          </mat-form-field>
+        </div>
+
+        <div class="six wide column" *ngIf="!isUpdate">
+          <mat-form-field class="formLoginFieldCustom">
+              <input matInput placeholder="Confirmação da Senha (máximo de 10 caracteres)" 
+                name="senhaConfirm" required 
+                [(ngModel)]="senhaConfirm"
+                type="password" 
+                (blur)="checkPassword()"
+                (keyup)="checkPassword()"
+                (ngModelChange)="checkPassword()"
+                maxlength="10">
+          </mat-form-field>
+        </div>
+
+      </div>  
+    </div>    
+      </form>
+
+      <div class="row">
+          <div class="eight wide column">
+
+              <button type="button" class="ui button blue" (click)="registrar()"
+                [disabled]="!(selecaoAluno && aluno.nomeCompleto 
+                && aluno.siape && aluno.email && selecaoSexo 
+                && nomeUsuarioEdit && usuario.senha 
+                && senhaConfirm && emailValid && matriculaValid
+                && nomeUsuarioValid && senhaValid)" 
+                *ngIf="!(isExistAluno && isExistUsuario)">
+                  Criar Conta 
+              </button>
+              <button type="button" class="ui button blue" (click)="registrar()"
+              [disabled]="!(selecaoAluno && aluno.nomeCompleto 
+              && aluno.siape && aluno.email && selecaoSexo 
+              && emailValid && matriculaValid && senhaValid)" 
+              *ngIf="(isExistAluno && isExistUsuario)">
+                Atualizar 
+            </button>
+              <button class="ui button" routerLink="/">Retornar</button>
+          </div>
+      </div>
+    </div>

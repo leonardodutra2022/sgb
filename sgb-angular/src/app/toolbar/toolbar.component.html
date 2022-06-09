@@ -1,0 +1,130 @@
+<mat-sidenav-container class="sidenav-container" >
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+      [attr.role]="(!isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(!isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(!isHandset$ | async)" fullscreen >
+    <mat-toolbar>
+      <i class="th large icon large"></i>
+      Menu [GESTÃO] 
+     
+    </mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dashboard" *ngIf="authService.checkPermissaoMenu('dashboard')">
+        <button mat-icon-button>
+        <i class="home icon large"></i>
+      </button>Página Inicial</a>
+
+      <a mat-list-item routerLink="/sistema" *ngIf="authService.checkPermissaoMenu('sistema')">
+        <button mat-icon-button>
+        <i class="cog icon large"></i>
+      </button>Sistema</a>
+
+      <a mat-list-item routerLink="/users" *ngIf="authService.checkPermissaoMenu('users')">
+        <button mat-icon-button>
+          <i class="user secret icon large"></i>
+        </button> Usuários e Permissões</a>
+
+      <a mat-list-item routerLink="processos/admin" *ngIf="authService.checkPermissaoMenu('processos/admin')">
+        <button mat-icon-button>
+          <i class="sun outline icon large"></i>
+        </button> Processos
+      </a>
+
+      <a mat-list-item routerLink="/processos" *ngIf="authService.checkPermissaoMenu('processos')">
+        <button mat-icon-button>
+        <i class="sun outline icon large"></i>
+      </button>Acompanhar Processos</a>   
+
+      <a mat-list-item routerLink="/inscricoes" *ngIf="authService.checkPermissaoMenu('minhas_inscricoes')">
+        <button mat-icon-button>
+        <i class="write icon large"></i>
+      </button>Minhas Inscrições</a>         
+
+      <a mat-list-item routerLink="documentacao" *ngIf="authService.checkPermissaoMenu('documentacao')">
+        <button mat-icon-button>
+          <i class="book alternative icon large"></i>
+        </button> Documentação
+      </a>
+
+      <a mat-list-item routerLink="concessao" *ngIf="authService.checkPermissaoMenu('concessoes')">
+        <button mat-icon-button>
+          <i class="check square icon icon large"></i>
+        </button> Concessões
+      </a>
+
+      <a mat-list-item routerLink="cadastro/auxilio" *ngIf="authService.checkPermissaoMenu('cadastro/auxilio')">
+        <button mat-icon-button>
+          <i class="plus square outline icon large"></i>
+        </button> Cadastro de Benefícios/Bolsas
+      </a>
+
+      <a mat-list-item routerLink="cadastro/aluno" *ngIf="authService.checkPermissaoMenu('cadastro/aluno')">
+        <button mat-icon-button>
+          <i class="plus square outline icon large"></i>
+        </button> Cadastro Prévio de Alunos
+      </a>
+
+      <a mat-list-item routerLink="cadastros-basicos" *ngIf="authService.checkPermissaoMenu('cadastros_basicos')">
+        <button mat-icon-button>
+          <i class="plus square outline icon large"></i>
+        </button> Cadastros Básicos
+      </a>
+
+      <a mat-list-item routerLink="frequencia/admin" *ngIf="authService.checkPermissaoMenu('frequencia_admin')">
+        <button mat-icon-button>
+          <i class="file alternate outline icon large"></i>
+        </button> Frequência
+      </a>
+
+      <a mat-list-item routerLink="frequencia/rubrica" *ngIf="authService.checkPermissaoMenu('rubrica')">
+        <button mat-icon-button>
+          <i class="pencil alternate icon large"></i>
+        </button> Rúbrica (Cadastro)
+      </a>
+
+      <a mat-list-item routerLink="frequencia/aluno" 
+        *ngIf="authService.checkPermissaoMenu('frequencia_aluno')">
+        <button mat-icon-button>
+          <i class="book icon large"></i>
+        </button> Frequência
+      </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" [class.mat-elevation-z2]="!isActive" [class.mat-elevation-z8]="isActive"> 
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="!isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>
+          <span>
+              <button mat-icon-button td-menu-button tdLayoutToggle (click)="drawer.toggle()" 
+                *ngIf="menuButton">
+                <mat-icon>menu</mat-icon>
+              </button>
+            </span>
+        Sistema de Gestão de Benefícios  <span class="versao">{{versao}}</span> 
+      </span>
+      <div class="logoff" *ngIf="authService.usuarioEstaAutenticado()">
+        <span class="textLogoff">{{usuarioAuth.nomeCompleto}}
+          
+        </span><br>
+        <span class="descLogoff">{{usuarioAuth.papel}}</span>
+        
+      </div>
+      <i class="edit icon btnLogoff" title="Atualizar Dados Básicos" 
+        (click)="viewAluno(usuarioAuth.siape)" style="cursor: pointer;margin: 0.4em;" 
+        *ngIf="authService.usuarioEstaAutenticado() && usuarioAuth.papel == 'Aluno'"></i>
+
+      <i class="power off icon btnLogoff" 
+        (click)="efetuarLogoff()" title="Logar/Deslogar do Sistema" 
+        *ngIf="authService.usuarioEstaAutenticado()"></i>
+        <div class="help-custom" title="Dúvidas ou para reportar algum erro no sistema, envie e-mail para: sgb.ufc.crateus@gmail.com"><i class="question circle icon"></i></div>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>

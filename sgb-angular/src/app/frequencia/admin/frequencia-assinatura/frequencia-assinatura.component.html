@@ -1,0 +1,81 @@
+<div class="ui container containerCustom">
+    <div class="ui header">
+        <h2 class="ui header">
+          Assinatura Eletrônica
+        </h2>
+      </div>
+    <div class="ui divider"></div>
+
+    <div class="ui grid">
+
+        <div class="row">
+            <div class="messages">
+              <div class="ui negative message custom-msg" *ngIf="viewMsgErro">
+                  <i class="close icon" (click)="hideMsg()"></i>
+                  <div class="header">
+                    Erro!
+                  </div>
+                  <p>
+                    {{msgErro}}
+                  </p>
+              </div>
+        
+              <div class="ui positive message custom-msg" *ngIf="viewMsg">
+                <i class="close icon" (click)="hideMsg()"></i>
+                <div class="header">
+                  Informe
+                </div>
+                <p>
+                  {{msg}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+        <div class="row">
+
+            <div class="sixteen wide column">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Usuário (acesso ao sistema)" 
+                      name="usuario" type="text" maxlength="50"
+                      [(ngModel)]="usuario">
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="sixteen wide column">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Senha (acesso ao sistema)" 
+                      name="pass" type="password" 
+                      maxlength="50"
+                      [(ngModel)]="pass">
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="sixteen wide column">
+                <div *ngIf="(usuario && pass)">
+                <mat-dialog-actions>
+                    <button class="ui button teal"
+                         (click)="check()" cdkFocusInitial
+                         [mat-dialog-close]="data.frequenciaRegistro">
+                        <fa-icon [icon]="signIcon" style="font-size: x-large"></fa-icon>
+                        Validar/Registrar
+                    </button>
+
+                    <button class="ui button" mat-dialog-close>Fechar</button>
+                </mat-dialog-actions>
+               </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

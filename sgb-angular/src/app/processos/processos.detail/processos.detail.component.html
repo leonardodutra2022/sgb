@@ -1,0 +1,97 @@
+<div class="ui container containerCustom">
+  <div class="header">
+    <h1 class="ui header">
+      Detalhes do Processo
+    </h1>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <div class="ui two column grid">
+      <div class="row">  <div class="right floated right aligned column">
+          <a routerLink="/processos/admin">
+            <div class="ui right floated small primary labeled icon button pagination menu">
+                <i class="list alternate icon"></i> Processos
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui raised segment">
+          <div class="ui header">Informações Gerais</div>
+          <a class="ui orange ribbon label">Dados do Processo</a>          
+            <div class="ui content contentCustom">
+
+                <div class="ui items">
+                  <div class="item">
+                    <div class="content customContent">
+                        <h5 class="ui header">Código</h5>
+                        <div class="description">
+                          <p>Processo nº {{processo.id}}/{{processo.ano}}</p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                      <div class="content">
+                          <h5 class="ui header">Situação</h5>
+                          <div class="description">
+                            <p>{{processo.statusProcesso}}</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <h5 class="ui header">Benefício</h5>
+                            <div class="description">
+                              <p>{{nomeBeneficio}}</p>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="item">
+                        <div class="content">
+                            <h5 class="ui header">Vagas</h5>
+                            <div class="description">
+                              <p>{{processo.vagas}} vaga(s)</p>
+                            </div>
+                        </div>
+                      </div>
+                </div>              
+
+            </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="ui segment">
+          <div class="ui header">
+            Datas e Cronogramas
+          </div>
+          <a class="ui teal ribbon label">Datas</a> 
+          <div class="ui content contentCustom">
+              <div class="ui items">
+                <div class="item">
+                  <div class="content customContent">
+                      <h5 class="ui header">Data de Abertura</h5>
+                      <div class="description">
+                        <p>{{processo.dataAbertura | date: 'shortDate': 'dd/MM/yyyy': 'pt'}}</p>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="item">
+                  <div class="content">
+                      <h5 class="ui header">Data de Encerramento</h5>
+                      <div class="description">
+                        <p>{{processo.dataEncerramento | date: 'shortDate': 'dd/MM/yyyy': 'pt'}}</p>
+                      </div>
+                  </div>
+                </div>
+
+                </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+</div>

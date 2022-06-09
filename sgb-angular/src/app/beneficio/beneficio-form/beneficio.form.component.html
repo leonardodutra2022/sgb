@@ -1,0 +1,84 @@
+<div class="ui container containerCustom">
+  <div class="ui header">
+    <h2 class="ui header">
+      Benefício
+    </h2>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <form >
+    <div class="ui grid">  
+
+      <div class="row">
+        <div class="eight wide column">
+          <mat-form-field class="formLoginFieldCustom">
+            <mat-select placeholder="Tipo de Benefício" [(ngModel)]="selecaoBeneficio" 
+              name="benTipoSelect" (ngModelChange)="changeBenTipo($event)">
+              <mat-option *ngFor="let ben of listBensTipo" [value]="ben.tipoBeneficio">
+                {{ben.tipoBeneficio}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="eight wide column">
+            <mat-form-field class="formLoginFieldCustom">
+                <input matInput placeholder="Nome do Benefício ou Bolsa" 
+                  name="nome" required [(ngModel)]="ben.nome">
+            </mat-form-field>
+        </div>
+
+        
+      </div>
+
+      <div class="row">
+          <div class="sixteen wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input matInput placeholder="Descrição" 
+                    name="descricao" required [(ngModel)]="ben.descricao" maxlength="500">
+              </mat-form-field>
+            </div>
+
+      </div>
+
+      <div class="row">
+        <div class="eight wide column">
+            <mat-form-field class="formLoginFieldCustom">
+                <input matInput placeholder="Período de renovação (mês)" 
+                  name="renovacao" required [(ngModel)]="ben.renovacao" type="number">
+            </mat-form-field>
+        </div>
+        <div class="eight wide column">
+          Permite acumulação com outro benefício ou bolsa?
+          <td class="collapsing">
+            <div class="ui toggle checkbox blue">
+              <input type="checkbox" [(ngModel)]="ben.permiteAcumulacao" name="obrigatorio" 
+              (ngModelChange)="onStatusChangeAcumulacao(ben)" 
+                (change)="onStatusChangeAcumulacao(ben)"> 
+              <label></label>
+            </div>
+          </td>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="eight wide column">
+              <button type="button" class="ui button blue" (click)="add()" *ngIf="!idTemp" 
+              [disabled]="sessaoService.verificarPermissao('add_usuario')">
+                Cadastrar
+              </button>
+
+              <button type="button" class="ui button blue" (click)="save()" *ngIf="idTemp" 
+              [disabled]="(!(selecaoBeneficio && ben.nome && ben.descricao) || 
+                sessaoService.verificarPermissao('edit_usuario'))">
+                Salvar
+              </button>
+              <button class="ui button" routerLink="/cadastro/auxilio">Cancelar</button>
+
+          </div>
+      </div>
+
+      </div>
+</form>
+
+</div>

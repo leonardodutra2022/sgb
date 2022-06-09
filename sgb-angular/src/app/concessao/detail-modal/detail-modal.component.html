@@ -1,0 +1,55 @@
+<div class="ui container containerCustom">
+
+  <h1 class="ui header">
+    Concessões registradas para o aluno
+  </h1>
+      <div class="ui divider"></div>
+
+      <div class="ui grid">
+        <div class="row">
+            <div class="right floated right aligned six wide column">
+
+            </div>
+        </div>
+        <div class="row">
+        <div class="ui column sixtenn wide">
+            <table class="ui sortable compact celled definition blue table">
+                <thead class="full-width">
+                  <tr>
+                    <th>Status da Concessão</th>
+                    <th>Data Concessão</th>
+                    <th>Data Final da Concessão</th>
+                    <th>Auxílio/Bolsa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let concessao of listaConcessao">
+                    <td>{{concessao.concessaoStatus}}</td>
+                    <td>{{concessao.dataConcessao | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                    <td>{{concessao.dataConcessaoFinal | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                    <td>{{concessao.beneficio.nome}}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        </div>
+      </div>
+
+</div>
+
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Confirmação de Exclusão
+    </div>
+    <div class="content">
+      <div class="description">
+        Uma exclusão acidental pode ser desagradável. Por favor tome essa ação com cuidado.
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui button default">Não</div>
+      <div class="ui small button red">Confirmar Exclusão</div>
+    </div>
+  </div>
+

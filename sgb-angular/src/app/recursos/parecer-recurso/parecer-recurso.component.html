@@ -1,0 +1,40 @@
+<div class="ui grid gridCustom">
+
+  <div class="sixteen wide column customHeader">
+    <h3 class="ui header">
+      Analisar Recursos
+      <div class="sub header">Recursos</div>
+    </h3>
+    <div class="ui divider"></div>
+  </div>      
+
+  <div class="row">
+      <div class="sixteen wide column">
+             <mat-form-field class="formFieldCustom">
+                     <mat-select placeholder="Aplicar Parecer ao Recurso" 
+                       name="statusSelect" 
+                       [ngModel]="selecaoStatus" (ngModelChange)="setStatus($event)">
+                       <mat-option *ngFor="let s of listStatus" 
+                         [value]="s.st">
+                         {{s.st}}
+                       </mat-option>
+                     </mat-select>
+             </mat-form-field>
+      </div>
+     <div class="sixteen wide column">
+         <mat-form-field class="formFieldCustom">
+         <textarea matInput placeholder="Relatório ou descrição sobre o recurso (no máximo 255 caracteres)" 
+             maxlength="255" rows="3" [(ngModel)]="recurso.relatorioParecer"
+             class="customArea">
+         </textarea>
+         </mat-form-field>                
+     </div>
+ </div>
+
+ <div class="customButtonStep">
+         <button class="ui button blue" type="button" 
+           (click)="salvarAnalise()"
+           [disabled]="!(selecaoStatus)">Enviar</button>
+       
+ </div>        
+</div>

@@ -1,0 +1,238 @@
+<div class="ui container containerCustom">
+  <div class="ui header">
+    <h2 class="ui header">
+      {{idTemp ? 'Atualizar Projeto' : 'Incluir Projeto'}}
+    </h2>
+  </div>
+  <div class="ui divider"></div>
+
+  <form>
+    <div class="ui grid">
+      <div class="row">
+        <div class="ui negative message custom-msg" *ngIf="viewMsgErro">
+          <i class="close icon" (click)="hideMsg()"></i>
+          <div class="header">
+            Erro!
+          </div>
+          <p>
+            {{msgErro}}
+          </p>
+        </div>
+
+        <div class="ui positive message custom-msg" *ngIf="viewMsg">
+          <i class="close icon" (click)="hideMsg()"></i>
+          <div class="header">
+            Informe
+          </div>
+          <p>
+            {{msg}}
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="sixteen wide column">
+          <div class="ui header">
+            <h3 class="ui header">
+              Informações Básicas
+            </h3>
+          </div>
+          <div class="ui divider"></div>
+        </div>
+        <div class="eight wide column">
+          <mat-form-field class="formLoginFieldCustom">
+            <input matInput placeholder="Título do Projeto (max de 500 caracteres)" name="titulo" maxlength="500"
+              required [(ngModel)]="selecaoProjeto.titulo">
+          </mat-form-field>
+        </div>
+
+        <div class="eight wide column">
+          <mat-form-field class="formLoginFieldCustom">
+            <mat-select placeholder="Carga Horária do Projeto" name="chSelect" [(ngModel)]="selecaoCargaHoraria">
+              <mat-option *ngFor="let h of listHorarios" [value]="h.horas">
+                {{ h.horas }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="sixteen wide column">
+          <mat-form-field class="formLoginFieldCustom">
+            <input matInput placeholder="Descrição Projeto (max de 5.000 caracteres)" name="desc" maxlength="5000"
+              required [(ngModel)]="selecaoProjeto.descricao">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="six wide column">
+          <div class="ui header">
+            <h3 class="ui header">
+              Responsável pelo Projeto e Lista de Alunos
+            </h3>
+          </div>
+
+          <div class="ui divider"></div>
+
+          <div class="form-field-custom">
+            <mat-form-field class="formLoginFieldCustom">
+              <!-- <mat-select placeholder="Responsável" [(ngModel)]="idResponsavelEdit" name="responsavelSelect"
+                (ngModelChange)="changeResponsavel($event)">
+                <mat-option *ngFor="let res of listaResponsaveis" [value]="res.id">
+                  {{res.nomeCompleto}}
+                </mat-option>
+              </mat-select> -->
+              <input matInput placeholder="Responsável por nome ou siape" name="responsaveis"
+                [formControl]="responsavelQueryField" maxlength="40" [matAutocomplete]="responsavel">
+
+              <mat-autocomplete autoActiveFirstOption #responsavel="matAutocomplete">
+                <mat-option *ngFor="let res of responsavelFilteredOptions | async" [value]="res.nomeCompleto"
+                  (click)="changeResponsavel(res)">
+                  {{res.nomeCompleto}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="ui icon buttons btn-custom">
+              <button class="ui button teal" title="Novo Responsável" (click)="openResponsavel()"
+                *ngIf="sessaoService.verificarPermissao('add_user')">
+                <i class="plus circle icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-field-custom">
+            <mat-form-field class="formLoginFieldCustom">
+              <!-- <mat-select placeholder="Aluno sss" [(ngModel)]="idAlunoEdit" name="alunoSelect"
+                (ngModelChange)="changeAluno($event)">
+                <mat-option *ngFor="let alu of listaAlunos" [value]="alu.id">
+                  {{alu.nomeCompleto}}
+                </mat-option>
+              </mat-select> -->
+              <input matInput placeholder="Aluno por nome, matricula ou cpf" name="alunos"
+                [formControl]="alunoQueryField" maxlength="40" [matAutocomplete]="aluno">
+
+              <mat-autocomplete autoActiveFirstOption #aluno="matAutocomplete">
+                <mat-option *ngFor="let alu of alunoFilteredOptions | async" [value]="alu.nomeCompleto"
+                  (click)="changeAluno(alu)">
+                  {{alu.nomeCompleto}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="ui icon buttons btn-custom">
+              <button class="ui button teal" title="Novo Aluno" (click)="openAluno()"
+                *ngIf="sessaoService.verificarPermissao('add_aluno')">
+                <i class="plus circle icon"></i>
+              </button>
+            </div>
+          </div>
+
+
+          <button (click)="gerar()" class="ui button green" *ngIf="listAlunosTemp.length > 0 && !idTemp">
+            Cadastrar Projeto
+          </button>
+
+          <button (click)="update()" class="ui button teal" *ngIf="idTemp">
+            Atualizar Projeto
+          </button>
+
+          <button class="ui button" routerLink="/frequencia/admin">
+            Retornar
+          </button>
+
+
+        </div>
+        <div class="ten wide column">
+
+          <div *ngIf="idProjetoEdit != ''">
+            <div class="ui image label">
+              {{selecaoProjeto.titulo}}
+            </div>
+
+            <div class="ui divider"></div>
+          </div>
+
+          <div *ngIf="idResponsavelEdit != ''">
+            <div class="ui image label">
+              {{selecaoResponsavel.nomeCompleto}}
+            </div>
+
+            <div class="ui divider"></div>
+          </div>
+
+          <div *ngIf="idResponsavelEdit == '' && idProjetoEdit == ''">
+
+            <div class="ui warning message">
+              <div class="header">
+                Lista de Alunos vinculados ao Projeto
+              </div>
+              Selecione os parâmetros à esquerda para compor lista de Alunos
+            </div>
+          </div>
+
+          <div *ngIf="idResponsavelEdit != ''">
+            <div class="ui header">
+              <h3 class="ui header">
+                Lista de Alunos à serem Vinculados
+              </h3>
+            </div>
+
+            <div class="ui divider"></div>
+
+            <table class="ui sortable compact celled definition blue table">
+              <thead class="full-width">
+                <tr>
+                  <th></th>
+                  <th>Nome Completo</th>
+                  <th>Curso</th>
+                  <th>Matrícula</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor="let alu of listAlunosTemp">
+                  <td class="collapsing">
+
+                  </td>
+                  <td>
+                    {{alu.nomeCompleto}}
+                  </td>
+                  <td>
+                    {{alu.cursoAtual}}
+                  </td>
+                  <td>
+                    {{alu.siape}}
+                  </td>
+                  <td class="collapsing">
+                    <div class="ui icon buttons">
+                      <button class="ui red button" title="Remover Aluno da Lista" (click)="deleteItemList(alu.id)">
+                        <i class="trash icon"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+              <tfoot class="full-width">
+                <tr>
+                  <th></th>
+                  <th colspan="5">
+
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+
+</div>

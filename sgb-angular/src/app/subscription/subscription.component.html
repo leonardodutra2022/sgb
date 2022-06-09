@@ -1,0 +1,169 @@
+<div class="ui container containerCustom">
+  <h2 class="ui header">
+      <div class="content">
+        Minhas Inscrições
+      </div>
+  </h2>
+
+  <div class="ui large menu">
+      <a routerLinkActive="active" class="item" routerLink="/processos">
+        <i class="sun outline icon"></i>
+        Processos Públicos
+      </a>
+      <a routerLinkActive="active" class="item" routerLink="/inscricoes">
+        <i class="pencil alternate icon"></i>
+        Minhas Inscrições
+      </a>  
+    </div>
+
+<div class="ui grid">
+        <div class="sixteen wide column">
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel *ngFor="let inscricao of listaInscricoes" 
+                  [expanded]="false" (opened)="false" (click)="checkEtapaAnaliseComissao(inscricao.codProcesso)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h4 class="ui header enfatizar"> Inscrição nº {{inscricao.codProcesso}}.0{{inscricao.codInscricao}}/{{inscricao.anoProcesso}} </h4>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      {{inscricao.processo.descricao}} #{{inscricao.codProcesso}} 
+                      [ {{inscricao.statusProcessoResume}} ] 
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="ui grid align center">
+                      <div class="four wide column">
+                          <div class="ui raised segments">
+                              <div class="ui segment segment-custom">
+                                <div class="ui header"><h5> Detalhes da Inscrição </h5></div>
+                              </div>
+                              
+                              <div class="ui segment" *ngIf="getViewAnalise(inscricao.processo)"> 
+                                <p>Status da Inscrição: <b>EM ANÁLISE</b></p>
+                              </div>
+
+                              <div class="ui segment" *ngIf="!getViewAnalise(inscricao.processo)">
+                                <p>Status da Inscrição: <b>{{inscricao.statusInscricao == 'INSCRICAO_CANCELADA' ? 'INSCRIÇÃO CANCELADA' : inscricao.statusInscricao}}</b></p> 
+                                
+                                <div *ngIf="checkResultadoFinal(inscricao.processo)">
+                                  <p *ngIf="getViewResultadoFinal(inscricao.processo)">Status Final (Concessão do Auxílio/Benefício): <b>{{inscricao.statusInscricaoFinal}}</b></p>
+                                  <p *ngIf="!getViewResultadoFinal(inscricao.processo)"> Status Final (Concessão do Auxílio/Benefício): <b>PENDENTE</b></p>
+                                </div>
+
+                                <p class="ui segment" *ngIf="(inscricao.statusInscricao == 'INSCRICAO_CANCELADA') || !inscricao">
+                                  Inscrição Cancelada por se encontrar incompleta ou com documentação mínima total ou parcialmente ausente.
+                                </p>
+                              </div>
+
+                              <div class="ui segment segment-custom">
+                                  <div class="ui header"><h5>Análise da Comissão</h5></div>
+                                </div>
+
+                                <div class="ui segment">
+                                  <p *ngIf="inscricao.statusInscricao == 'DEFERIDO'">
+                                    {{inscricao.analiseComissao}}
+                                  </p>
+                                </div>
+
+                                <div>
+                                      <button class="ui labeled icon button btn-custom" *ngIf="inscricao.statusInscricao == 'INDEFERIDO' && !getViewAnalise(inscricao.processo)"
+                                        (click)="openAnaliseComissao(inscricao)">
+                                        <i class="eye icon"></i>Análise da Comissão
+                                      </button>
+                                </div>
+                                
+                                <div class="ui segment segment-pendencia-titulo" *ngIf="inscricao.pendenciaDoc || inscricao.pendenciaDados">
+                                    <div class="ui header"><h5>Pendências na Inscrição</h5></div>
+                                  </div>
+  
+                                  <p class="ui segment segment-pendencia" *ngIf="inscricao.pendenciaDoc || inscricao.pendenciaDados">
+                                      <label *ngIf="inscricao.pendenciaDoc" class="ui label">{{inscricao.pendenciaDocObs}}</label>
+                                      <button class="ui labeled icon button btn-custom" 
+                                          *ngIf="inscricao.pendenciaDoc"
+                                          (click)="openRecurso(inscricao,inscricao.pendenciaDoc)">
+                                        <i class="edit outline icon"></i>Incluir Documento Pendente
+                                      </button>
+                                      <label *ngIf="inscricao.pendenciaDados" class="ui label">{{inscricao.pendenciaDadosObs}}</label>
+                                      <button class="ui labeled icon button btn-custom" 
+                                          *ngIf="inscricao.pendenciaDados"
+                                          (click)="openFormPendente(inscricao)">
+                                        <i class="edit outline icon"></i>Complementar Dados Pendente
+                                      </button>                                    
+                                  </p>  
+                          </div>
+                      </div>
+                      <div class="six wide column">
+                      <div class="ui raised segments">
+                          <div class="ui segment">
+                            <div class="ui header"><h5> Recursos </h5></div>
+                          </div>
+                          <div class="ui segment">
+                            <table class="ui celled table">
+                              <thead>
+                                <tr>
+                                  <th>ID</th>
+                                  <th>Parecer</th>
+                                  <th>Data</th>
+                                  <th>Detalhes</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let recurso of inscricao.recursosInscricao">
+                                  <td>{{recurso.id}}</td>
+                                  <td>{{inscricao.processo.statusProcesso == "ANALISE_DOCUMENTAL" || inscricao.processo.statusProcesso == "EM_ANALISE" ? "Em análise" : recurso.parecer}}</td>
+                                  <td>{{recurso.dataHora | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                                  <td>
+                                    <button class="ui button" (click)="openDetail(recurso)">
+                                      <i class="eye icon"></i>
+                                    </button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <p *ngIf="getViewRecurso(inscricao.processo)">
+                              <button class="ui labeled icon button" 
+                                *ngIf="inscricao.statusInscricao == 'INDEFERIDO'"
+                              (click)="openRecurso(inscricao)">
+                              <i class="edit outline icon"></i>Incluir Recurso
+                            </button>
+                            </p>
+                          </div>
+                        </div>
+                  </div>
+                  <div class="four wide column" *ngIf="inscricao.processo.possuiEntrevista && hasEntrevista">
+                          <div class="ui raised segments">
+                              <div class="ui segment">
+                                <div class="ui header"><h5> Entrevista </h5></div>
+                              </div>
+                              <div class="ui segment">
+                                <p><b>Agendamento</b></p>
+                              </div>
+                              <div class="ui segment" >
+                                <p>
+                                  Data e Horário: <b>{{inscricao.entrevista.data  | date: 'shortDate':'dd/MM/yyyy':'pt'}}, {{inscricao.entrevista.hora}}</b>
+                                </p>
+                                <p>
+                                  Local: <b>{{inscricao.entrevista.localEntrevista}}</b>
+                                </p>
+                                <p>
+                                  Observações: <b>{{inscricao.entrevista.observacoes}}</b>
+                                </p>
+                                <button class="ui labeled icon button" (click)="openEntrevista(inscricao.entrevista)" 
+                                  *ngIf="inscricao.entrevista.parecerMembroComissao == 'DEFERIDO' || inscricao.entrevista.parecerMembroComissao == 'INDEFERIDO'">
+                                  <i class="eye icon"></i>Parecer da Comissão
+                                </button>
+                              </div>
+                            </div>
+                      </div>
+                  </div>
+    
+                  <mat-action-row>
+                  </mat-action-row>
+                </mat-expansion-panel>
+              
+              </mat-accordion>
+              
+        </div>
+      </div>
+
+</div>

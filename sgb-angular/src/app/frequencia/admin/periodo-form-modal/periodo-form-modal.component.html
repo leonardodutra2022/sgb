@@ -1,0 +1,45 @@
+<h2 class="ui header">
+    Novo Período
+</h2>
+
+<div class="ui divider"></div>
+      <div class="ui grid">
+        <div class="row">
+            <div class="ui column sixteen wide">
+              <mat-form-field  class="formLoginFieldCustom">
+                <mat-label>Selecione Mês e Ano</mat-label>
+                <input matInput [matDatepicker]="dp" [formControl]="date" required>
+                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker #dp
+                                startView="multi-year"
+                                (yearSelected)="selectAno($event)"
+                                (monthSelected)="selectMes($event, dp)"
+                                panelClass="example-month-picker">
+                </mat-datepicker>
+              </mat-form-field>
+              
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="ui column sixtenn wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Observação (máximo de 255 caracteres)" 
+                      name="obs" [(ngModel)]="periodo.observacao"
+                      maxlength="255"> 
+                </mat-form-field>
+            </div>
+        </div>
+      </div>
+
+
+<mat-dialog-actions align="begin">
+  <button class="ui button teal" cdkFocusInitial 
+    [mat-dialog-close]="data.periodo"
+    (click)="add()"
+    [disabled]="!(date.value)"
+    mat-button
+    > Cadastrar
+  </button>
+  <button class="ui button" mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

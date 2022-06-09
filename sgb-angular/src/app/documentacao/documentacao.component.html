@@ -1,0 +1,89 @@
+<div class="ui container containerCustom">
+
+  <h1 class="ui header">
+        Documentação
+  </h1>
+      <div class="ui divider"></div>
+
+      <div class="ui grid">
+        <div class="row">
+            <div class="right floated right aligned six wide column">
+                <button routerLink="add/" *ngIf="sessaoService.verificarPermissao('add_documentacao')" 
+                (click)="setListTempDocumentacao()" class="ui right floated small primary labeled icon button pagination menu">
+                <i class="user icon"></i> Novo 
+              </button>
+              <button class="ui right floated small primary labeled icon button pagination menu"
+                (click)="exportDialog()">
+                <i class="file icon"></i> Exportar
+              </button>
+            </div>
+
+        </div>
+        <div class="row" *ngFor="let grupo of gruposDocsCustom">
+        <div class="ui sixteen wide table-custom">
+          <h3 class="ui header">
+            {{grupo.descricao}}
+            <div class="sub header">{{grupo.subtitulo}}.</div>
+          </h3>
+            <table class="ui sortable compact celled definition blue table">
+                <thead class="full-width">
+                  <tr>
+                      <th></th>
+                      <th>Documento</th>
+                      <th>Obrigatoriedade</th>
+                      <th>Categoria</th>
+                      <th>Auxílios/Bolsas vinculado(s)</th>
+                      <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let docs of listaDocumentacao" [ngClass]="{'hide-class' : docs.grupoDoc != grupo.titulo}">
+                      <td class="collapsing">
+                        <div class="ui toggle checkbox blue" *ngIf="sessaoService.verificarPermissao('edit_documentacao')">
+                          <input type="checkbox" [(ngModel)]="docs.ativo" name="ativo" 
+                          (ngModelChange)="onStatusChange(docs)" (change)="onStatusChange(docs)"> 
+                          <label></label>
+                        </div>
+                      </td>
+                      <td>{{docs.documento}}</td>
+                      <td>{{docs.obrigatorio ? "SIM" : "NÃO"}}</td>
+                      <td>{{docs.categoria}}</td>
+                      <td>
+                        <span *ngFor="let b of docs.beneficios">{{b.nome}},</span>
+                      </td>
+                      <td class="collapsing">
+                          <div class="ui icon buttons">
+                              <button routerLink="{{docs.id}}/edit" class="ui button" *ngIf="sessaoService.verificarPermissao('edit_documentacao')">
+                                <i class="edit icon"></i>
+                              </button>
+                              <button class="ui button" routerLink="{{docs.id}}" *ngIf="sessaoService.verificarPermissao('view_documentacao')">
+                                <i class="eye icon"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+      </div>
+
+</div>
+
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Confirmação de Exclusão
+    </div>
+    <div class="content">
+      <div class="description">
+        Uma exclusão acidental pode ser desagradável. Por favor tome essa ação com cuidado.
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui button default">Não</div>
+      <div class="ui small button red">Confirmar Exclusão</div>
+    </div>
+  </div>
+

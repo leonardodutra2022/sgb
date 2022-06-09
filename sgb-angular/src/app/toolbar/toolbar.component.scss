@@ -1,0 +1,57 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  background: #023e70;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.versao {
+  font-size: 13px;
+}
+
+.logoff {
+  margin: 0px 0px 0px auto;  
+  line-height: 15px;
+}
+
+.btnLogoff {
+  cursor: pointer;
+  padding: 5px 5px 0px 0px;
+  vertical-align: top;
+  height: auto;
+}
+
+.textLogoff {
+  font-size: 15px;
+  padding: 0px 10px;
+}
+
+.descLogoff {
+  font-size: 12px;
+  padding: 0px 10px;
+  font-style: italic;
+  float: right;
+}
+
+.help-custom {
+  padding: 0.5em 0.2em 0.2em;
+  /* float: right; */
+  /* display: block; */
+  vertical-align: bottom;
+  font-size: inherit;
+}

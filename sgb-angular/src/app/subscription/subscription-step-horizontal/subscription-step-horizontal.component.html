@@ -1,0 +1,131 @@
+<div class="ui steps">
+  <div class="step {{subStepDadosPessoais}}" routerLinkActive="active">
+    
+  <div class="content step-complete-custom > a" data-inverted="" 
+    data-tooltip="Dados pessoais" data-position="top left"
+    *ngIf="stepDadosPessoais$">
+      <a routerLink="dados-pessoais">
+          <i class="id big card outline icon" ></i>
+      </a>
+  </div>
+
+  <div class="content" data-inverted="" 
+    data-tooltip="Dados pessoais" data-position="top left"
+    *ngIf="!stepDadosPessoais$">
+      <a routerLink="dados-pessoais">
+          <i class="id big card outline icon" ></i>
+      </a>
+  </div>  
+
+  </div>
+  <div class="step content" routerLinkActive="active" 
+    *ngIf="stepContatos$">
+    <div class="content" class="content" data-inverted="" 
+    data-tooltip="Endereço e Contato" data-position="top left">
+      <a routerLink="contatos-enderecos">
+          <i class="map marker alternate big icon" style="color: #21ba45 !important"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="step" 
+    *ngIf="!stepContatos$">
+    <div class="content" class="content" data-inverted="" 
+      data-tooltip="Endereço e Contato" data-position="top left">
+       <i class="map marker alternate big icon" ></i>
+    </div>
+  </div>
+
+  <div class="step content" routerLinkActive="active"
+  *ngIf="stepMoradia$">
+      <div class="content" data-inverted="" 
+       data-tooltip="Transporte e moradia" data-position="top left">
+      <a routerLink="moradia-transporte">
+          <i class="taxi big icon" style="color: #21ba45 !important"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="step" 
+  *ngIf="!stepMoradia$">
+    <div class="content" data-inverted="" 
+     data-tooltip="Transporte e moradia" data-position="top left">
+      <i class="taxi big icon" ></i>
+    </div>
+  </div>  
+
+  <div class="step content" routerLinkActive="active"
+  *ngIf="stepSocio$">
+    <div class="content" data-inverted="" 
+    data-tooltip="Informações sócioeconômicas" data-position="top left">
+      <a routerLink="socioeconomico">
+          <i class="users big icon" style="color: #21ba45 !important"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="step {{subStepDadosSocioEcon}}"
+  *ngIf="!stepSocio$">
+    <div class="content" data-inverted="" 
+    data-tooltip="Informações sócioeconômicas" data-position="top left">
+      <i class="users big icon" ></i>
+    </div>
+  </div>  
+
+  <div class="step content" routerLinkActive="active"
+  *ngIf="stepFinancas$">
+    <div class="content" data-inverted="" 
+      data-tooltip="Situação Financeira" data-position="top left">
+      <a routerLink="info-financeira">
+          <i class="money bill alternate outline big icon" style="color: #21ba45 !important"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="step"
+  *ngIf="!stepFinancas$">
+    <div class="content" data-inverted="" 
+      data-tooltip="Situação Financeira" data-position="top left">
+        <i class="money bill alternate outline big icon" ></i>
+    </div>
+  </div>  
+
+  <div class="step content" routerLinkActive="active"
+  *ngIf="stepSaude$">
+      <div class="content" data-inverted="" 
+      data-tooltip="Informações de saúde e deficiência" data-position="top left">
+      <a routerLink="info-saude">
+          <i class="heartbeat big icon" style="color: #21ba45 !important"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="step"
+  *ngIf="!stepSaude$">
+    <div class="content" data-inverted="" 
+      data-tooltip="Informações de saúde e deficiência" data-position="top left">
+          <i class="heartbeat big icon" ></i>
+    </div>
+  </div>  
+
+  <div class="step" routerLinkActive="active"
+  *ngIf="stepAuxilios$">
+      <div class="content" data-inverted="" 
+        data-tooltip="Auxílios e Bolsas" data-position="top left">
+      <a routerLink="outros-auxilios">
+        <i class="plus square outline big icon" style="color: #21ba45 !important"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="step" 
+  *ngIf="!stepAuxilios$">
+    <div class="content" data-inverted="" 
+      data-tooltip="Auxílios e Bolsas" data-position="top left">
+        <i class="plus square outline big icon" ></i>
+    </div>
+  </div>
+
+</div>
+
+<router-outlet></router-outlet>

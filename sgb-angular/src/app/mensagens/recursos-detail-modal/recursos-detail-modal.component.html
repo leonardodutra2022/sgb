@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Detalhes do Recurso Interposto</h2>
+<mat-dialog-content class="mat-typography">
+<div class="content customModal">
+
+  <p>Fundamentação: <b>{{recurso.fundamentacao}}</b></p>
+  <p>Parecer: <b>{{processo.statusProcesso == "ANALISE_DOCUMENTAL" || processo.statusProcesso == "EM_ANALISE" ? "Em análise" : recurso.parecer}}</b></p>
+  <p>Descrição do Parecer: <b>{{processo.statusProcesso == "ANALISE_DOCUMENTAL" || processo.statusProcesso == "EM_ANALISE" ? "Em análise" : recurso.relatorioParecer}}</b></p>
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <a class="ui button blue" [href]="link" target="_blank" 
+    *ngIf="existAnexo">Baixar Anexo</a>
+  <button class="ui button" mat-dialog-close>Ok</button>
+</mat-dialog-actions>

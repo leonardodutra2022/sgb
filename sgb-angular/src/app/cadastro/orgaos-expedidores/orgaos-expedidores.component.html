@@ -1,0 +1,65 @@
+<div class="ui menu">
+    <h4 class="header item">
+      <div data-tooltip="Lista de Órgãos Expedidores" data-inverted="">
+        <i class="university icon" ></i>
+      </div>
+    </h4>
+
+    <div class="ui category search item">
+      <div class="ui transparent icon input">
+        <input class="prompt" type="text" placeholder="Pesquisar...">
+        <i class="search link icon"></i>
+      </div>
+      <div class="results"></div>
+    </div>
+
+    <div class="right menu custom-menu">
+      <div class="ui buttons">
+        <button class="ui small labeled icon button" (click)="exportDialog()">
+          <i class="file icon"></i> 
+            Exportar
+        </button>
+        <button class="ui small button" routerLink="../">Retornar</button>
+      </div>
+    </div>
+</div>
+
+<div class="container">
+  <div class="ui grid">
+    <div class="row">
+      <div class="ui column sixtenn wide">
+        <table class="ui sortable compact celled definition blue table">
+          <thead class="full-width">
+            <tr>
+              <th></th>
+              <th>Descrição</th>
+              <th>Abreviatura</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let item of lista">
+              <td class="collapsing">
+
+              </td>
+              <td>{{item.descricao}}</td>
+              <td>{{item.sigla}}</td>
+              <td class="collapsing">
+
+              </td>
+            </tr>
+            
+          </tbody>
+          <tfoot class="full-width">
+            <tr>
+              <th></th>
+              <th colspan="4">
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

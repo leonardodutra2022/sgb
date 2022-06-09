@@ -1,0 +1,75 @@
+<div class="ui container containerCustom">
+  <div class="header">
+    <h1 class="ui header">
+      Detalhes do Benefício
+    </h1>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <div class="ui two column grid">
+      <div class="row">  <div class="right floated right aligned column">
+          <a routerLink="/cadastro/auxilio">
+            <div class="ui right floated small primary labeled icon button pagination menu">
+                <i class="list alternate icon"></i> Listar Benefícios
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui raised segment">
+          <div class="ui header">Informações Gerais</div>
+          <a class="ui orange ribbon label">Dados do Benefício</a>          
+            <div class="ui content contentCustom">
+
+                <div class="ui items">
+                  <div class="item">
+                    <div class="content customContent">
+                        <h5 class="ui header">Código</h5>
+                        <div class="description">
+                          <p>{{ben.id}}</p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                      <div class="content">
+                          <h5 class="ui header">Permite acumulação com outros auxílios?</h5>
+                          <div class="description">
+                            <p>{{ben.permiteAcumulacao}}</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <h5 class="ui header">Tipo de Benefício</h5>
+                            <div class="description">
+                              <p>{{ben.tipoBeneficio}}</p>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="item">
+                        <div class="content">
+                            <h5 class="ui header">Descrição</h5>
+                            <div class="description">
+                              <p>{{ben.descricao}}</p>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="item">
+                        <div class="content">
+                            <h5 class="ui header">Período de renovação (mês)</h5>
+                            <div class="description">
+                              <p>{{ben.renovacao}}</p>
+                            </div>
+                        </div>
+                      </div>                      
+                </div>              
+
+            </div>
+        </div>
+      </div>
+
+      
+    </div>
+
+</div>

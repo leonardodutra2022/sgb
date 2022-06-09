@@ -1,0 +1,135 @@
+<div class="ui piled segments">  
+    <div class="ui segment">
+  
+    <form name="frmInscricaoSubmit" method="post" enctype="multipart/form-data"> 
+    <div class="ui grid">
+    <div class="row">
+      <div class="sixteen wide column customHeader">
+        <div class="ui header">Submissão da Inscrição</div>
+        <div class="ui divider"></div>
+      </div>
+    
+      <div class="row custom-msg">
+          <div class="ui negative message" *ngIf="!submited">
+              <div class="header">
+                Status da Inscrição!
+              </div>
+                Inscrição não submetida!
+          </div>
+          <div class="ui positive message" *ngIf="submited">
+              <div class="header">
+                Status da Inscrição!
+              </div>
+                Inscrição já submetida!
+          </div>
+      </div>
+
+          <table class="ui very basic table custom-table">
+              <thead>
+                <tr>
+                  <th>Etapa da Inscrição</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Dados Pessoais</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.dadosPessoaisCompleto" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.dadosPessoaisCompleto" title="Formulário possui dados obrigatórios a serem preenchidos!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dados de Contato e Endereço</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.dadosContatosLogradouroCompleto" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.dadosContatosLogradouroCompleto" title="Formulário possui dados obrigatórios a serem preenchidos!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dados Sócioeconômicos </td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.dadosSocioEconCompleto" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.dadosSocioEconCompleto" title="Formulário possui dados obrigatórios a serem preenchidos!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dados de Moradia e Transporte</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.dadosMoradiaTransporteCompleto" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.dadosMoradiaTransporteCompleto" title="Formulário possui dados obrigatórios a serem preenchidos!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dados de Outros Auxílios</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.dadosOutrosAuxiliosCompleto" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.dadosOutrosAuxiliosCompleto" title="Formulário possui dados obrigatórios a serem preenchidos!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dados sobre Saúde e Deficiência</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.dadosSaudeDeficienciaCompleto" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.dadosSaudeDeficienciaCompleto" title="Formulário possui dados obrigatórios a serem preenchidos!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dados sobre Informações Financeiras</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.infoFinanceiroCompleto" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.infoFinanceiroCompleto" title="Formulário possui dados obrigatórios a serem preenchidos!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dados Acadêmicos</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.dadosAcadCompleto" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.dadosAcadCompleto" title="Formulário possui dados obrigatórios a serem preenchidos!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Documentação</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="inscricaoValidacao.documentacaoCompleta" title="Informações essenciais foram fornecidas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!inscricaoValidacao.documentacaoCompleta" title="Resta algum documento obrigatório a ser enviado!"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Outras validações importantes</td>
+                  <td>
+                    <i class="chevron circle down large icon" style="color: darkgreen;" *ngIf="(inscricaoValidacao.cpfValido && inscricaoValidacao.matriculaAtualizada)" title="Informações validadas!"></i>
+                    <i class="exclamation large icon" style="color: darkred;" *ngIf="!(inscricaoValidacao.cpfValido && inscricaoValidacao.matriculaAtualizada)" title="CPF inválido ou matrícula não atualizada, favor verificar!"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+    
+    </div>
+    </div>
+    </form>
+  </div>
+  
+  <div class="ui segment">
+    <div class="row">
+        <div class="customButtonStep">
+          <button class="ui button" type="button" routerLink="../upload-docs">Anterior</button>
+          <button class="ui button blue" type="button" routerLink="/inscricoes" *ngIf="viewBtnIns">Ir para Minhas Inscrições</button>  
+          <button 
+            class="ui button green" 
+            type="button" 
+            (click)="submit()"
+            *ngIf="!submited"
+            [disabled]="!(inscricaoValidacao.documentacaoCompleta && inscricaoValidacao.dadosAcadCompleto
+                          && inscricaoValidacao.infoFinanceiroCompleto && inscricaoValidacao.dadosSaudeDeficienciaCompleto
+                          && inscricaoValidacao.dadosOutrosAuxiliosCompleto && inscricaoValidacao.dadosSocioEconCompleto
+                          && inscricaoValidacao.dadosMoradiaTransporteCompleto && inscricaoValidacao.dadosContatosLogradouroCompleto
+                          && inscricaoValidacao.dadosPessoaisCompleto && inscricaoValidacao.cpfValido && inscricaoValidacao.matriculaAtualizada) 
+                          || sendingEmail">
+              
+              {{sendingEmail ? 'Aguarde...' : 'Submeter Inscrição'}}
+          </button>
+        </div>
+      </div>
+  </div>
+  </div>

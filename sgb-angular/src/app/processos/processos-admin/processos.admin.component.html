@@ -1,0 +1,114 @@
+<div class="ui container containerCustom">
+
+  <h1 class="ui header">
+        Processos
+  </h1>
+      <div class="ui divider"></div>
+
+      <div class="ui grid">
+        <div class="row">
+
+            <div class="left floated left aligned eight wide column">
+              <a routerLink="/processos" *ngIf="sessaoService.verificarPermissao('add_processo')" 
+                >
+                <div class="ui right floated small primary labeled icon button pagination menu">
+                    <i class="cogs icon"></i> Acompanhar Processos
+                </div>                
+              </a>
+            </div>
+
+            <div class="right floated right aligned six wide column">
+              <button class="ui right floated small primary labeled icon button pagination menu"
+                (click)="exportDialog()">
+                <i class="file icon"></i> Exportar
+              </button>
+              <button routerLink="/processos/admin/add" *ngIf="sessaoService.verificarPermissao('add_processo')" 
+                  (click)="setListTempProcessos()" class="ui right floated small primary labeled icon button pagination menu">
+                  <i class="user icon"></i> Novo 
+              </button>
+            </div>
+
+        </div>
+        <div class="row">
+        <div class="ui column sixtenn wide">
+            <table class="ui sortable compact celled definition blue table">
+                <thead class="full-width">
+                  <tr>
+                    <th></th>
+                    <th>Beneficio</th>
+                    <th>Data Abertura</th>
+                    <th>Data Encerramento</th>
+                    <th>Situação do Processo</th>
+                    <th>Vagas</th>
+                    <th>Ano</th>
+                    <th>Unificado?</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let proc of listaProcessos">
+                    <td class="collapsing">
+                      <div class="ui toggle checkbox blue" *ngIf="sessaoService.verificarPermissao('edit_processo')">
+                        <input type="checkbox" [(ngModel)]="proc.ativo" name="ativo" 
+                        (ngModelChange)="onStatusChange(proc)" (change)="onStatusChange(proc)"> 
+                        <label></label>
+                      </div>
+                    </td>
+                    <td>{{proc.beneficio.nome}}</td>
+                    <td>{{proc.dataAbertura | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                    <td>{{proc.dataEncerramento | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                    <td>{{proc.statusProcesso}}</td>
+                    <td>{{proc.vagas}}</td>
+                    <td>{{proc.ano}}</td> 
+                    <td>{{proc.unificado ? 'SIM' : 'NÃO'}}</td> 
+                    <td class="collapsing">
+                        <div class="ui icon buttons">
+                            <button routerLink="/processos/admin/{{proc.id}}/edit" class="ui button" *ngIf="sessaoService.verificarPermissao('edit_processo')">
+                              <i class="edit icon"></i>
+                            </button>
+                            <button class="ui button" routerLink="/processos/admin/{{proc.id}}" *ngIf="sessaoService.verificarPermissao('edit_processo')">
+                              <i class="eye icon"></i>
+                            </button>
+                            <button class="ui button" routerLink="/processos/{{proc.id}}/inscricoes-recebidas" *ngIf="sessaoService.verificarPermissao('edit_processo')">
+                              <i class="pencil alternate icon"></i>
+                            </button>                            
+                        </div>
+                    </td>
+                  </tr>
+                  
+                  
+
+                  
+                </tbody>
+                <tfoot class="full-width">
+                  <tr>
+                    <th></th>
+                    <th colspan="5">
+
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+        </div>
+        </div>
+      </div>
+
+</div>
+
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Confirmação de Exclusão
+    </div>
+    <div class="content">
+      <div class="description">
+        Uma exclusão acidental pode ser desagradável. Por favor tome essa ação com cuidado.
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui button default">Não</div>
+      <div class="ui small button red">Confirmar Exclusão</div>
+    </div>
+  </div>
+

@@ -1,0 +1,146 @@
+<div class="ui piled segments">  
+  <div class="ui segment">
+
+
+<form name="formInscricaoDadosPessoais">
+<div class="ui grid">
+<div class="row">
+  <div class="sixteen wide column customHeader">
+    <div class="ui header">Informe outros Auxílios e/ou Bolsas que ja possui</div>
+    <div class="ui divider"></div>
+  </div>
+
+  <div class="sixteen wide column">
+      <div class="ui toggle checkbox formFieldCustom">
+        <input type="checkbox" name="possuiAcompPsiPrae"  
+          [(ngModel)]="inscricao.acompPsiPrae"
+          [disabled]="inscricaoValidacao.dadosOutrosAuxiliosCompleto">
+        <label>Possuo Acompanhamento Psicológico (NAE)</label>
+      </div>
+  </div>
+
+  <div class="sixteen wide column">
+      <div class="ui toggle checkbox formFieldCustom">
+        <input type="checkbox" name="possuiAuxEmergPrae"
+          [(ngModel)]="inscricao.auxEmergPrae"
+          [disabled]="(inscricaoValidacao.dadosOutrosAuxiliosCompleto || auxEmergencialExist)">
+        <label>Possuo Auxílio Emergencial (NAE)
+          <i class="info circle large icon custom-icon" title="Encontrado registro de concessão para esse Auxílio/Bolsa, vinculado ao aluno!" *ngIf="auxEmergencialExist"></i>
+        </label>
+      </div>
+  </div>
+
+  <div class="sixteen wide column">
+      <div class="ui toggle checkbox formFieldCustom">
+        <input type="checkbox" name="possuiAuxMoradiaPrae"
+          [(ngModel)]="inscricao.auxMoradiaPrae"
+          [disabled]="(inscricaoValidacao.dadosOutrosAuxiliosCompleto || auxMoradiaExist)">
+        <label>Possuo Auxílio Moradia (NAE)
+          <i class="info circle large icon custom-icon" title="Encontrado registro de concessão para esse Auxílio/Bolsa, vinculado ao aluno!" *ngIf="auxMoradiaExist"></i>
+        </label>
+      </div>
+  </div>
+
+  <div class="sixteen wide column">
+      <div class="ui toggle checkbox formFieldCustom">
+        <input type="checkbox" name="possuiBolsaIniAcadPrae"
+          [(ngModel)]="inscricao.bolsaIniAcadPrae"
+          [disabled]="inscricaoValidacao.dadosOutrosAuxiliosCompleto || auxBiaExist">
+        <label>Possuo Bolsa de Iniciação Acadêmica (PBIA)
+          <i class="info circle large icon custom-icon" title="Encontrado registro de concessão para esse Auxílio/Bolsa, vinculado ao aluno!" *ngIf="auxBiaExist"></i>
+        </label>
+      </div>
+  </div>
+
+  <div class="sixteen wide column">
+      <div class="ui toggle checkbox formFieldCustom">
+        <input type="checkbox" name="possuiBolsaIsencaoRUPrae"
+          [(ngModel)]="inscricao.isencaoRUPrae"
+          [disabled]="inscricaoValidacao.dadosOutrosAuxiliosCompleto || isencaoRuExist">
+        <label>Possuo Isenção do Restaurante Universitário
+          <i class="info circle large icon custom-icon" title="Encontrado registro de concessão para esse Auxílio/Bolsa, vinculado ao aluno!" *ngIf="isencaoRuExist"></i>
+        </label>
+      </div>
+  </div>
+
+  <div class="sixteen wide column">
+      <div class="ui toggle checkbox formFieldCustom">
+        <input type="checkbox" name="possuiAuxCrechePrae"
+          [(ngModel)]="inscricao.auxCrechePrae"
+          [disabled]="inscricaoValidacao.dadosOutrosAuxiliosCompleto">
+        <label>Possuo Auxílio Creche (PRAE)</label>
+      </div>
+  </div>
+
+
+  <div class="sixteen wide column">
+      <div class="ui toggle checkbox blue formFieldCustom">
+        <input type="checkbox" name="alunoBolsista"
+          [(ngModel)]="inscricao.bolsista"
+          [disabled]="inscricaoValidacao.dadosOutrosAuxiliosCompleto">
+        <label>Possui outro tipo de Bolsa - com recursos pagos pela rede estadual, municipal ou outro tipo?</label>
+      </div>
+  </div>
+
+  <div class="ten wide column" *ngIf="inscricao.bolsista">
+      <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Descreva qual Bolsa..." 
+            name="tipoBolsa" [(ngModel)]="inscricao.tipoBolsa" 
+            maxlength="50" required
+            [readonly]="inscricaoValidacao.dadosOutrosAuxiliosCompleto">
+      </mat-form-field>
+    </div>
+
+    <div class="six wide column" *ngIf="inscricao.bolsista">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Valor da Bolsa" 
+              name="valorOutraBolsa" [(ngModel)]="inscricao.valorOutraBolsa" 
+              maxlength="10" required
+              [readonly]="inscricaoValidacao.dadosOutrosAuxiliosCompleto">
+        </mat-form-field>
+      </div>
+</div>
+</div>
+</form>
+</div>
+
+<div class="ui segment">
+  <div class="row">
+      <div class="customButtonStep">
+          <div class="ui toggle checkbox blue formFieldCustom">
+            <input type="checkbox" tabindex="0" name="termoInscricao" 
+              [(ngModel)]="inscricao.declaracaoVeracidade"
+              [disabled]="inscricaoValidacao.dadosOutrosAuxiliosCompleto">
+          <label>
+            Declaro, sob as penas da Lei, que os dados informados nestes formulários (componentes da inscrição) são verdadeiros 
+            e que conheço e aceito todas as regras pertinentes ao processo consignadas no(s) Edital(is) de Abertura de Inscrições.
+          </label>
+        </div>
+
+        <button class="ui button" type="button" 
+          routerLink="../info-saude"
+          *ngIf="!isModalForm">
+          Anterior
+        </button>  
+        
+        <button class="ui button blue" type="button"
+          (click)="add()" 
+          (dblclick)="dbClick()"
+          *ngIf="!(inscricaoValidacao.dadosOutrosAuxiliosCompleto) && !isModalForm && isUpdate"
+          [disabled]="(!(inscricao.declaracaoVeracidade) || fetching)">
+           {{fetching ? 'Processando...' : 'Salvar e Continuar'}}
+        </button>
+        
+        <button routerLink="../info-acad" class="ui button"
+          *ngIf="(inscricaoValidacao.dadosOutrosAuxiliosCompleto) && !isModalForm">
+          Avançar
+        </button>
+
+        <button class="ui labeled right floated icon button pagination"
+          (click)="editEnable()" *ngIf="(inscricaoValidacao.dadosOutrosAuxiliosCompleto)">
+          <i class="write icon"></i>Alterar Informações
+        </button>
+      </div>
+    </div>
+</div>
+</div>

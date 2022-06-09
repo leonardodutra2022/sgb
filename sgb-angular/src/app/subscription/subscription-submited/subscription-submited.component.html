@@ -1,0 +1,83 @@
+<div class="ui container containerCustom">
+
+  <h2 class="ui header">
+    Inscrições Aplicadas
+    <div class="sub header">{{beneficio.nome}}.</div>
+  </h2>
+      <div class="ui divider"></div>
+
+      <div class="ui grid">
+        <div class="row">
+            <div class="right floated right aligned six wide column">
+                <button routerLink="/processos/admin" 
+                 class="ui right floated small primary labeled icon button pagination menu">
+                  <i class="reply icon"></i>Retornar 
+              </button>
+              <button class="ui right floated small primary labeled icon button pagination menu"
+                (click)="exportDialog()">
+                <i class="file icon"></i> Exportar
+              </button>
+            </div>
+
+        </div>
+        <div class="row">
+        <div class="ui column sixtenn wide">
+            <table class="ui selectable sortable compact celled definition blue table">
+                <thead class="full-width">
+                  <tr>
+                    <th>#</th>
+                    <th>Código Aluno</th>
+                    <th>Nome Completo</th>
+                    <th>CPF</th>
+                    <th>Matrícula</th>
+                    <th>Curso (atual)</th>
+                    <th>Resultado Parcial</th>
+                    <th>Resultado Final</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let aluno of listaInscricoesCustom" class="{{aluno.situacaoFinalInscricao=='DEFERIDO' ? 'positive' : 'negative'}}">
+                    <td>{{aluno.i}}</td>
+                    <td>{{aluno.alunoId}}</td>
+                    <td>{{aluno.nomeCompleto}}</td>
+                    <td>{{aluno.cpf}}</td>
+                    <td>{{aluno.matricula}}</td>
+                    <td>{{aluno.cursoAtual}}</td>
+                    <td>{{aluno.situacaoInscricao}}</td>
+                    <td>{{aluno.situacaoFinalInscricao}}</td>
+                    <td class="collapsing">
+                      <div class="ui icon buttons">
+                          <button class="ui button" 
+                              *ngIf="aluno.existInscricao"
+                              (click)="pageInscricao(aluno.inscricaoId)">
+                              <i class="eye icon"></i>
+                            </button>
+
+                            <button class="ui button" 
+                              *ngIf="aluno.existInscricao"
+                              (click)="pageInscricaoValidacao(aluno.inscricaoId)">
+                              <i class="tasks icon"></i>
+                            </button>
+                            
+                        </div>
+                      
+                      <i class="envelope outline icon custom content" title="Contem Recurso(s) Interposto(s)" *ngIf="aluno.existRecurso"></i>
+
+                    </td>
+                  </tr>
+                  
+                </tbody>
+                <tfoot class="full-width">
+                  <tr>
+                    <th></th>
+                    <th colspan="5">
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+           </div>
+        </div>
+      </div>
+</div>

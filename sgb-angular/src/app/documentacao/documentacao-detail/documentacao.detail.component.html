@@ -1,0 +1,89 @@
+<div class="ui container containerCustom">
+    <div class="header">
+      <h1 class="ui header">
+        Detalhes do Documento
+      </h1>
+    </div>
+  
+    <div class="ui divider"></div>
+  
+    <div class="ui two column grid">
+        <div class="row">  <div class="right floated right aligned column">
+            <a routerLink="/documentacao">
+              <div class="ui right floated small primary labeled icon button pagination menu">
+                  <i class="list alternate icon"></i> Listar Documentos
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui raised segment">
+            <div class="ui header">Informações Gerais</div>
+            <a class="ui orange ribbon label">Dados do Documento</a>          
+              <div class="ui content contentCustom">
+  
+                  <div class="ui items">
+                    <div class="item">
+                      <div class="content customContent">
+                          <h5 class="ui header">Código</h5>
+                          <div class="description">
+                            <p>{{doc.id}}</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <h5 class="ui header">Obrigatório?</h5>
+                            <div class="description">
+                              <p>{{doc.obrigatorio ? "Sim" : "Não"}}</p>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="item">
+                          <div class="content">
+                              <h5 class="ui header">Tipo de documento</h5>
+                              <div class="description">
+                                <p>{{doc.documentoTipo}}</p>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="item">
+                          <div class="content">
+                              <h5 class="ui header">Descrição</h5>
+                              <div class="description">
+                                <p>{{doc.descricao}}</p>
+                              </div>
+                          </div>
+                        </div>
+                  </div>              
+  
+              </div>
+          </div>
+        </div>
+  
+
+        <div class="column">
+        <div class="ui raised segment">
+          <div class="ui header">Benefícios Vinculados</div>
+          <a class="ui orange ribbon label">Benefícios</a>          
+            <div class="ui content contentCustom">
+
+                <div class="ui items">
+                  <div class="item" *ngFor="let b of beneficios">
+                    <div class="content customContent">
+                        <h5 class="ui header">{{b.nome}}</h5>
+                        <div class="description">
+                          <p>Código: {{b.id}} [{{b.tipoBeneficio}}]</p>
+                        </div>
+                    </div>
+                  </div>
+                </div>              
+
+            </div>
+        </div>
+      </div>
+
+        
+      </div>
+  
+  </div>

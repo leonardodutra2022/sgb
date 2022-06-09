@@ -1,0 +1,127 @@
+<div class="ui container containerCustom">
+  <div class="ui header">
+    <h2 class="ui header">
+      Documentação
+    </h2>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <form >
+    <div class="ui grid">  
+
+      <div class="row">
+        <div class="two wide column">
+          <mat-form-field class="formLoginFieldCustom">
+            <mat-select placeholder="Tipo de Documento" [(ngModel)]="selecaoDoc" 
+              name="docTipoSelect" (ngModelChange)="changeDocTipo($event)">
+              <mat-option *ngFor="let doc of listDocsTipo" [value]="doc.abreviacao">
+                {{doc.titulo}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="four wide column">
+          <mat-form-field class="formLoginFieldCustom">
+            <mat-select placeholder="Categoria" [(ngModel)]="selecaoCategoria" 
+              name="docCategoriaSelect" (ngModelChange)="changeDocCategoria($event)">
+              <mat-option *ngFor="let doc of listDocsCategorias" [value]="doc.categoria">
+                {{doc.descricao}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="four wide column" *ngIf="!isDocGeral">
+            <mat-form-field class="formLoginFieldCustom">
+              <mat-select placeholder="Vincular Auxílio(s)/Bolsa(s)" 
+                name="beneficioSelect" multiple
+                [(ngModel)]="selecaoBeneficios"
+                (ngModelChange)="changeBeneficio($event)">
+                <mat-option *ngFor="let beneficios of listBeneficios" [value]="beneficios">
+                  {{beneficios.nome}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="six wide column" *ngIf="!isDocGeral">
+          <h4 class="ui header">
+            <div class="sub header">Auxílio(s)/Bolsa(s) Vinculado(a).</div>
+          </h4>
+          <span *ngFor="let b of selecaoBeneficios">{{b.nome}},</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="four wide column">
+          <mat-form-field class="formLoginFieldCustom">
+            <mat-select placeholder="Grupo de Classificação" [(ngModel)]="selecaoGrupo" 
+              name="docGrupoSelect" (ngModelChange)="changeDocGrupo($event)">
+              <mat-option *ngFor="let docGrupo of listGrupoDocs" [value]="docGrupo.grupo">
+                {{docGrupo.descricao}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+          <div class="four wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input matInput placeholder="Documento" 
+                    name="documento" required [(ngModel)]="doc.documento"
+                    (blur)="checkDoc()" (keyup)="checkDoc()">
+              </mat-form-field>
+          </div>
+
+          <div class="six wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input matInput placeholder="Descrição" 
+                    name="descricao" required [(ngModel)]="doc.descricao">
+              </mat-form-field>
+            </div>
+
+            <div class="two wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input matInput placeholder="Sequência CheckList" 
+                    name="seq" [(ngModel)]="doc.sequencia" type="number">
+              </mat-form-field>
+            </div>
+
+      </div>
+
+      <div class="row">
+          <div class="eight wide column">
+              Documento obrigatório?
+              <td class="collapsing">
+                <div class="ui toggle checkbox blue">
+                  <input type="checkbox" [(ngModel)]="doc.obrigatorio" name="obrigatorio" 
+                  (ngModelChange)="onStatusChangeObrigatorio(doc)" 
+                    (change)="onStatusChangeObrigatorio(doc)"> 
+                  <label></label>
+                </div>
+              </td>
+            </div>
+      </div>
+
+      <div class="row">
+          <div class="eight wide column">
+              <button type="button" class="ui button blue" (click)="add()" *ngIf="!idTemp" 
+              [disabled]="!(docValid) || sessaoService.verificarPermissao('add_usuario')">
+                Cadastrar
+              </button>
+
+              <button type="button" class="ui button blue" (click)="save()" *ngIf="idTemp" 
+              [disabled]="(!(selecaoDoc && doc.documento && doc.descricao) || 
+                sessaoService.verificarPermissao('edit_usuario'))">
+                Salvar
+              </button>
+              <button class="ui button" routerLink="/documentacao">Cancelar</button>
+
+          </div>
+      </div>
+
+      </div>
+</form>
+
+</div>

@@ -1,0 +1,414 @@
+<div class="ui container containerCustom">
+
+  <h1 class="ui header">
+    Frequências BIA
+  </h1>
+  <div class="ui divider"></div>
+
+  <div class="ui grid">
+    <div class="row">
+
+      <div class="left floated left aligned four wide column">
+
+        <div class="ui buttons">
+          <button routerLink="/frequencia/admin/projeto/add" *ngIf="sessaoService.verificarPermissao('add_frequencia')"
+            (click)="setListTempfrequencias()" class="ui left floated small primary labeled icon button pagination menu">
+            <i class="book icon"></i> Novo Projeto
+          </button>
+
+          <button *ngIf="sessaoService.verificarPermissao('delete_frequencia')"
+            (click)="exportar()" class="ui left floated small primary labeled icon button teal pagination menu">
+            <i class="file pdf icon"></i> Exportar PDFs, CSV, XLSX
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      {{resultsSearch.total > 0 ? 'Resultados encontratos': ''}}
+    </div>
+
+
+    <div class="row">
+      <div class="ui column twelve wide">
+        <table class="ui sortable compact celled definition blue table">
+          <thead class="full-width">
+            <tr>
+              <th></th>
+              <th>Projeto</th>
+              <th>Carga Horária</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let proj of listaProjetos">
+              <td class="collapsing">
+                <div class="ui icon buttons">
+                  <button class="ui button" *ngIf="sessaoService.verificarPermissao('edit_frequencia')"
+                    title="Exibir Detalhamento" (click)="detail(proj)">
+                    <i class="plus circle icon"></i>
+                  </button>
+                </div>
+              </td>
+              <td>
+                <span title="{{proj.descricao}}">{{proj.titulo}}</span>
+              </td>
+              <td>
+                {{proj.totalHoras}}
+              </td>
+
+              <td>{{proj.status == 'ASSINATURA_PENDENTE' ? 'ANDAMENTO' : proj.status}}</td>
+              <td class="collapsing">
+                <div class="ui icon buttons">
+                  <button routerLink="/frequencia/admin/projeto/{{proj.id}}/edit" class="ui button"
+                    *ngIf="sessaoService.verificarPermissao('edit_frequencia')" title="Alterar Registro">
+                    <i class="edit icon" data-title="Alterar Parâmetros da Frequência"></i>
+                  </button>
+                  <button class="ui button" *ngIf="sessaoService.verificarPermissao('edit_frequencia')"
+                    title="Listar Alunos Vinculados ao Projeto" (click)="listDialog(proj)">
+                    <i class="users icon"></i>
+                  </button>
+                  <button class="ui button" title="Visualizar Lista de Frequências Mensais deste Projeto"
+                    *ngIf="sessaoService.verificarPermissao('edit_frequencia')" (click)="listDialogFrequencias(proj)">
+                    <i class="list alternate outline icon"></i>
+                  </button>
+                  <button class="ui button" *ngIf="sessaoService.verificarPermissao('edit_user')"
+                    title="Reenviar e-mail de acesso para os membros do projeto" (click)="resendEmail(proj)">
+                    <i class="mail icon"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+          <tfoot class="full-width">
+            <tr *ngIf="viewDetail">
+              <th colspan="12">
+                <div>
+                  <!-- detalhamento.............................. -->
+                  <i class="close icon" (click)="closeDetail('geral')" style="cursor: pointer;"></i>
+                  <h2 class="ui header">
+                    {{projetoView.titulo}}
+                    <div class="sub header">{{projetoView.descricao}}</div>
+                  </h2>
+
+                  <h4 class="ui header">
+                    {{projetoView.responsavel.nomeCompleto}} 
+                    <span>
+                      <i class="id card icon" style="cursor: pointer;" (click)="listDialogResponsavel(projetoView.responsavel)"
+                        title="Visualizar/Editar Dados do Responsável">
+                      </i>
+                    </span>
+                    <div class="sub header">Responsável</div>
+                  </h4>
+
+                  <h4 class="ui header">
+                    <span (click)="listDialogFrequencias(projetoView)" style="cursor: pointer;">
+                      {{listaFrequenciasVinculadasTemp.length}} frequências mensais
+                      <i class="list alternate outline icon" style="cursor: pointer;"
+                        title="Visualizar Lista de Frequências Mensais deste Projeto"></i>
+                    </span>
+                    <div class="sub header">Frequências mensais vinculadas a este Projeto (total registros)</div>
+                  </h4>
+
+                  <h4 class="ui header">
+                    <span (click)="listDialog(projetoView)" style="cursor: pointer;">
+                      {{projetoView.aluno.length}} {{projetoView.aluno.length > 1 ? 'alunos' : 'aluno'}}
+                      <i class="list alternate outline icon" style="cursor: pointer;"
+                        title="Visualizar Lista de Alunos"></i>
+                    </span>
+                    <div class="sub header">Total de alunos vinculados ao projeto</div>
+                  </h4>
+
+                  <h4 class="ui header">
+                    <div class="sub header">{{projetoView.observacao}}</div>
+                  </h4>
+
+                </div>
+              </th>
+            </tr>
+
+              <tr *ngIf="projetoPageable.totalPages > 1">
+                <th colspan="5">
+                <div class="ui right floated pagination menu">
+                  <a class="icon item" *ngIf="!projetoPageable.first" (click)="prevPage()">
+                    <i class="left chevron icon"></i>
+                  </a>
+
+                  <a [id]="i" (click)="goPage(i)" *ngFor="let p of [].constructor(projetoPageable.totalPages); let i = index" class="item">{{i + 1}}</a>
+                  
+                  <a class="icon item" *ngIf="!projetoPageable.last" (click)="nextPage()">
+                    <i class="right chevron icon"></i>
+                  </a>
+                </div>
+              </th>
+            </tr>
+
+          </tfoot>
+        </table>
+      </div>
+
+
+      <div class="ui column four wide ">
+        <h3 class="ui header">
+          Filtros <i class="filter icon" style="color: #023e70;"></i>
+        </h3>
+        <div class="ui divider"></div>
+
+        <div class="left floated left aligned three wide column filter-custom">
+          <div class="form-field-custom">
+            <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Projeto" name="projetos" [formControl]="projetoQueryField" maxlength="100"
+                [matAutocomplete]="projeto">
+
+              <mat-autocomplete autoActiveFirstOption #projeto="matAutocomplete">
+                <mat-option *ngFor="let proj of projetoFilteredOptions | async" [value]="proj.titulo"
+                  (click)="setProjetoFilter(proj)">
+                  {{proj.titulo}}
+                </mat-option>
+              </mat-autocomplete>
+
+            </mat-form-field>
+
+            <div class="ui icon buttons btn-custom">
+              <button class="ui button teal" title="Novo Projeto" (click)="openProjeto()"
+                *ngIf="sessaoService.verificarPermissao('add_projeto')">
+                <i class="plus circle icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="projetoSearch.viewTag">
+            <a class="ui teal image label">
+              {{projetoSearch.query}}
+              <div class="detail">PROJETO</div>
+
+            </a>
+
+            <span>
+              <i class="close icon" (click)="closeDetail('projeto')" style="cursor: pointer;"></i>
+            </span>
+
+            <div class="row">
+              <div class="ui column twelve wide">
+                <table class="ui sortable compact celled definition blue table">
+                  <thead class="full-width">
+                    <tr>
+                      <th></th>
+                      <th>Projeto</th>
+                      <th>Carga Horária</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let proj of listaProjetos">
+                      <td class="collapsing">
+                        <div class="ui icon buttons">
+                          <button class="ui button" *ngIf="sessaoService.verificarPermissao('edit_frequencia')"
+                            title="Exibir Detalhamento" (click)="detail(proj)">
+                            <i class="plus circle icon"></i>
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <span title="{{proj.descricao}}">{{proj.titulo}}</span>
+                      </td>
+                      <td>
+                        {{proj.totalHoras}}
+                      </td>
+
+                      <td>{{proj.status == 'ASSINATURA_PENDENTE' ? 'ANDAMENTO' : proj.status}}</td>
+                      <td class="collapsing">
+                        <div class="ui icon buttons">
+                          <button routerLink="/frequencia/admin/projeto/{{proj.id}}/edit" class="ui button"
+                            *ngIf="sessaoService.verificarPermissao('edit_frequencia')" title="Alterar Registro">
+                            <i class="edit icon" data-title="Alterar Parâmetros da Frequência"></i>
+                          </button>
+                          <button class="ui button" *ngIf="sessaoService.verificarPermissao('edit_frequencia')"
+                            title="Listar Alunos Vinculados ao Projeto" (click)="listDialog(proj)">
+                            <i class="users icon"></i>
+                          </button>
+                          <button class="ui button" title="Visualizar Lista de Frequências Mensais deste Projeto"
+                            *ngIf="sessaoService.verificarPermissao('edit_frequencia')"
+                            (click)="listDialogFrequencias(proj)">
+                            <i class="list alternate outline icon"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+
+
+                  </tbody>
+                  <tfoot class="full-width">
+                    <tr>
+                      <th colspan="12">
+                        <div *ngIf="viewDetail">
+                          <!-- detalhamento.............................. -->
+                          <i class="close icon" (click)="closeDetail('geral')" style="cursor: pointer;"></i>
+                          <h2 class="ui header">
+                            {{projetoView.titulo}}
+                            <div class="sub header">{{projetoView.descricao}}</div>
+                          </h2>
+
+                          <h4 class="ui header">
+                            {{projetoView.responsavel.nomeCompleto}}
+                            <div class="sub header">Responsável</div>
+                          </h4>
+
+                          <h4 class="ui header">
+                            <span (click)="listDialogFrequencias(projetoView)" style="cursor: pointer;">
+                              {{listaFrequenciasVinculadasTemp.length}} frequências mensais
+                              <i class="list alternate outline icon" style="cursor: pointer;"
+                                title="Visualizar Lista de Frequências Mensais deste Projeto"></i>
+                            </span>
+                            <div class="sub header">Frequências mensais vinculadas a este Projeto (total registros)
+                            </div>
+                          </h4>
+
+                          <h4 class="ui header">
+                            <span (click)="listDialog(projetoView)" style="cursor: pointer;">
+                              {{projetoView.aluno.length}} {{projetoView.aluno.length > 1 ? 'alunos' : 'aluno'}}
+                              <i class="list alternate outline icon" style="cursor: pointer;"
+                                title="Visualizar Lista de Alunos"></i>
+                            </span>
+                            <div class="sub header">Total de alunos vinculados ao projeto</div>
+                          </h4>
+
+                          <h4 class="ui header">
+                            <div class="sub header">{{projetoView.observacao}}</div>
+                          </h4>
+
+                        </div>
+                      </th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="left floated left aligned three wide column filter-custom">
+
+
+          <!-- Ao refatorar a parte de periodo onde será na verdade a frequência,
+                utilizar esse trecho de código que será útil -->
+
+          <!-- <div class="form-field-custom">
+                  <mat-form-field class="formFieldCustom">
+                      <input matInput placeholder="Período"
+                        name="periodos"
+                        [formControl]="periodoQueryField"
+                        maxlength="25"
+                        [matAutocomplete]="periodo">
+
+                        <mat-autocomplete autoActiveFirstOption #periodo="matAutocomplete">
+                          <mat-option *ngFor="let per of periodoFilteredOptions | async" [value]="per.periodoReferencia" (click)="setPeriodoFilter(per)">
+                              {{per.periodoReferencia}}
+                          </mat-option>
+                        </mat-autocomplete>
+
+                  </mat-form-field>
+
+                  <div class="ui icon buttons btn-custom">
+                    <button class="ui button teal"
+                      title="Novo Período"
+                      (click)="openPeriodo()"
+                      *ngIf="sessaoService.verificarPermissao('add_periodo')">
+                      <i class="plus circle icon"></i>
+                    </button>
+                  </div>
+               </div> -->
+
+          <div *ngIf="periodoSearch.viewTag">
+            <a class="ui teal image label">
+              {{periodoSearch.query}}
+              <div class="detail">PERÍODO</div>
+            </a>
+
+            <span>
+              <i class="close icon" (click)="closeDetail('periodo')" style="cursor: pointer;"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="left floated left aligned three wide column filter-custom">
+          <div class="form-field-custom">
+            <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Responsável por nome ou siape" name="responsaveis"
+                [formControl]="responsavelQueryField" maxlength="40" [matAutocomplete]="responsavel">
+
+              <mat-autocomplete autoActiveFirstOption #responsavel="matAutocomplete">
+                <mat-option *ngFor="let res of responsavelFilteredOptions | async" [value]="res.nomeCompleto"
+                  (click)="setResponsavelFilter(res)">
+                  {{res.nomeCompleto}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="ui icon buttons btn-custom">
+              <button class="ui button teal" title="Novo Responsável" (click)="openResponsavel()"
+                *ngIf="sessaoService.verificarPermissao('add_user')">
+                <i class="plus circle icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="responsavelSearch.viewTag">
+            <a class="ui teal image label">
+              {{responsavelSearch.query}}
+              <div class="detail">RESPONSÁVEL</div>
+            </a>
+
+            <span>
+              <i class="close icon" (click)="closeDetail('responsavel')" style="cursor: pointer;"></i>
+            </span>
+          </div>
+
+        </div>
+
+        <div class="left floated left aligned three wide column filter-custom">
+          <div class="form-field-custom">
+            <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Aluno por nome, matricula ou cpf" name="alunos"
+                [formControl]="alunoQueryField" maxlength="40" [matAutocomplete]="aluno">
+
+              <mat-autocomplete autoActiveFirstOption #aluno="matAutocomplete">
+                <mat-option *ngFor="let alu of alunoFilteredOptions | async" [value]="alu.nomeCompleto"
+                  (click)="setAlunoFilter(alu)">
+                  {{alu.nomeCompleto}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="ui icon buttons btn-custom">
+              <button class="ui button teal" title="Novo Aluno" (click)="openAluno()"
+                *ngIf="sessaoService.verificarPermissao('add_aluno')">
+                <i class="plus circle icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="alunoSearch.viewTag">
+            <a class="ui teal image label">
+              {{alunoSearch.query}}
+              <div class="detail">ALUNO</div>
+            </a>
+
+            <span>
+              <i class="close icon" (click)="closeDetail('aluno')" style="cursor: pointer;"></i>
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>

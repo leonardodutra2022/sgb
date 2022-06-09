@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Confirmação de Exclusão </h2>
+<mat-dialog-content class="mat-typography">
+<div class="content customModal">
+
+  <h3>Se você confirmar o INDEFERIMENTO a CONCESSÃO já existente para 
+    o aluno irá ser apagada, no entanto, para reincluir um registro de concessão, 
+    basta DEFERIR a inscrição para este aluno!</h3>
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="ui button" mat-dialog-close>Cancelar</button>
+  <button class="ui button red" cdkFocusInitial 
+  [mat-dialog-close]="true">Confirmar Exclusão
+  </button>
+</mat-dialog-actions>

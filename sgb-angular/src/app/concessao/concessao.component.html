@@ -1,0 +1,74 @@
+<div class="ui container containerCustom">
+
+    <h1 class="ui header">
+      Concessões
+    </h1>
+        <div class="ui divider"></div>
+  
+        <div class="ui grid">
+          <div class="row">
+              <div class="right floated right aligned six wide column">
+                  <button routerLink="add/" *ngIf="sessaoService.verificarPermissao('add_concessao')" 
+                    class="ui right floated small primary labeled icon button pagination menu">
+                  <i class="file alternate outline icon"></i> Novo 
+                </button>
+                <button class="ui right floated small primary labeled icon button pagination menu"
+                  (click)="exportDialog()">
+                  <i class="file icon"></i> Exportar
+                </button>
+              </div>
+          </div>
+          <div class="row">
+          <div class="ui column sixtenn wide">
+              <table class="ui sortable compact celled definition blue table">
+                  <thead class="full-width">
+                    <tr>
+                      <th>Status da Concessão</th>
+                      <th>Data Concessão</th>
+                      <th>Data Final da Concessão</th>
+                      <th>Aluno</th>
+                      <th>Auxílio/Bolsa</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let concessao of listaConcessao">
+                      <td>{{concessao.concessaoStatus}}</td>
+                      <td>{{concessao.dataConcessao | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                      <td>{{concessao.dataConcessaoFinal | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                      <td>{{concessao.aluno.nomeCompleto}}</td>
+                      <td>{{concessao.beneficio.nome}}</td>
+                      <td class="collapsing">
+                        <div class="ui icon buttons">
+                          <button routerLink="{{concessao.id}}/edit" class="ui button" *ngIf="sessaoService.verificarPermissao('edit_concessao')">
+                            <i class="edit icon"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+          </div>
+          </div>
+        </div>
+  
+  </div>
+  
+  <div class="ui modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Confirmação de Exclusão
+      </div>
+      <div class="content">
+        <div class="description">
+          Uma exclusão acidental pode ser desagradável. Por favor tome essa ação com cuidado.
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui button default">Não</div>
+        <div class="ui small button red">Confirmar Exclusão</div>
+      </div>
+    </div>
+  
+  

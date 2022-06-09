@@ -1,0 +1,48 @@
+<h3 class="ui header">
+  Recuperar Dados de Acesso
+  <div class="sub header">Use seu e-mail informado anteriormente no cadastro.</div>
+</h3>
+
+<h4>Caso seja encontrado o e-mail informado, você receberá uma notificação com os dados de acesso! Verifique caixa de spam também!</h4>
+
+<div class="ui grid">
+  <div class="row">
+    <div class="sixteen wide column">
+      <mat-form-field class="formLoginFieldCustom">
+        <input matInput placeholder="Informe seu e-mail" 
+          name="email" required
+          [(ngModel)]="email">
+      </mat-form-field>
+    </div>
+  </div>
+
+<div class="row" *ngIf="verifyEmail">
+  <div class="sixteen wide column">
+    <div class="ui info message">
+      <div class="header">
+        Verifique sua caixa de e-mail!
+      </div>
+      <ul class="list">
+        <li>Se seu e-mail fizer parte do cadastro, então receberá seus dados de acesso.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="eight wide column">
+
+    <mat-dialog-actions>
+      <button class="ui blue button" 
+        *ngIf="!verifyEmail"
+        (click)="search()" cdkFocusInitial
+        [disabled]="sending">
+        {{sending ? 'Aguarde...' : 'Encontrar cadastro!'}}
+      </button>
+
+      <button class="ui button" mat-dialog-close *ngIf="verifyEmail">Fechar</button>
+    </mat-dialog-actions>
+
+  </div>
+</div>
+</div>

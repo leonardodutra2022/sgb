@@ -1,0 +1,35 @@
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.enfatizar {
+  font-weight: bold;
+}
+
+.tableCustom {
+  width: 100%;
+}
+
+.btn-custom {
+  margin: 5% !important;
+}
+
+.segment-custom {
+  background-color: #f1f1f1;
+}
+
+.segment-pendencia-titulo {
+  background-color: #ffc7d1;
+  border: 1px #ccaaaa solid !important;
+}
+
+.segment-pendencia {
+  background-color: #ffe8e8;
+  border: 1px #ccaaaa solid !important;
+}

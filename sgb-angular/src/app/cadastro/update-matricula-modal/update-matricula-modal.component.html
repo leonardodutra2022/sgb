@@ -1,0 +1,44 @@
+<h2 mat-dialog-title><i class="write icon"></i> Atualização da Matrícula</h2>
+<mat-dialog-content class="mat-typography">
+<div class="content customModal">
+
+  <h3>Matrícula Atual: <b>{{matriculaAtual}}</b></h3>
+
+  <div class="ui grid">
+    <div class="row">
+      <div class="sixteen wide column">
+        <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Nova Matrícula" 
+              name="matriculaNova" [(ngModel)]="matriculaNova" 
+              maxlength="15">
+          </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="sixteen wide column">
+        <button class="ui button blue" type="button" 
+        (click)="atualizar()" 
+        [disabled]="!(matriculaNova)">
+          Atualizar Matrícula
+      </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="sixteen wide column">
+        <div class="ui warning message">
+          <div class="header">
+            Informe!
+          </div>
+          Após a atualização, o sistema encerrará a sessão atual e você pode entrar novamente, por medida de segurança para as próximas alterações que você fará.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="ui button" cdkFocusInitial 
+  [mat-dialog-close]="true">Fechar
+  </button>
+</mat-dialog-actions>

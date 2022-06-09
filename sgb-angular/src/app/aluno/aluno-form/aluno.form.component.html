@@ -1,0 +1,269 @@
+<div class="ui container containerCustom"> 
+  <div class="ui header">
+    <h2 class="ui header">
+      Aluno
+    </h2>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <form name="formBasicoInfo">
+    <div class="ui grid">  
+
+      <div class="row">
+          <div class="four wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input matInput placeholder="CPF (Apenas números)" 
+                    name="cpf" required maxlength="11" 
+                    (ngModelChange)="changeAluno($event)"
+                    [(ngModel)]="selecaoAluno" [cpfMask]>
+              </mat-form-field>
+            </div>
+
+        <div class="twelve wide column">
+            <mat-form-field class="formLoginFieldCustom">
+                <input matInput placeholder="Nome Completo" 
+                  name="nomeCompleto" required [(ngModel)]="aluno.nomeCompleto">
+            </mat-form-field>
+        </div>
+       
+      </div>  
+    </div>    
+      </form>
+
+
+      <div class="sixteen wide column customHeader">
+        <div class="ui header">Vincular Matrículas e Cursos</div>
+        <div class="ui divider"></div>
+    </div>
+
+
+      <form [formGroup]="grupoAcad">
+      
+      <div formGroupName="acad">
+      <div class="ui grid">
+      
+      <div class="row">
+          <div class="five wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input matInput placeholder="Período Letivo (ex: 2019.1)" maxlength="6" 
+                      name="periodoLetivo"
+                      formControlName="periodoLetivo" [periodoMask]>
+              </mat-form-field>
+          </div>
+
+        <div class="five wide column">
+            <mat-form-field class="formLoginFieldCustom">
+                <input matInput placeholder="Matrícula" maxlength="10"
+                    name="matricula" required 
+                    formControlName="matricula">
+            </mat-form-field>
+        </div>
+
+        <div class="six wide column">
+          <mat-form-field class="formLoginFieldCustom">
+              <mat-select placeholder="Curso"
+                formControlName="curso"
+                name="cursoSelect"
+                >
+              <mat-option *ngFor="let curso of listCursos" 
+                [value]="curso.nome">
+                {{curso.nome}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+        </div>
+      </div>
+     </div>
+    </div>
+
+
+      <div class="ui icon buttons">
+          <button class="ui button blue" (click)="addAlias()" 
+            [disabled]="!grupoAcad.valid" *ngIf="!idTemp">
+            Vincular
+          </button>
+          <button class="ui button blue" (click)="atualizar()" 
+            [disabled]="!grupoAcad.valid" *ngIf="idTemp" >
+            Atualizar
+          </button>
+          <button class="ui button" (click)="resetFormAcad()">
+            Limpar Formulário
+          </button>
+        </div>
+
+        </form>
+
+
+
+          <div class="ui piled segment">
+            <h4 class="ui header">Matrículas e Cursos Vinculados</h4>
+            
+            <div class="ui grid">
+                <div class="row">
+                  <div class="sixteen wide column">
+                    <div class="ui segment">
+                        <div class="row">
+                            <mat-accordion>
+                                <mat-expansion-panel *ngFor="let acad of vinculosAcademicos">
+                                  <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                      {{acad.curso}} / {{acad.periodoLetivo}}
+                                      
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                      Matrícula: {{acad.matricula}}
+                                    </mat-panel-description>
+                                  </mat-expansion-panel-header>
+                              
+                                  <p>Período Letivo: <b>{{acad.periodoLetivo}}</b></p>
+              
+                                  <div class="ui icon buttons">
+                                      <button class="ui button" (click)="edit(acad)">
+                                        <i class="pencil alternate icon"></i>
+                                      </button>
+                                      <button class="ui button" (click)="openDeleteDialog(acad.id)">
+                                        <i class="trash alternate icon"></i>
+                                      </button>
+                                  </div>
+              
+                                </mat-expansion-panel>
+                              </mat-accordion>
+                              
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+
+
+      <div class="sixteen wide column customHeader">
+          <div class="ui header">Vincular Benefícios ou bolsas</div>
+          <div class="ui divider"></div>
+      </div>
+
+
+      <form [formGroup]="grupoBen">
+      
+        <div formGroupName="ben">
+      <div class="ui grid">
+        <div class="row">
+
+          <div class="four wide column" >
+
+            <mat-form-field class="formLoginFieldCustom">
+              <input matInput [matDatepicker]="dataConcessao" placeholder="Data da Concessão" 
+                [(ngModel)]="dataConcessaoEdit" name="dataConcessao" [value]="dataConcessaoEdit"
+                formControlName="dataConcessao">
+              <mat-datepicker-toggle matSuffix [for]="dataConcessao"></mat-datepicker-toggle>
+              <mat-datepicker #dataConcessao></mat-datepicker>
+            </mat-form-field>
+
+        </div>
+        <div class="four wide column">
+
+              <mat-form-field class="formLoginFieldCustom">
+                <input matInput [matDatepicker]="dataConcessaoFinal" placeholder="Data final da Concessão" 
+                  [(ngModel)]="dataConcessaoFinalEdit" name="dataConcessaoFinal" 
+                  [value]="dataConcessaoFinalEdit" formControlName="dataConcessaoFinal">
+                <mat-datepicker-toggle matSuffix [for]="dataConcessaoFinal"></mat-datepicker-toggle>
+                <mat-datepicker #dataConcessaoFinal></mat-datepicker>
+              </mat-form-field>
+
+        </div>
+    
+            <div class="four wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                <mat-select placeholder="Benefício ou Bolsa" [(ngModel)]="selecaoBeneficio" 
+                  name="benSelect" (ngModelChange)="changeBeneficio($event)" 
+                  formControlName="beneficio">
+                  <mat-option *ngFor="let ben of listBeneficios" [value]="ben">
+                    {{ben.nome}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="four wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                <mat-select placeholder="Situação" [(ngModel)]="selecaoStatus" 
+                  name="statusSelect" formControlName="concessaoStatus">
+                  <mat-option *ngFor="let st of listConcessaoStatus" [value]="st.status">
+                    {{st.status}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>            
+        </div>
+    </div>
+  </div>
+    </form>
+
+
+    <div class="ui icon buttons">
+      <button class="ui button blue" (click)="addAliasBen()" 
+        [disabled]="!grupoBen.valid" *ngIf="!idBenTemp">
+        Vincular
+      </button>
+      <button class="ui button blue" (click)="atualizarConcessao()" 
+        [disabled]="!grupoBen.valid" *ngIf="idBenTemp" >
+        Atualizar
+      </button>
+      <button class="ui button" (click)="resetFormBen()">
+        Limpar Formulário
+      </button>
+    </div>
+
+
+          <div class="ui piled segment">
+              <h4 class="ui header">Benefícios e/ou bolsas vinculados</h4>
+              <div class="ui bottom attached segment">
+                  <div class="ui segment">
+                      <div class="row">
+                          <mat-accordion>
+                              <mat-expansion-panel *ngFor="let concessoes of listConcessoes">
+                                <mat-expansion-panel-header>
+                                  <mat-panel-title>
+                                    {{concessoes.beneficio.nome}}
+                                  </mat-panel-title>
+                                  <mat-panel-description>
+                                    {{concessoes.concessaoStatus}}
+                                  </mat-panel-description>
+                                </mat-expansion-panel-header>
+                            
+                                <p>Data Concessão: <b>{{concessoes.dataConcessao | date: 'shortDate':'dd/MM/yyyy':'pt'}}</b></p>
+                                <p>Data Final: <b>{{concessoes.dataConcessaoFinal | date: 'shortDate':'dd/MM/yyyy':'pt'}}</b></p>                                
+            
+                                <div class="ui icon buttons">
+                                    <button class="ui button" (click)="editConcessao(concessoes)">
+                                      <i class="pencil alternate icon"></i>
+                                    </button>
+                                    <button class="ui button" (click)="openDeleteDialogConcessao(concessoes.id)">
+                                      <i class="trash alternate icon"></i>
+                                    </button>
+                                </div>
+            
+                              </mat-expansion-panel>
+                            </mat-accordion>
+                            
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+      <div class="row">
+          <div class="eight wide column">
+
+              <button type="button" class="ui button blue" (click)="save()" *ngIf="idTemp" 
+              [disabled]="(!(selecaoAluno && aluno.nomeCompleto && aluno.cpf) || 
+                sessaoService.verificarPermissao('edit_usuario'))">
+                Salvar Alterações do Aluno
+              </button>
+              <button class="ui button" routerLink="/cadastro/aluno">Retornar a Lista</button>
+
+          </div>
+      </div>
+    </div>

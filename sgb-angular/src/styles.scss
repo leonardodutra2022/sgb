@@ -1,0 +1,110 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// @include roboto-family('Regular', 400);
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$candy-app-primary: mat-palette($mat-indigo);
+$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$candy-app-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($candy-app-theme);
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+.containerCustom {
+    padding-top: 25px;
+}
+
+
+.ui.menu .active.item {
+    background: rgba(0,0,0,0.15) !important;
+}
+
+.customMargin {
+    margin-bottom: 6%;
+}
+
+.mat-dialog-container {
+    // width: 55% !important;
+    margin: auto !important;
+}
+
+.mat-tab-body-content {
+    height: auto !important;
+    overflow: hidden !important;
+}
+
+.mat-tab-body-content .ng-trigger .ng-trigger-translateTab {
+    height: auto !important;
+    overflow: hidden !important;
+}
+
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    // height: 250px;
+    overflow-y: auto;
+}
+
+.cdk-overlay-pane {
+    //overflow-y: auto !important;
+}
+
+#cdk-overlay-0 {
+    //overflow-y: auto !important;
+}
+
+
+
+//// eu comentei aqui para evitar alguns problemas de estilização que estava ocorrendo, e que não mudou a funcionalidade do toast
+// @import '~bootstrap/scss/bootstrap';
+
+
+
+// regular style toast
+@import 'node_modules/ngx-toastr/toastr';
+
+// bootstrap style toast
+// or import a bootstrap 4 alert styled design (SASS ONLY)
+// should be after your bootstrap imports, it uses bs4 variables, mixins, functions
+// @import 'node_modules/ngx-toastr/toastr-bs4-alert';
+
+
+// if you'd like to use it without importing all of bootstrap it requires
+
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+// @import 'node_modules/ngx-toastr/toastr-bs4-alert';
+
+
+.mat-dialog-container {
+    -webkit-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(230, 230, 230, 0.164),0px 0px 0px 1px rgba(0, 0, 226, 0.12) !important;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(189, 188, 188, 0.14),0px 0px 0px 1px rgba(0, 0, 0, 0.12) !important;
+    background: #fff;
+    color: rgba(0,0,0,.87);
+}

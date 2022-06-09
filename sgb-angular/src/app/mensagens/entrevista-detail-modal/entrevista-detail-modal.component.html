@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Parecer da Entrevista</h2>
+<mat-dialog-content class="mat-typography">
+<div class="content customModal">
+
+  <p>Data: <b>{{entrevista.data | date: 'shortDate':'dd/MM/yyyy':'pt'}}</b></p>
+  <p>Parecer: <b>{{entrevista.parecerMembroComissao}}</b></p>
+  <p>Relatório: <b>{{entrevista.relatorio}}</b></p>
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="ui button" mat-dialog-close>Ok</button>
+</mat-dialog-actions>

@@ -1,0 +1,75 @@
+<h2 class="ui header">
+    Informações Básicas do Responsável
+</h2>
+
+<div class="ui divider"></div>
+
+<div class="ui grid">
+    <div class="row">
+        <div class="ui column six wide">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Nome Completo" name="nomeAluno"
+                    [disabled]="!edit"[(ngModel)]="usuario.nomeCompleto" maxlength="255">
+            </mat-form-field>
+        </div>
+
+        <div class="ui column five wide">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Curso Atual " name="cursoAtual"
+                    [disabled]="!edit" [(ngModel)]="usuario.cursoResponsavel" maxlength="255">
+            </mat-form-field>
+        </div>
+
+        <div class="ui column five wide">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Telefone Fixo ou Celular" name="telefone"
+                    [disabled]="!edit" [(ngModel)]="usuario.telefoneResponsavel" maxlength="11">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="ui divider"></div>
+
+    <div class="row">
+        <div class="ui column five wide">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="E-mail" name="email"
+                    [disabled]="!edit" [(ngModel)]="usuario.email" maxlength="255">
+            </mat-form-field>
+        </div>
+
+        <div class="ui column five wide">
+            <mat-form-field class="formFieldCustom">
+                <i class="edit icon" title="Habilitar alteração na matrícula" (click)="setEditMatricula()" style="cursor: pointer;display: flex;float: right;"
+                    *ngIf="!editMatricula"></i>
+                <input matInput placeholder="Matrícula" name="matricula"
+                    [disabled]="!(edit && editMatricula)" [(ngModel)]="usuario.siape" maxlength="20">
+            </mat-form-field>
+
+            
+
+            <div class="ui warning message" *ngIf="editMatricula">
+                <div class="header">
+                  Aviso Importante ao Atualizar Matrícula!
+                </div>
+                  Se a matrícula for alterada, deslogue do sistema e logue novamente! Pois a sessão está baseada utilizando a matrícula do usuário
+            </div>
+        </div>
+
+        <div class="ui column six wide">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Setor" name="setor"
+                    [disabled]="!edit" [(ngModel)]="usuario.setor" maxlength="150">
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+
+<mat-dialog-actions align="begin">
+    <button class="ui button teal" cdkFocusInitial [mat-dialog-close]="data.responsavel" 
+        (click)="update()" *ngIf="edit" mat-button> Atualizar Dados
+    </button>
+    <button class="ui button teal" (click)="setEdit()" *ngIf="!edit" mat-button> Editar Dados
+    </button>
+    <button class="ui button" mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

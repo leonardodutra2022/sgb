@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="ui negative message custom-msg" *ngIf="error$ | async">
+        <i class="close icon" (click)="hideError()"></i>
+        <div class="header">
+          Erro (código {{codErro}})!
+        </div>
+        <p>
+          {{msgErro}}
+        </p>
+    </div>
+</div>
+
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" 
+      fxLayoutGap="10px" fxLayoutGap.xs="5px">
+
+    <div class="item item-2" fxFlex="55%">
+
+
+      <mat-card role="group" *ngIf="!mostrarLogin">
+        <mat-card-title>Todos os Processos</mat-card-title>
+        <mat-card-subtitle>Inscrições, editais, publicações e etc</mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-content >        
+          <app-processos-publicos></app-processos-publicos>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+      </mat-card>
+    </div>
+    <div class="item item-3 row" fxFlex="35%" fxFlexOrder="2" *ngIf="!mostrarLogin">
+      <mat-card >
+        <form name="formLogin" class="formLoginCustom">
+        <mat-card-title>Acompanhamento</mat-card-title>
+        <mat-card-subtitle>Inscrições, acompanhamento de processos, resultados</mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-content class="customFildsLogin">
+                <mat-form-field class="formLoginFieldCustom">
+                  <input [(ngModel)]="dadosAcesso.nomeUsuario" matInput placeholder="Nome de Usuário" name="nomeUsuario">
+                </mat-form-field>
+                <mat-form-field class="formLoginFieldCustom">
+                    <input [(ngModel)]="dadosAcesso.senha" matInput placeholder="Senha" type="password" name="senha">
+                  </mat-form-field>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+            <button class="ui button blue" (click)="efetuarLogin()">Acessar</button>
+            <button class="ui button default" (click)="novoLogin()">Cadastre-se</button>
+            <button class="ui button" (click)="recoverPass()">Esqueci a Senha</button>
+        </mat-card-actions>
+      </form>
+      </mat-card>
+    </div>
+
+</div>

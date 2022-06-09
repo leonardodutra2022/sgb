@@ -1,0 +1,131 @@
+<div class="ui container containerCustom">
+  <div class="header">
+    <h1 class="ui header">
+      Detalhes de Usuário
+    </h1>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <div class="ui two column grid">
+      <div class="row">  <div class="right floated right aligned column">
+          <a routerLink="/users">
+            <div class="ui right floated small primary labeled icon button pagination menu">
+                <i class="list alternate icon"></i> Usuários 
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui raised segment">
+          <div class="ui header">Informações Gerais</div>
+          <a class="ui orange ribbon label">Dados Pessoais</a>          
+            <div class="ui content contentCustom">
+
+                <div class="ui items">
+                  <div class="item">
+                    <div class="content">
+                        <h5 class="ui header">Nome Completo</h5>
+                        <div class="description">
+                          <p>{{usuario.nomeCompleto}}</p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                      <div class="content">
+                          <h5 class="ui header">SIAPE (para Servidor)</h5>
+                          <div class="description">
+                            <p>{{usuario.siape}}</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <h5 class="ui header">Sexo</h5>
+                            <div class="description">
+                              <p>{{usuario.sexo}}</p>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="item">
+                        <div class="content">
+                            <h5 class="ui header">Permissões / Papel / Status</h5>
+                            <div class="description">
+                              <p> / {{usuario.papel}} / {{usuario.ativo}}</p>
+                            </div>
+                        </div>
+                      </div>
+                </div>              
+
+            </div>
+          <a class="ui teal ribbon label">Contato</a> 
+          <div class="ui content contentCustom">
+              <div class="ui items">
+                <div class="item">
+                  <div class="content">
+                      <h5 class="ui header">E-Mail</h5>
+                      <div class="description">
+                        <p>{{usuario.email}}</p>
+                      </div>
+                  </div>
+                </div>
+
+                </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column" *ngIf="false">
+        <div class="ui segment">
+          <div class="ui header">
+                Informações Específicas para Alunos
+          </div>
+          <a class="ui orange left ribbon label">Inscrições</a>
+          <div class="ui content contentCustom">
+              <div class="ui items">
+                  <div class="item">
+                      <div class="content">
+                          <h5 class="ui header">Inscrição 1</h5>
+                          <div class="description">
+                            <p>Detalhes da Inscrição</p>
+                            <p>Mais detalhes da Inscrição</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="item">
+                      <div class="content">
+                          <h5 class="ui header">Inscrição 2</h5>
+                          <div class="description">
+                            <p>Detalhes da Inscrição</p>
+                            <p>Mais detalhes da Inscrição</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          <a class="ui teal left ribbon label">Informações Acadêmicas</a>
+          <div class="ui content contentCustom">
+            <div class="ui items">
+                <div class="item">
+                    <div class="content">
+                        <h5 class="ui header">Matricula</h5>
+                        <div class="description">
+                          <p>801102</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="content">
+                        <h5 class="ui header">Curso</h5>
+                        <div class="description">
+                          <p>Sistemas de Informação</p>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

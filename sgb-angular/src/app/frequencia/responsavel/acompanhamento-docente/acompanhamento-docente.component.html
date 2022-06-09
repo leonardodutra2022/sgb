@@ -1,0 +1,141 @@
+<div class="ui container containerCustom">
+    <div class="ui header">
+        <h2 class="ui header">
+          Registros de Frequência
+        </h2>
+      </div>
+    <div class="ui divider"></div>
+
+    <div class="ui grid">
+      <div class="row">
+        <div class="messages">
+          <div class="ui negative message custom-msg" *ngIf="viewMsgErro">
+              <i class="close icon" (click)="hideMsg()"></i>
+              <div class="header">
+                Erro!
+              </div>
+              <p>
+                {{msgErro}}
+              </p>
+          </div>
+    
+          <div class="ui positive message custom-msg" *ngIf="viewMsg">
+            <i class="close icon" (click)="hideMsg()"></i>
+            <div class="header">
+              Informe
+            </div>
+            <p>
+              {{msg}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="sixtenn wide column">
+          <div>
+              <table class="ui sortable compact celled definition blue table">
+                  <thead class="full-width">
+                    <tr>
+                      <th></th>
+                      <th>Data</th>
+                      <th>Entrada/Saída</th>
+                      <th>Observações do Aluno</th>
+                      <th>Assinatura Aluno</th>
+                      <th>Responsável (assinatura)</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let regF of registrosFrequencia" class="(regF.assinaturaAlunoEntrada && regF.assinaturaAlunoSaida && regF.assinaturaResponsavel) ? positive">
+                      <td class="collapsing">
+                        <fa-icon class="icon-check" [icon]="calendarCheck" *ngIf="regF.assinaturaAlunoEntrada && regF.assinaturaAlunoSaida && regF.assinaturaResponsavel"></fa-icon>
+
+                      </td>
+                      <td>
+                        {{regF.dataReferencia | date: 'shortDate':'dd/MM/yyyy':'pt'}}
+                      </td>
+                      <td>
+                        <span *ngIf="regF.assinaturaAlunoEntrada">
+                          <span class="horario-reg" *ngFor="let r of regF.horarios">
+                            {{r.entrada | localTime}} às {{r.saida | localTime}}, 
+                          </span>
+                        </span>
+                      </td>
+                      <td>
+                        {{regF.observacao}}
+                      </td>
+                      <td>
+                        {{regF.status}}
+                      </td>
+                      <td>
+                        {{regF.assinaturaResponsavel ? 'ASSINADO' : 'PENDENTE'}}
+                      </td>
+                      <td class="collapsing">
+                          <button class="ui button teal" (click)="assinar(regF)" title="Assinar Registro" 
+                            *ngIf="!regF.assinaturaResponsavel && authService.checkPermissaoMenu('ass_frequencia_resp') && isResponsavelProjeto">
+                            <fa-icon [icon]="signIcon"></fa-icon>
+                          </button>
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                  <tfoot class="full-width">
+                    <tr *ngIf="registroFrequenciaPageable.totalPages > 1">
+                      <th colspan="7">
+                        <div class="ui right floated pagination menu">
+                          <a class="icon item" *ngIf="!registroFrequenciaPageable.first" (click)="prevPage()">
+                            <i class="left chevron icon"></i>
+                          </a>
+        
+                          <a [id]="i" class="item" (click)="goPage(i)" *ngFor="let p of [].constructor(registroFrequenciaPageable.totalPages); let i = index">{{i + 1}}</a>
+                          
+                          <a class="icon item" *ngIf="!registroFrequenciaPageable.last" (click)="nextPage()">
+                            <i class="right chevron icon"></i>
+                          </a>
+                        </div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <th colspan="7">
+                      </th>
+                    </tr>
+                  </tfoot>
+                </table>
+           </div>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="sixteen wide column">
+          <div style="float: right;">
+            <mat-dialog-actions>
+              <button class="ui button teal" (click)="assinarTodos()" title="Assinar todos os registro para esse aluno" 
+                *ngIf="authService.checkPermissaoMenu('ass_frequencia_resp') && isResponsavelProjeto && hasPendencia">
+                <fa-icon [icon]="signIcon"></fa-icon> Assinar Todos os Registros do Aluno
+              </button>
+              <button class="ui button" mat-dialog-close>Fechar</button>
+            </mat-dialog-actions>
+          </div>
+
+          <div class="comprovanteFrequencia" *ngIf="frequenciaRegistro.assinaturaResponsavel">
+
+          </div>
+
+          <div class="assinatura" *ngIf="frequenciaRegistro.assinaturaResponsavel">
+            <span class="info">
+              Registrado e Assinado <fa-icon [icon]="signIcon" class="icon"></fa-icon>
+            </span>
+            
+            <p class="paragrafo">
+              <a href="https://www.in.gov.br/en/web/dou/-/decreto-n-10.543-de-13-de-novembro-de-2020-288224831" target="_blank">
+                Assinado digital digitalmente conforme Decreto nº 10.543, de 13 de novembro de 2020. 
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

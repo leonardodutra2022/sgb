@@ -1,0 +1,96 @@
+<div class="ui container containerCustom">
+    <div class="ui header">
+      <h2 class="ui header">
+        Concessão
+      </h2>
+    </div>
+  
+    <div class="ui divider"></div>
+  
+    <form >
+      <div class="ui grid">
+        <div class="row">
+          <div class="three wide column">
+            <mat-form-field class="formLoginFieldCustom">
+              <mat-select placeholder="Situação" [(ngModel)]="selecaoStConcessao"
+                name="concessaoSelect" (ngModelChange)="changeStatusConcessao($event)">
+                <mat-option *ngFor="let c of listStConcessoes" [value]="c.status">
+                  {{c.status}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+  
+          <div class="six wide column">
+            <mat-form-field class="formLoginFieldCustom">
+              <mat-select placeholder="Processo" [(ngModel)]="selecaoProcesso" 
+                name="processoSelect" (ngModelChange)="changeProcesso($event)">
+                <mat-option *ngFor="let p of processos" [value]="p.id">
+                  {{p.descricao}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+  
+          <div class="four wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                <mat-select placeholder="Aluno" [(ngModel)]="selecaoAluno" 
+                  name="alunoSelect" (ngModelChange)="changeAluno($event)">
+                  <mat-option *ngFor="let a of alunos" [value]="a.id">
+                    {{a.nomeCompleto}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
+
+          <div class="three wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                <mat-select placeholder="Benefício" [(ngModel)]="selecaoBeneficio" 
+                  name="beneficioSelect" (ngModelChange)="changeBeneficio($event)">
+                  <mat-option *ngFor="let b of beneficios" [value]="b.id">
+                    {{b.nome}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="eight wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                <input matInput [matDatepicker]="dpIni" placeholder="Data Concessão" [formControl]="dateConcessao" name="dataIni">
+                <mat-datepicker-toggle matSuffix [for]="dpIni"></mat-datepicker-toggle>
+                <mat-datepicker #dpIni></mat-datepicker>
+              </mat-form-field>
+          </div>
+          <div class="eight wide column">
+              <mat-form-field class="formLoginFieldCustom">
+                <input matInput [matDatepicker]="dpFim" placeholder="Data Encerramento da Concessão" [formControl]="dateConcessaoEncerramento" name="dataFim">
+                <mat-datepicker-toggle matSuffix [for]="dpFim"></mat-datepicker-toggle>
+                <mat-datepicker #dpFim></mat-datepicker>
+              </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="row">
+            <div class="eight wide column">
+                <button type="button" class="ui button blue" (click)="add()" *ngIf="!idTemp" 
+                [disabled]="!((selecaoProcesso && selecaoAluno && 
+                  selecaoBeneficio && selecaoStConcessao && dateConcessao) && 
+                  sessaoService.verificarPermissao('add_concessao'))">
+                  Cadastrar
+                </button>
+                <button type="button" class="ui button blue" (click)="save()" *ngIf="idTemp" 
+                [disabled]="!((selecaoProcesso && selecaoAluno
+                  && selecaoBeneficio && selecaoConcessao && selecaoStConcessao) 
+                  && sessaoService.verificarPermissao('edit_concessao'))">
+                  Salvar
+                </button>
+                <button class="ui button" routerLink="/concessao">Cancelar</button>
+            </div>
+        </div>
+  
+        </div>
+  </form>
+  
+  </div>

@@ -1,0 +1,159 @@
+<div class="ui container">
+
+    <!-- <div class="rubrica"> -->
+        <div class="ui grid">
+            <div class="row">
+                <div class="sixteen wide column customHeader" *ngIf="!rubricaAtual.hasRubrica">
+                    <h2 class="ui header customHeader">
+                        <div class="content">
+                            Cadastro de Rúbrica
+                            <div class="sub header">Selecione e Edite para obter uma imagem dentro do mínimo adequado de qualidade/legibilidade</div>
+                        </div>
+                    </h2>
+                    <div class="ui divider"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="sixteen wide column customHeader" *ngIf="rubricaAtual.hasRubrica">
+                    <h2 class="ui header">    
+                        <div class="content">
+                            Rúbrica Cadastrada
+                            <div class="sub header">Atualização da Rúbrica</div>
+                        </div>
+                    </h2>
+                    <div class="ui divider"></div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="rubricaAtual.hasRubrica">
+                <img [src]="rubricaBase64" alt="Rúbrica">
+            </div>
+
+            <div class="row" *ngIf="rubricaAtual.hasRubrica">
+                <button class="ui button teal" (click)="alterarRubrica()">
+                    Alterar Rúbrica
+                </button>
+            </div>
+
+            <div class="row" *ngIf="!rubricaAtual.hasRubrica">
+                <div class="nine wide column">
+                    <div class="upload">
+                        <input type="file" (change)="fileChangeEvent($event)" style="display: none !important" id="uploadImagem" name="uploadImagem"/>
+                    </div>
+            
+                    <div for="uploadImagem" >
+                        <!-- <input type="text" value="http://ww.short.url/c0opq"> -->
+                        <label for="uploadImagem" class="ui button teal">
+                            <!-- <button class="ui teal right labeled icon button"> -->
+                            Selecionar Imagem de Rúbrica
+                                
+                            <!-- </button> -->
+                        </label>
+                    </div>
+
+                    <div class="img-upload">
+                        <image-cropper
+                            [imageChangedEvent]="imageChangedEvent"
+                            [maintainAspectRatio]="false"
+                            [containWithinAspectRatio]="containWithinAspectRatio"
+                            [aspectRatio]="4 / 1"
+                            [resizeToWidth]="256"
+                            [cropperMinWidth]="128"
+                            [onlyScaleDown]="true"
+                            [roundCropper]="false"
+                            [canvasRotation]="canvasRotation"
+                            [transform]="transform"
+                            [alignImage]="'left'"
+                            [style.display]="showCropper ? null : 'none'"
+                            format="png"
+                            (imageCropped)="imageCropped($event)"
+                            (imageLoaded)="imageLoaded()"
+                            (cropperReady)="cropperReady($event)"
+                            (loadImageFailed)="loadImageFailed()"
+                        ></image-cropper>
+                    </div>
+            
+
+                </div>
+
+                <div class="seven wide column">
+                    <h3 class="ui header" *ngIf="croppedImage">    
+                        <div class="content">
+                            Visualização Prévia
+                            <div class="sub header">Prévia da Edição</div>
+                        </div>
+                    </h3>
+                    <div class="ui divider" *ngIf="croppedImage"></div>
+
+                    <div class="img-cropped">
+                        <img [src]="croppedImage" [style.border]="croppedImage ? '1px solid black' : 'none'" />
+                    </div>
+
+                    <div class="form-rubrica" *ngIf="croppedImage">
+                        <button class="ui green button" (click)="updateRubrica()">
+                            Cadastrar Rúbrica
+                            <!-- <fa-icon [icon]="rotateRedo" style="font-size: x-large"></fa-icon> -->
+                            <!-- <i class="ui redo icon"></i> -->
+                        </button>
+                    </div>
+
+                    <div class="tools" *ngIf="croppedImage">
+
+                        <h3 class="ui header customHeader">    
+                            <div class="content">
+                                Edição de Imagem
+                                <div class="sub header">Utilize as opções abaixo para obter melhor legibilidade de sua rúbrica</div>
+                            </div>
+                        </h3>
+                        <div class="ui divider"></div>
+
+                        <button class="ui teal right labeled icon button" (click)="rotateLeft()">
+                            Girar à Esquerda
+                            <!-- <fa-icon [icon]="rotateUndo" style="font-size: x-large"></fa-icon> -->
+                            <i class="ui undo icon"></i>
+                        </button>
+                        <button class="ui teal right labeled icon button" (click)="rotateRight()">
+                            Girar à Direita
+                            <!-- <fa-icon [icon]="rotateRedo" style="font-size: x-large"></fa-icon> -->
+                            <i class="ui redo icon"></i>
+                        </button>
+                        <button class="ui teal button" (click)="flipHorizontal()">
+                            Inversão Horizontal
+                            <!-- <img src="assets/flip_horizontal.png" alt="Inverter Horizontalmente" width="100"> -->
+                        </button>
+                        <button class="ui teal button" (click)="flipVertical()">
+                            Inversão Vertical
+                            <!-- <img src="assets/flip_vertical.png" alt="Inverter Verticalmente" width="100"> -->
+                        </button>
+                        <button class="ui teal button" (click)="toggleContainWithinAspectRatio()">{{containWithinAspectRatio?'Proporção de Preenchimento':'Dentro da Proporção'}}</button>
+                        <button class="ui teal button" (click)="resetImage()">Restaurar Imagem</button>
+                        <!-- <input [(ngModel)]="rotation" placeholder="Rotation" type="number" (keyup)="updateRotation()" />  -->
+                        <button class="ui teal right labeled icon button" (click)="zoomOut()">
+                            <!-- <fa-icon [icon]="zoomMinus" style="font-size: x-large"></fa-icon> -->
+                            Zoom -
+                            <i class="ui search minus icon"></i>
+                        </button> 
+                        <button class="ui teal right labeled icon button" (click)="zoomIn()">
+                            <!-- <fa-icon [icon]="zoomPlus" style="font-size: x-large"></fa-icon> -->
+                            Zoom +
+                            <i class="ui search plus icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+    <!-- </div> -->
+</div>
+

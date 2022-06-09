@@ -1,0 +1,460 @@
+<div class="ui piled segments">
+    <div class="ui segment">
+<form name="formInscricaoDadosPessoais">
+  <div class="ui grid">
+  <div class="row">
+    <div class="sixteen wide column customHeader">
+      <div class="ui header">Identificação</div>
+      <div class="ui divider"></div>
+    </div>
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <input matInput placeholder="Nome Completo" 
+          name="nomeCompleto" required [(ngModel)]="aluno.nomeCompleto"
+          maxlength="150" [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+      </mat-form-field>
+    </div>
+    <div class="eight wide column">
+      <mat-form-field class="formFieldCustom">
+        <mat-select placeholder="Sexo" name="sexoSelect" 
+          [(ngModel)]="selecaoSexo" 
+          [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+          <mat-option *ngFor="let sex of listSexo" [value]="sex.value">
+            {{ sex.genero }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Nome Social" 
+            name="nomeSocial" [(ngModel)]="aluno.nomeSocial"
+            maxlength="150" [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+        </mat-form-field>
+      </div>
+      <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="CPF (apenas números)" 
+            name="cpf" required [(ngModel)]="aluno.cpf" maxlength="11" 
+            cpfAcadMask [readonly]="inscricaoValidacao.dadosPessoaisCompleto || !inscricaoValidacao.dadosPessoaisCompleto">
+          <button mat-button matSuffix mat-icon-button aria-label="Alterar Matrícula" (click)="editCpf()" *ngIf="isExistValidacao">
+            <mat-icon class="custom-icon" title="Atualizar Matrícula">edit</mat-icon>
+            <i class="exclamation circle large icon custom-icon-error" title="CPF inválido!" *ngIf="!inscricaoValidacao.cpfValido"></i>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="six wide column">
+          <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="RG" 
+              name="rg" required [(ngModel)]="aluno.rg"
+              maxlength="20" [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+          </mat-form-field>
+        </div>
+        <div class="five wide column">
+          <mat-form-field class="formFieldCustom">
+              <mat-select placeholder="Órgão Expedidor" name="orgaoExpSelect" 
+                [ngModel]="selectOrgaoExp" (ngModelChange)="setOrgaoExpedidor($event)"
+                [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+                <mat-option *ngFor="let oe of listOrgaosExpedidores" [value]="oe.id">
+                  {{oe.descricao}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+
+      <div class="five wide column">
+          <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="CNH" 
+              name="cnh" [(ngModel)]="aluno.cnh"
+              maxlength="20" [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+          </mat-form-field>
+        </div>
+       
+      
+      <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+            <input matInput [matDatepicker]="dataNascimento" 
+              placeholder="Data de Nascimento" 
+              [formControl]="dataNascimentoEdit" 
+              name="dataNascimento" 
+              [readonly]="inscricaoValidacao.dadosPessoaisCompleto"
+              required>
+            <mat-datepicker-toggle matSuffix [for]="dataNascimento" 
+              [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-datepicker-toggle>
+            <mat-datepicker #dataNascimento></mat-datepicker>
+          </mat-form-field>
+
+      </div>
+      <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+            <mat-select placeholder="Estado Civil" name="estadoCivilSelect" 
+              [(ngModel)]="selecaoEstadoCivil"
+              [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+              <mat-option *ngFor="let ec of listEstadoCivil" [value]="ec.value">
+                {{ec.estadoCivil}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+      </div>
+
+      <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Naturalidade" 
+            name="naturalidade" required [(ngModel)]="aluno.naturalidade"
+            maxlength="30"  [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+        </mat-form-field>
+      </div>
+
+      <div class="eight wide column">
+        <mat-form-field class="formFieldCustom">
+          <input matInput placeholder="Nacionalidade" 
+            name="nacionalidade" required [(ngModel)]="aluno.nacionalidade"
+            maxlength="30" [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+        </mat-form-field>
+      </div>
+
+
+      <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Nome do Pai (caso não possa informar, coloque traço - )" 
+                name="nomePai" [(ngModel)]="aluno.nomePai" required
+                maxlength="100" [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+        </div>
+        <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Nome da Mãe" 
+                name="nomeMae" required [(ngModel)]="aluno.nomeMae"
+                maxlength="100" [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+        </div>
+      </div>
+ 
+<div class="row">
+  <div class="eight wide column">
+    <td class="collapsing"> 
+    <div class="ui toggle checkbox blue formFieldCustom">
+      <input type="checkbox" name="paiViuvo" 
+        [(ngModel)]="aluno.paiViuvo" [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+      <label>Pai viúvo?</label>
+    </div>
+    </td>
+  </div>
+  <div class="eight wide column">
+    <div class="ui toggle blue checkbox formFieldCustom">
+      <input type="checkbox" name="maeViuva" 
+        [(ngModel)]="aluno.maeViuva" [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+      <label>Mãe viúva?</label>
+    </div>
+  </div>  
+</div>
+
+      <div class="row">
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+                <mat-select placeholder="Tipo de escola em que cursou o Ensino Médio" 
+                  name="tipoEscolaEnsinoMedio" 
+                  [(ngModel)]="selecaoTipoEscolaEM"
+                  [disabled]="inscricaoValidacao.dadosPessoaisCompleto"
+                  required>
+                  <mat-option *ngFor="let es of listTipoEscolaEM" 
+                    [value]="es.value">
+                    {{es.tipoEscola}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="eight wide column">
+              <div class="ui toggle checkbox blue formFieldCustom">
+                <input type="checkbox" name="bolsistaEscolaParticular" 
+                  [(ngModel)]="aluno.bolsistaEscolaParticular"
+                  [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+                <label>Bolsista em escola particular?</label>
+              </div>
+            </div>
+
+            <div class="eight wide column">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Percentual da Bolsa" 
+                    name="percentualBolsa" type="number" 
+                    [(ngModel)]="aluno.percentualBolsa"
+                    [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+              </mat-form-field>
+            </div>
+
+            
+            <div class="sixteen wide column customHeader">
+              <div class="ui header">Logradouro da Família de Origem</div>
+              <div class="ui divider"></div>
+            </div>
+
+            <div class="eight wide column">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Logradouro" 
+                    name="logradouroMoradiaFamiliar" required 
+                    [(ngModel)]="logradouroFamiliar.nomeRua"
+                    maxlength="100"
+                    [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+                </mat-form-field>
+            </div>
+
+            <div class="eight wide column">
+              <mat-form-field class="formFieldCustom">
+                  <mat-select placeholder="Tipo de Logradouro" name="tipoLogradouroFamiliarSelect" 
+                    [ngModel]="tipoLogradouroFamiliarSelecionado.id" 
+                    (ngModelChange)="setTipoLogradouroFamiliar($event)"
+                    [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+                        <mat-option *ngFor="let tipo of listTipoLog" 
+                          [value]="tipo.id">
+                          {{tipo.descricao}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+          </div>
+
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="CEP (apenas números)" 
+                name="cepFamiliar" required  
+                [(ngModel)]="logradouroFamiliar.cep"
+                maxlength="10"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto"
+                cepMask>
+            </mat-form-field>
+          </div>
+      
+      
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+                <mat-select placeholder="UF" name="ufSelectFamiliar" 
+                [ngModel]="selectUFFamiliar" 
+                (ngModelChange)="carregarListaCidades($event)"
+                [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+                        <mat-option *ngFor="let est of listEstados" 
+                          [value]="est.id">
+                          {{est.nome}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
+
+
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+              <mat-select placeholder="Cidade" name="cidadeSelectFamiliar" 
+              [ngModel]="selectCidadeFamiliar" 
+              (ngModelChange)="setCidade($event)"
+              [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+                      <mat-option *ngFor="let cid of listCidades" 
+                        [value]="cid.id">
+                        {{cid.nome}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+      
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Bairro" 
+                name="bairroFamiliar" required  [(ngModel)]="logradouroFamiliar.bairro"
+                maxlength="50"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+          </div>  
+
+
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+                <mat-select placeholder="Tipo de Casa" name="tipoCasaSelectFamiliar" 
+                [(ngModel)]="selecaoTipoCasaFamiliar"
+                [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+                <mat-option *ngFor="let tipoCasa of listTipoCasa" 
+                  [value]="tipoCasa.value">
+                  {{tipoCasa.tipo}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
+      
+      
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Nº Casa" 
+                name="numCasaFamiliar"  [(ngModel)]="logradouroFamiliar.numCasa"
+                maxlength="15"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+          </div>    
+          
+          
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Complemento" 
+                name="complementoFamiliar"  
+                [(ngModel)]="logradouroFamiliar.complemento"
+                maxlength="100"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+          </div> 
+      
+      
+          <div class="eight wide column">
+            <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Referência" 
+                name="referenciaFamiliar" 
+                [(ngModel)]="logradouroFamiliar.referencia"
+                maxlength="150"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+          </div>          
+
+      <div class="sixteen wide column customHeader">
+          <div class="ui header">Dados Bancários</div>
+          <div class="ui divider"></div>
+      </div>
+
+      <div class="sixteen wide column" *ngIf="msgNuBank"> 
+        <div class="ui negative message">
+          <i class="close icon" (click)="hideMsgBank()"></i>
+          <div class="header">
+            Problemas relacionados à conta do Nu Bank!
+          </div>
+            Caro candidato, a comissão informa que há ocorrências de problemas ao transferir fundos (da UFC) para contas relacionada ao Nu Bank, 
+            por isso recomendamos fortemente que utilize outro banco. Obrigado.
+        </div>
+      </div>
+
+      <div class="sixteen wide column">
+        <mat-form-field class="formFieldCustom">
+            <mat-select placeholder="Banco" 
+              name="bancoSelect" 
+              [ngModel]="selectBanco" 
+              (ngModelChange)="setBanco($event)"
+              [disabled]="inscricaoValidacao.dadosPessoaisCompleto">
+              <mat-option *ngFor="let b of listBancos" 
+                [value]="b.id">
+                {{b.nomeBanco}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Número da Agência" 
+                name="numAgencia" 
+                [(ngModel)]="aluno.numAgencia"
+                maxlength="15"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+        </div>
+        <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Cidade da Agência" 
+                name="cidadeAgencia" 
+                [(ngModel)]="aluno.cidadeAgencia"
+                maxlength="20"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+        </div> 
+        
+      <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Operação da Conta (Caixa Econômica Federal)" 
+                name="operadorCef" 
+                [(ngModel)]="aluno.operadorCef"
+                maxlength="5"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+        </div>
+        <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Conta Corrente (com dígito)" 
+                name="contaCorrente" 
+                [(ngModel)]="aluno.contaCorrente"
+                maxlength="20" 
+                (blur)="checkContaCorrente();checkCpfValidacao()" 
+                (keyup)="checkContaCorrente();checkCpfValidacao()"
+                [readonly]="inscricaoValidacao.dadosPessoaisCompleto">
+            </mat-form-field>
+        </div>
+  </div>
+
+  <div class="row">
+    <div class="ui negative message custom-msg" *ngIf="!contaCorrenteValid || !inscricaoValidacao.cpfValido">
+        <div class="header">
+          Validação de Dados!
+        </div>
+        <li class="custom">
+          <ul *ngFor="let v of msgValidacao"><i class="chevron circle right icon"></i> {{v}}</ul>
+        </li>
+
+    </div>
+  </div>
+
+  
+  </div>
+</form>
+</div>
+<div class="ui segment">
+    <div class="row">
+        <div class="customButtonStep">
+            <button class="ui button blue" type="button" 
+              (click)="addInscricao()"
+              (dblclick)="dbClick()"
+              [disabled]="(!(aluno.nomeCompleto && selecaoSexo && aluno.cpf && aluno.rg && selectOrgaoExp
+              && dataNascimentoEdit && selecaoEstadoCivil && aluno.naturalidade && aluno.nacionalidade
+              && aluno.nomePai && aluno.nomeMae && selecaoTipoEscolaEM 
+              && logradouroFamiliar.nomeRua && tipoLogradouroFamiliarSelecionado.id
+              && logradouroFamiliar.cep && selectUFFamiliar && selectCidadeFamiliar 
+              && logradouroFamiliar.bairro && selecaoTipoCasaFamiliar && logradouroFamiliar.numCasa
+              && selectBanco && aluno.numAgencia && contaCorrenteValid
+              && aluno.contaCorrente && dataNascimentoEdit.valid && inscricaoValidacao.cpfValido) || fetching)"
+              *ngIf="!(inscricaoValidacao.dadosPessoaisCompleto) && !isModalForm && !isUpdate">
+               {{fetching ? 'Processando...' : 'Salvar e Continuar'}}
+            </button>
+
+            <button class="ui button blue" type="button" 
+              (click)="update()"
+              (dblclick)="dbClick()"
+              [disabled]="(!(aluno.nomeCompleto && selecaoSexo && aluno.cpf && aluno.rg && selectOrgaoExp
+              && dataNascimentoEdit && selecaoEstadoCivil && aluno.naturalidade && aluno.nacionalidade
+              && aluno.nomePai && aluno.nomeMae && selecaoTipoEscolaEM 
+              && logradouroFamiliar.nomeRua && tipoLogradouroFamiliarSelecionado.id
+              && logradouroFamiliar.cep && selectUFFamiliar && selectCidadeFamiliar 
+              && logradouroFamiliar.bairro && selecaoTipoCasaFamiliar && logradouroFamiliar.numCasa
+              && selectBanco && aluno.numAgencia && contaCorrenteValid
+              && aluno.contaCorrente && dataNascimentoEdit.valid && inscricaoValidacao.cpfValido) || fetching)"
+              *ngIf="!(inscricaoValidacao.dadosPessoaisCompleto) && !isModalForm && isUpdate">
+              Atualizar e Continuar
+            </button>            
+
+            <button routerLink="../contatos-enderecos" class="ui button"
+              *ngIf="(inscricaoValidacao.dadosPessoaisCompleto) && !isModalForm">Avançar
+            </button>
+
+            <button class="ui button green" type="button"
+            (click)="addInscricaoPendente()"
+            [disabled]="!(aluno.nomeCompleto && selecaoSexo && aluno.cpf && aluno.rg && selectOrgaoExp
+              && dataNascimentoEdit && selecaoEstadoCivil && aluno.naturalidade && aluno.nacionalidade
+              && aluno.nomePai && aluno.nomeMae && selecaoTipoEscolaEM 
+              && logradouroFamiliar.nomeRua && tipoLogradouroFamiliarSelecionado.id
+              && logradouroFamiliar.cep && selectUFFamiliar && selectCidadeFamiliar 
+              && logradouroFamiliar.bairro && selecaoTipoCasaFamiliar && logradouroFamiliar.numCasa
+              && selectBanco && aluno.numAgencia && contaCorrenteValid
+              && aluno.contaCorrente)"
+              *ngIf="isModalForm">Atualizar
+            </button>
+
+            <button class="ui labeled right floated icon button pagination"
+              (click)="editEnable()" *ngIf="(inscricaoValidacao.dadosPessoaisCompleto)">
+              <i class="write icon"></i>Alterar Informações
+            </button>
+        </div>
+        
+      </div>
+</div>
+</div>

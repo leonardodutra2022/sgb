@@ -1,0 +1,92 @@
+<h2 class="ui header">
+    Cadastro de Aluno
+</h2>
+
+<div class="ui divider"></div>
+      <div class="ui grid">
+        <div class="row">
+            <div class="ui column six wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Nome Completo" 
+                    name="nomeC" required [(ngModel)]="aluno.nomeCompleto">
+                </mat-form-field>
+            </div>
+
+            <div class="ui column five wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="CPF (apenas números)" 
+                      name="cpf" required [(ngModel)]="aluno.cpf" maxlength="11">
+                </mat-form-field>
+            </div>
+
+            <div class="ui column five wide">
+              <mat-form-field class="formLoginFieldCustom">
+                  <input matInput placeholder="E-mail" 
+                    name="email" required [(ngModel)]="aluno.email">
+              </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="ui column four wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <input matInput placeholder="Matrícula (apenas números)" maxlength="20"
+                      name="siape" required [(ngModel)]="aluno.siape">
+                </mat-form-field>
+            </div>
+
+            <div class="ui column four wide">
+                <mat-form-field class="formLoginFieldCustom">
+                    <mat-select placeholder="Sexo" name="sexoSelect" 
+                      [(ngModel)]="selecaoSexo">
+                      <mat-option *ngFor="let sex of listSexo" [value]="sex.value">
+                        {{ sex.genero }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+
+            <div class="ui column four wide">
+              <mat-form-field class="formLoginFieldCustom">
+                <mat-select placeholder="Curso Atual" name="cursoSelect" 
+                  [(ngModel)]="selecaoCurso">
+                  <mat-option *ngFor="let c of listCursos" [value]="c.curso">
+                    {{ c.curso }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="ui column four wide">
+              <mat-form-field class="formLoginFieldCustom">
+                <input matInput placeholder="Telefone (apenas números)" maxlength="11"
+                  name="telefone" required [(ngModel)]="aluno.telefoneFixo">
+                </mat-form-field>
+            </div>
+        </div>
+      </div>
+
+<mat-dialog-actions align="begin">
+  <!-- [mat-dialog-close]="data.aluno" -->
+  <button class="ui button teal" cdkFocusInitial 
+    [mat-dialog-close]="data.aluno"
+    (click)="addAluno()"
+    mat-button
+    *ngIf="(aluno.nomeCompleto && aluno.siape 
+            && aluno.email && aluno.cpf
+            && aluno.telefoneFixo)"
+    > Cadastrar
+  </button>
+  <button class="ui button"
+     [disabled]="!(aluno.nomeCompleto && aluno.siape 
+                    && aluno.email && aluno.cpf
+                    && aluno.telefoneFixo)"
+     *ngIf="!(aluno.nomeCompleto && aluno.siape 
+              && aluno.email && aluno.cpf
+              && aluno.telefoneFixo)"
+    > Cadastrar
+    </button>
+    
+  <button class="ui button" mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

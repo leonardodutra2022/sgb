@@ -1,0 +1,82 @@
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel *ngFor="let procs of listaProcessos" [expanded]="step === 0" hideToggle>
+              <mat-expansion-panel-header >
+                <mat-panel-title>
+                  <h4 class="ui header enfatizar"> {{procs.descricao}}</h4>
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{procs.statusProcessoResume}}
+                  <i class="cogs icon large"></i>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+          
+              <div class="ui grid">
+                  <div class="sixteen wide column">
+                      <div class="ui raised segments">
+                          <div class="ui segment">
+                            <div class="ui header"><h5>Editais, retificações, resultados e portarias e etc </h5></div>
+                          </div>
+                          <div class="ui segment">
+                            <p>Documentações oficiais</p>
+                          </div>
+                          <div class="ui segment">
+                            <table class="ui celled table">
+                              <thead>
+                                <tr>
+                                  <th>Descrição</th>
+                                  <th>Data Postagem</th>
+                                  <th>Baixar Documento</th>
+                                </tr>
+                              </thead>
+                              <tbody >
+                                <tr *ngFor="let docs of procs.docsOficiais" >
+                                  <td>[{{docs.tipo}}] {{docs.descricao}}</td>
+                                  <td>{{docs.dataPostagem  | date: 'shortDate':'dd/MM/yyyy':'pt'}}</td>
+                                  <td>
+                                      <a class="ui button customButtons" href="{{link}}/{{docs.idDoc}}" target="_self">
+                                          <i class="ui download icon"></i>
+                                        </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                  </div>
+              </div>
+
+              <mat-action-row *ngIf="!isAbble">
+                <div class="ui warning message msg-custom" >
+                  <div class="header">
+                    importante! 
+                  </div>
+                    Candidato não elegível à submissão de inscrição nesse processo!
+                </div>
+              </mat-action-row>
+
+              <mat-action-row>
+                <a class="ui button" href="{{procs.cronogramaLink}}">Cronograma</a>
+
+                <button class="ui button blue" routerLink="/processos/{{procs.idProcesso}}/inscricao"
+                  *ngIf="(checkSessao() && acessoTempUser)">
+                    Inscrição Liberada
+                </button>                
+                
+                <button class="ui button blue" routerLink="/processos/{{procs.idProcesso}}/inscricao"
+                  *ngIf="(checkSessao() && checkInscricaoStatus(procs.statusProcesso) && !hasInscricao && isAbble)">
+                    Efetuar Inscrição
+                </button>
+
+                <button class="ui button green" routerLink="/processos/{{procs.idProcesso}}/inscricao"
+                  *ngIf="(checkSessao() && checkInscricaoStatus(procs.statusProcesso) && hasInscricao)">
+                    Atualizar Inscrição
+                </button>                
+              </mat-action-row>
+            </mat-expansion-panel>
+          
+          </mat-accordion>
+          
+    </div>
+  </div>

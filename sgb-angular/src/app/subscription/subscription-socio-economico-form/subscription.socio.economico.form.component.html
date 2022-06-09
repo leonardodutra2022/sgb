@@ -1,0 +1,238 @@
+<div class="ui piled segments">  
+    <div class="ui segment">
+
+    <div class="ui grid">
+    <div class="row">
+      <div class="sixteen wide column customHeader">
+        <div class="ui header">Informações Sócioeconômicas Gerais</div>
+        <div class="ui divider"></div>
+      </div>
+      </div>
+      </div>
+
+      <form name="formSocioEconBasico">
+          <div class="ui grid">
+              <div class="row">        
+              <div class="eight wide column">
+                <mat-form-field class="formFieldCustom">
+                    <input matInput placeholder="Nº de Pessoas na Família (incluindo você)"
+                      name="totalPessoasFamilia" required type="number"
+                      [(ngModel)]="aluno.quantasPessoasFamilia"
+                      [readonly]="inscricaoValidacao.dadosSocioEconCompleto">
+                  </mat-form-field>
+              </div> 
+
+              <div class="row">
+                  <div class="sixteen wide column">
+                      <div class="ui toggle checkbox blue formFieldCustom">
+                        <input type="checkbox" name="genitor"
+                          [(ngModel)]="inscricao.genitor"
+                          [disabled]="inscricaoValidacao.dadosSocioEconCompleto">
+                        <label>Você é Pai ou Mãe?</label>
+                      </div>
+                  </div>  
+              </div>
+            
+
+              <div class="sixteen wide column customHeader" *ngIf="inscricao.genitor">
+                <div class="ui header">Informações como Pai ou Mãe</div>
+                <div class="ui divider"></div>
+              </div> 
+              
+              <div class="eight wide column" *ngIf="inscricao.genitor">
+                  <mat-form-field class="formFieldCustom">
+                      <input matInput placeholder="Número de filhos" 
+                        name="numFilhos" required type="number"
+                        [(ngModel)]="aluno.numFilhos"
+                        [readonly]="inscricaoValidacao.dadosSocioEconCompleto">
+                    </mat-form-field>
+                </div>   
+                
+              <div class="eight wide column" *ngIf="inscricao.genitor">
+                  <mat-form-field class="formFieldCustom">
+                      <input matInput placeholder="Idade do filho mais novo" 
+                        name="idadeFilhoMaisNovo" type="number"
+                        [(ngModel)]="aluno.idadeFilhoMaisNovo"
+                        [readonly]="inscricaoValidacao.dadosSocioEconCompleto">
+                    </mat-form-field>
+              </div>
+        
+              <div class="sixteen wide column" *ngIf="inscricao.genitor">
+                  <div class="ui toggle checkbox blue formFieldCustom">
+                    <input type="checkbox" name="possuiGuardaFilho"
+                      [(ngModel)]="aluno.possueGuardaFilho"
+                      [disabled]="inscricaoValidacao.dadosSocioEconCompleto">
+                    <label>Possui guarda do(s) filho(s)?</label>
+                  </div>
+              </div>
+        
+            </div>
+            </div>
+      </form>
+
+      <form [formGroup]="grupoSocioEconFamiliar">
+      
+      <div class="sixteen wide column customHeader">
+          <div class="ui header">Informações Sócioeconômicas dos entes do núcleo familiar</div>
+          <div class="ui divider"></div>
+      </div>
+
+      <div formGroupName="pessoaFamiliar" *ngIf="!inscricaoValidacao.dadosSocioEconCompleto">
+      <div class="ui grid">
+      <div class="row">
+      <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+              <input matInput placeholder="Nome Completo" 
+                 name="nomeCompletoMembroFamilia" required 
+                 formControlName="nomeCompleto"
+                 maxlength="100">
+            </mat-form-field>
+        </div>
+
+        <div class="eight wide column">
+          <mat-form-field class="formFieldCustom">
+            <input matInput placeholder="Parentesco (Ex: Tia, Avó, Irmão, Primo, Sobrinho)" 
+              formControlName="parentesco" name="parentesco" required
+              maxlength="20">
+          </mat-form-field>
+        </div> 
+
+        <div class="four wide column">
+            <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Idade" 
+                  formControlName="idade" name="idadeMembroFamilia" required type="number">
+              </mat-form-field>
+          </div>
+
+          <div class="six wide column">
+              <mat-form-field class="formFieldCustom">
+                  <mat-select placeholder="Escolaridade" 
+                    formControlName="escolaridade"
+                    name="escolaridadeMembroFamiliaSelect" 
+                    >
+                  <mat-option *ngFor="let escola of listEscolaridade" 
+                    [value]="escola.value">
+                    {{escola.escolaridade}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+          </div>
+
+          <div class="six wide column">
+              <mat-form-field class="formFieldCustom">
+                  <input matInput placeholder="Renda Mensal" 
+                   formControlName="rendaMensal" name="rendaMensalMembroFamilia" required type="number">
+                </mat-form-field>
+            </div>
+            <div class="sixteen wide column">
+              <mat-form-field class="formFieldCustom">
+                <input matInput placeholder="Descreva qual Atividade, Profissão, Benefício Social (ex: Bolsa Família) ou aposentadoria/pensão que recebe" 
+                  formControlName="atividadeProfissao" name="atividadeProfissao" 
+                  maxlength="50" required>
+              </mat-form-field>
+            </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="ui icon buttons" *ngIf="!inscricaoValidacao.dadosSocioEconCompleto">
+            <button class="ui button blue" (click)="addAlias()" 
+              [disabled]="!grupoSocioEconFamiliar.valid" *ngIf="!idTemp">
+              Adicionar ao Núcleo Familiar
+            </button>
+            <button class="ui button blue" (click)="atualizar()" 
+              [disabled]="!grupoSocioEconFamiliar.valid" *ngIf="idTemp" >
+              Atualizar
+            </button>
+            <button class="ui button" (click)="resetFormParentes()">
+              Limpar Formulário
+            </button>
+          </div>
+        </form>
+
+          <div class="sixteen wide column customHeader">
+              <div class="ui header">Listagem de Entes Familiares</div>
+              <div class="ui divider"></div>
+          </div>
+
+      <div class="ui segment">
+          <div class="row">
+              <mat-accordion>
+                  <mat-expansion-panel *ngFor="let familiar of parentes">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        {{familiar.nomeCompleto}}
+                      </mat-panel-title>
+                      <mat-panel-description>
+                        {{familiar.parentesco}}, {{familiar.idade}} anos
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                
+                    <p>Renda Informada: <b>R$ {{familiar.rendaMensal}}</b></p>
+
+                    <div class="ui icon buttons" *ngIf="!inscricaoValidacao.dadosSocioEconCompleto">
+                        <button class="ui button" (click)="edit(familiar)">
+                          <i class="pencil alternate icon"></i>
+                        </button>
+                        <button class="ui button" (click)="openDeleteDialog(familiar)">
+                          <i class="trash alternate icon"></i>
+                        </button>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+          </div>
+      </div>
+
+      <div class="sixteen wide column customHeader">
+        <div class="ui header">Relato Familiar</div>
+        <div class="ui divider"></div>
+      </div>
+
+      <div class="ui segment">
+        <div class="row">
+        <div class="sixteen wide column">
+          <mat-form-field class="formFieldCustom">
+            <textarea matInput placeholder="Relato familiar (máximo de 1500 caracteres)" 
+              maxlength="1500" rows="6" [(ngModel)]="inscricao.relatoFamiliar" required
+              [readonly]="inscricaoValidacao.dadosSocioEconCompleto"></textarea>
+          </mat-form-field>
+        </div>
+        </div>
+      </div>
+      
+      <div class="ui segment">
+          <div class="row">
+              <div class="customButtonStep">
+              <button class="ui button" type="button" 
+                routerLink="../moradia-transporte/"
+                *ngIf="!isModalForm && inscricaoValidacao.dadosSocioEconCompleto">Anterior
+              </button>
+
+              <button class="ui button blue" type="button" 
+                (click)="salvarProximo()"
+                (dblclick)="dbClick()"
+                [disabled]="(!(aluno.quantasPessoasFamilia && inscricao.relatoFamiliar) || fetching)"
+                *ngIf="!(inscricaoValidacao.dadosSocioEconCompleto) && !isModalForm && isUpdate">
+                {{fetching ? 'Processando...' : 'Salvar e Continuar'}}
+              </button>
+              
+              <button routerLink="../info-financeira" class="ui button"
+                *ngIf="(inscricaoValidacao.dadosSocioEconCompleto) && !isModalForm">Avançar
+              </button>
+              
+              <button class="ui button green" type="button" 
+                (click)="salvarPendente()"
+                [disabled]="!(aluno.quantasPessoasFamilia && inscricao.relatoFamiliar)"
+                *ngIf="isModalForm">
+                Atualizar
+              </button>
+
+              <button class="ui labeled right floated icon button pagination"
+                (click)="editEnable()" *ngIf="(inscricaoValidacao.dadosSocioEconCompleto)">
+                <i class="write icon"></i>Alterar Informações
+              </button>
+              </div>
+            </div>
+      </div>
+  </div>
+</div>
